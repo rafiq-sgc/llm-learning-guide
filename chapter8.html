@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why LLMs Fail - LLM Learning Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+</script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+        <header class="header">
+            <h1>❌ Why LLMs Fail</h1>
+            <p class="subtitle">Chapter 8 of 11</p>
+        </header>
+
+        
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="chapter1.html">📖 Chapter 1: Introduction to LLMs</a></li>
+            <li><a href="chapter2.html">⚙️ Chapter 2: Transformer Architecture</a></li>
+            <li><a href="chapter3.html">🔢 Chapter 3: Tokenization</a></li>
+            <li><a href="chapter4.html">👁️ Chapter 4: Attention Mechanism</a></li>
+            <li><a href="chapter5.html">🎓 Chapter 5: Training LLMs</a></li>
+            <li><a href="chapter6.html">✨ Chapter 6: Text Generation</a></li>
+            <li><a href="chapter7.html">✅ Chapter 7: Why LLMs Succeed</a></li>
+            <li><a href="chapter8.html">❌ Chapter 8: Why LLMs Fail</a></li>
+            <li><a href="chapter9.html">💬 Chapter 9: NL2SQL Overview</a></li>
+            <li><a href="chapter10.html">🏗️ Chapter 10: Your NL2SQL System</a></li>
+            <li><a href="chapter11.html">📚 Chapter 11: Examples & Case Studies</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>❌ Why LLMs Fail</h1>
+                <p>Chapter 8 of 11 - Complete Learning Guide</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter7.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter9.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>1. <strong>Hallucination: Making Things Up</strong></h3>
+<p><strong>Problem</strong>: LLMs generate plausible-sounding but incorrect information</p>
+<p><strong>Example:</strong></p>
+<pre><code>User: "Show me students from Harvard enrolled in 2024"
+<p>LLM: SELECT * FROM students WHERE university = 'Harvard' AND year = 2024</p>
+<p>Reality: Your database doesn't have a 'university' column</p>
+<p></code></pre></p>
+<p><strong>Why it happens:</strong></p>
+<ul>
+<li>Model learned patterns from training data</li>
+<li>Doesn't have access to actual database schema</li>
+<li>Generates based on what "sounds right"</li>
+</ul>
+<p><strong>Your system's solution:</strong></p>
+<pre><code># From sql_agent.py - validates and re-executes
+<p>if 'sql_db_query' not in execution_tool_names or \</p>
+<p>len(sql_query.strip()) == 0 or \</p>
+<p>is_intent_negative(final_ai_response):</p>
+<p># Handle failure case</p>
+<p></code></pre></p>
+<h3>2. <strong>Context Window Limitations</strong></h3>
+<p><strong>Problem</strong>: LLMs have maximum input length</p>
+<pre><code>GPT-3.5: 4,096 tokens (~3,000 words)
+<p>GPT-4:   8,192 tokens (~6,000 words)</p>
+<p>GPT-4 Turbo: 128,000 tokens (~96,000 words)</p>
+<p></code></pre></p>
+<p><strong>Impact</strong>: Can't process very long documents or many tables at once</p>
+<p><strong>Your system's solution:</strong></p>
+<ul>
+<li>Hybrid search finds only relevant tables (reduces context)</li>
+<li>Focuses on top 2-5 most relevant tables</li>
+</ul>
+<h3>3. <strong>Lack of Real-World Knowledge</strong></h3>
+<p><strong>Problem</strong>: Training data has a cutoff date</p>
+<pre><code>GPT-4 Training: Data up to April 2023
+<p>Current Date: 2024</p>
+<p>Missing: Events, facts, data after cutoff</p>
+<p></code></pre></p>
+<p><strong>Impact</strong>: Can't answer questions about recent events</p>
+<h3>4. <strong>Ambiguity Handling</strong></h3>
+<p><strong>Problem</strong>: Natural language is ambiguous</p>
+<pre><code>User: "Show me active students"
+<p>Ambiguity:</p>
+<ul>
+<li>Currently enrolled?</li>
+<li>Recently active?</li>
+<li>Active in system?</li>
+<li>Active status flag?</li>
+</ul>
+<p></code></pre></p>
+<p><strong>Your system's solution:</strong></p>
+<ul>
+<li>Clarifying questions</li>
+<li>Semantic phrase matching</li>
+<li>Entity metadata to understand domain</li>
+</ul>
+<h3>5. <strong>Token Limits and Cost</strong></h3>
+<p><strong>Problem</strong>:</p>
+<ul>
+<li>Longer prompts = more tokens = higher cost</li>
+<li>Rate limits from API providers</li>
+<li>Latency increases with context size</li>
+</ul>
+<p><strong>Your system's optimization:</strong></p>
+<pre><code># Limit results to 5 rows (from utils.py)
+<p>"Always limit results to a maximum of 5 rows unless the user requests a different number."</p>
+<p></code></pre></p>
+<h3>6. <strong>Schema Mismatch</strong></h3>
+<p><strong>Problem</strong>: LLM assumes schema that doesn't exist</p>
+<pre><code>LLM thinks: "students" table has "name", "age", "gpa"
+<p>Reality: Table is "student_records" with "full_name", "date_of_birth", "grade_point_avg"</p>
+<p></code></pre></p>
+<p><strong>Your system's solution:</strong></p>
+<ul>
+<li>Hybrid search provides actual schema</li>
+<li>Metadata includes column descriptions</li>
+<li>System prompt includes exact table/column names</li>
+</ul>
+<h3>7. <strong>Complex Queries</strong></h3>
+<p><strong>Problem</strong>: Multi-step reasoning can fail</p>
+<pre><code>User: "Show me students who enrolled in 2024 and have GPA &gt; 3.5,
+<p>but exclude those who dropped out"</p>
+<p>Requires:</p>
+<ol>
+<li>Filter by enrollment year</li>
+<li>Filter by GPA</li>
+<li>Join with dropout records</li>
+<li>Exclude matches</li>
+</ol>
+<p></code></pre></p>
+<p><strong>Why it fails:</strong></p>
+<ul>
+<li>Multiple conditions</li>
+<li>Requires joins</li>
+<li>Complex logic</li>
+</ul>
+<p><strong>Mitigation</strong>: Break into simpler queries or use agentic approach (ReAct)</p>
+<h3>8. <strong>Security and Injection</strong></h3>
+<p><strong>Problem</strong>: SQL injection if not careful</p>
+<pre><code>User: "Delete all students"  # Should be blocked!
+<p></code></pre></p>
+<p><strong>Your system's protection:</strong></p>
+<pre><code># From utils.py
+<p>"NEVER perform DML operations (INSERT, UPDATE, DELETE, DROP, etc.)."</p>
+<p></code></pre></p>
+<h3>Common Failure Patterns in NL2SQL</h3>
+<p><div class="diagram-container"><div class="mermaid">
+graph TD
+    A[User Query] --> B{Valid?}
+    B -->|No| C[Intent Classification Fails]
+    B -->|Yes| D{Relevant Tables Found?}
+    D -->|No| E[Hybrid Search Fails]
+    D -->|Yes| F{Schema Understood?}
+    F -->|No| G[Hallucination]
+    F -->|Yes| H{SQL Generated?}
+    H -->|No| I[Generation Fails]
+    H -->|Yes| J{SQL Valid?}
+    J -->|No| K[Syntax Error]
+    J -->|Yes| L{Query Executes?}
+    L -->|No| M[Runtime Error]
+    L -->|Yes| N[Success!]
+    
+    style C fill:#f44336
+    style E fill:#f44336
+    style G fill:#f44336
+    style I fill:#f44336
+    style K fill:#f44336
+    style M fill:#f44336
+    style N fill:#4caf50
+</div></div></p>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter7.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter9.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Complete LLM Learning Guide</p>
+            <p>Chapter 8 of 11</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+    </script>
+</body>
+</html>

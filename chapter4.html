@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention Mechanism: The Core Innovation - LLM Learning Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+</script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+        <header class="header">
+            <h1>👁️ Attention Mechanism: The Core Innovation</h1>
+            <p class="subtitle">Chapter 4 of 11</p>
+        </header>
+
+        
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="chapter1.html">📖 Chapter 1: Introduction to LLMs</a></li>
+            <li><a href="chapter2.html">⚙️ Chapter 2: Transformer Architecture</a></li>
+            <li><a href="chapter3.html">🔢 Chapter 3: Tokenization</a></li>
+            <li><a href="chapter4.html">👁️ Chapter 4: Attention Mechanism</a></li>
+            <li><a href="chapter5.html">🎓 Chapter 5: Training LLMs</a></li>
+            <li><a href="chapter6.html">✨ Chapter 6: Text Generation</a></li>
+            <li><a href="chapter7.html">✅ Chapter 7: Why LLMs Succeed</a></li>
+            <li><a href="chapter8.html">❌ Chapter 8: Why LLMs Fail</a></li>
+            <li><a href="chapter9.html">💬 Chapter 9: NL2SQL Overview</a></li>
+            <li><a href="chapter10.html">🏗️ Chapter 10: Your NL2SQL System</a></li>
+            <li><a href="chapter11.html">📚 Chapter 11: Examples & Case Studies</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>👁️ Attention Mechanism: The Core Innovation</h1>
+                <p>Chapter 4 of 11 - Complete Learning Guide</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter3.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter5.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>What is Attention?</h3>
+<p><strong>Attention</strong> allows the model to focus on relevant parts of the input when generating each word. It's like highlighting important words in a sentence.</p>
+<h3>Simple Analogy</h3>
+<p>When you read: <strong>"The cat sat on the mat because it was tired"</strong></p>
+<p>You know "it" refers to "cat" because you pay <strong>attention</strong> to the context. LLMs do the same!</p>
+<h3>Self-Attention Mechanism</h3>
+<p><div class="diagram-container"><div class="mermaid">
+graph TD
+    A[Input: 'The cat sat'] --> B[Query Q]
+    A --> C[Key K]
+    A --> D[Value V]
+    B --> E[Calculate Attention Scores]
+    C --> E
+    E --> F[Weighted Sum of Values]
+    D --> F
+    F --> G[Output]
+</div></div></p>
+<h3>How Attention Scores Work</h3>
+<p>For the sentence: <strong>"The cat sat on the mat"</strong></p>
+<p>When processing "cat", the model calculates:</p>
+<pre><code>Attention("cat" to "The") = 0.1   (low - article)
+<p>Attention("cat" to "cat") = 1.0   (high - itself)</p>
+<p>Attention("cat" to "sat") = 0.8   (high - verb related to cat)</p>
+<p>Attention("cat" to "on") = 0.2    (low - preposition)</p>
+<p>Attention("cat" to "the") = 0.1   (low - article)</p>
+<p>Attention("cat" to "mat") = 0.3   (medium - object)</p>
+<p></code></pre></p>
+<p>The model learns these weights during training!</p>
+<h3>Multi-Head Attention</h3>
+<p>Instead of one attention mechanism, transformers use <strong>multiple heads</strong> (typically 12-128), each looking at different relationships:</p>
+<p><div class="diagram-container"><div class="mermaid">
+graph LR
+    A[Input] --> B[Head 1: Syntax]
+    A --> C[Head 2: Semantics]
+    A --> D[Head 3: Long-range]
+    A --> E[Head N: ...]
+    B --> F[Concatenate]
+    C --> F
+    D --> F
+    E --> F
+    F --> G[Output]
+</div></div></p>
+<p><strong>Example:</strong></p>
+<ul>
+<li><strong>Head 1</strong> might focus on grammatical relationships (subject-verb)</li>
+<li><strong>Head 2</strong> might focus on meaning (cat → animal)</li>
+<li><strong>Head 3</strong> might focus on long-distance dependencies</li>
+</ul>
+<h3>Why Attention is Powerful</h3>
+<ol>
+<li><strong>Parallel Processing</strong>: Can process all words simultaneously (unlike RNNs)</li>
+<li><strong>Long-range Dependencies</strong>: Can connect words far apart in the sentence</li>
+<li><strong>Interpretability</strong>: We can see what the model is "paying attention to"</li>
+</ol>
+<h3>Visual Example</h3>
+<pre><code>Query: "Show me students enrolled in 2024"
+<p>Attention weights when generating "students":</p>
+<p>┌─────────┬──────────┬─────────┬─────────┬─────────┐</p>
+<p>│  Show   │   me     │ students│ enrolled│   2024  │</p>
+<p>├─────────┼──────────┼─────────┼─────────┼─────────┤</p>
+<p>│   0.1   │   0.2    │   1.0   │   0.8   │   0.3   │</p>
+<p>└─────────┴──────────┴─────────┴─────────┴─────────┘</p>
+<p>↑                    ↑</p>
+<p>Low attention        High attention</p>
+<p></code></pre></p>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter3.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter5.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Complete LLM Learning Guide</p>
+            <p>Chapter 4 of 11</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+    </script>
+</body>
+</html>

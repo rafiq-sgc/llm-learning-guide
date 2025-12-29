@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical Examples and Case Studies - LLM Learning Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+</script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+        <header class="header">
+            <h1>📚 Practical Examples and Case Studies</h1>
+            <p class="subtitle">Chapter 11 of 11</p>
+        </header>
+
+        
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="chapter1.html">📖 Chapter 1: Introduction to LLMs</a></li>
+            <li><a href="chapter2.html">⚙️ Chapter 2: Transformer Architecture</a></li>
+            <li><a href="chapter3.html">🔢 Chapter 3: Tokenization</a></li>
+            <li><a href="chapter4.html">👁️ Chapter 4: Attention Mechanism</a></li>
+            <li><a href="chapter5.html">🎓 Chapter 5: Training LLMs</a></li>
+            <li><a href="chapter6.html">✨ Chapter 6: Text Generation</a></li>
+            <li><a href="chapter7.html">✅ Chapter 7: Why LLMs Succeed</a></li>
+            <li><a href="chapter8.html">❌ Chapter 8: Why LLMs Fail</a></li>
+            <li><a href="chapter9.html">💬 Chapter 9: NL2SQL Overview</a></li>
+            <li><a href="chapter10.html">🏗️ Chapter 10: Your NL2SQL System</a></li>
+            <li><a href="chapter11.html">📚 Chapter 11: Examples & Case Studies</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>📚 Practical Examples and Case Studies</h1>
+                <p>Chapter 11 of 11 - Complete Learning Guide</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter10.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><span></span></div>
+
+            <div class="section">
+                <h3>Example 1: Simple Query</h3>
+<p><strong>User Input:</strong></p>
+<pre><code>"Show me all students enrolled in 2024"
+<p></code></pre></p>
+<p><strong>Processing:</strong></p>
+<ol>
+<li><strong>Intent</strong>: SQL (confidence: 0.99)</li>
+<li><strong>Hybrid Search</strong>: Finds "students" table</li>
+<li><strong>Context Built</strong>:</li>
+</ol>
+<pre><code>   Table: students
+<p>Columns: student_id, name, enrollment_year, ...</p>
+<p></code></pre></p>
+<ol>
+<li><strong>SQL Generated</strong>:</li>
+</ol>
+<pre><code>   SELECT student_id, name, enrollment_year
+<p>FROM students</p>
+<p>WHERE enrollment_year = 2024</p>
+<p>LIMIT 5</p>
+<p></code></pre></p>
+<ol>
+<li><strong>Result</strong>: List of students</li>
+</ol>
+<h3>Example 2: Complex Query with Join</h3>
+<p><strong>User Input:</strong></p>
+<pre><code>"Show me students with GPA above 3.5 who are enrolled in Computer Science"
+<p></code></pre></p>
+<p><strong>Processing:</strong></p>
+<ol>
+<li><strong>Intent</strong>: SQL (confidence: 0.98)</li>
+<li><strong>Hybrid Search</strong>: Finds ["students", "enrollments", "courses"]</li>
+<li><strong>Context Built</strong>: Multiple tables with relationships</li>
+<li><strong>SQL Generated</strong>:</li>
+</ol>
+<pre><code>   SELECT s.student_id, s.name, s.gpa, c.course_name
+<p>FROM students s</p>
+<p>JOIN enrollments e ON s.student_id = e.student_id</p>
+<p>JOIN courses c ON e.course_id = c.course_id</p>
+<p>WHERE s.gpa &gt; 3.5</p>
+<p>AND LOWER(c.course_name) LIKE '%computer science%'</p>
+<p>LIMIT 5</p>
+<p></code></pre></p>
+<ol>
+<li><strong>Result</strong>: Filtered and joined data</li>
+</ol>
+<h3>Example 3: Count Query</h3>
+<p><strong>User Input:</strong></p>
+<pre><code>"How many students are enrolled in 2024?"
+<p></code></pre></p>
+<p><strong>Processing:</strong></p>
+<ol>
+<li><strong>Intent</strong>: SQL (confidence: 0.99)</li>
+<li><strong>System Prompt</strong>: Recognizes "How many" → Use COUNT()</li>
+<li><strong>SQL Generated</strong>:</li>
+</ol>
+<pre><code>   SELECT COUNT(*)
+<p>FROM students</p>
+<p>WHERE enrollment_year = 2024</p>
+<p></code></pre></p>
+<ol>
+<li><strong>Result</strong>: Single number (count)</li>
+</ol>
+<h3>Example 4: Failure Case - Ambiguity</h3>
+<p><strong>User Input:</strong></p>
+<pre><code>"Show me active students"
+<p></code></pre></p>
+<p><strong>Potential Issues:</strong></p>
+<ul>
+<li>What does "active" mean?</li>
+<li>Currently enrolled?</li>
+<li>Recently logged in?</li>
+<li>Active status flag?</li>
+</ul>
+<p><strong>Your System's Handling:</strong></p>
+<ol>
+<li><strong>Semantic Matching</strong>: Checks for "active students" in key phrases</li>
+<li><strong>Clarifying Question</strong>: If ambiguous, asks for clarification</li>
+<li><strong>Default Behavior</strong>: Uses most common interpretation (currently enrolled)</li>
+</ol>
+<h3>Example 5: Failure Case - Schema Mismatch</h3>
+<p><strong>User Input:</strong></p>
+<pre><code>"Show me students from Harvard"
+<p></code></pre></p>
+<p><strong>Problem:</strong></p>
+<ul>
+<li>Database doesn't have "university" or "school" column</li>
+<li>LLM might hallucinate column name</li>
+</ul>
+<p><strong>Your System's Protection:</strong></p>
+<ol>
+<li><strong>Hybrid Search</strong>: Only provides actual schema</li>
+<li><strong>System Prompt</strong>: "Only use tables from: {extract_tables}"</li>
+<li><strong>Tool Usage</strong>: Agent checks actual schema before generating SQL</li>
+<li><strong>Validation</strong>: SQL execution fails if column doesn't exist → retry</li>
+</ol>
+<h3>Real-World Performance</h3>
+<p><strong>Success Rate Factors:</strong></p>
+<ul>
+<li><strong>Simple queries</strong>: 90-95% success</li>
+<li><strong>Complex queries with joins</strong>: 70-80% success</li>
+<li><strong>Ambiguous queries</strong>: 50-60% (needs clarification)</li>
+</ul>
+<p><strong>Improvement Strategies:</strong></p>
+<ol>
+<li><strong>Better Metadata</strong>: More detailed table/column descriptions</li>
+<li><strong>More Examples</strong>: Few-shot examples in prompt</li>
+<li><strong>Clarifying Questions</strong>: Ask when ambiguous</li>
+<li><strong>Error Recovery</strong>: Retry with different approach on failure</li>
+</ol>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter10.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><span></span></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Complete LLM Learning Guide</p>
+            <p>Chapter 11 of 11</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+    </script>
+</body>
+</html>

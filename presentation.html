@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behind the Scenes of LLMs - Presentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slides-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 60px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow-y: auto;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Title Slide */
+        .slide-title {
+            text-align: center;
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+        }
+
+        .slide-title h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .slide-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .slide-title .meta {
+            font-size: 1.2rem;
+            margin-top: 3rem;
+            opacity: 0.9;
+        }
+
+        /* Content Slides */
+        .slide h1 {
+            font-size: 3rem;
+            color: #2196F3;
+            margin-bottom: 1.5rem;
+            border-bottom: 4px solid #2196F3;
+            padding-bottom: 0.5rem;
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            color: #4CAF50;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .slide h3 {
+            font-size: 2rem;
+            color: #FF9800;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin: 1rem 0;
+            color: #333;
+        }
+
+        .slide ul, .slide ol {
+            font-size: 1.2rem;
+            margin: 1rem 0 1rem 2rem;
+            line-height: 1.8;
+        }
+
+        .slide li {
+            margin: 0.5rem 0;
+        }
+
+        .slide strong {
+            color: #2196F3;
+            font-weight: 600;
+        }
+
+        /* Code Blocks */
+        .slide pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .slide code {
+            font-family: 'Courier New', monospace;
+        }
+
+        .inline-code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #d63384;
+            font-size: 0.9em;
+        }
+
+        /* Diagrams */
+        .diagram-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .mermaid {
+            background: white;
+        }
+
+        /* Example Boxes */
+        .example-box {
+            background: #f8f9fa;
+            border-left: 4px solid #2196F3;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background: #e8f5e9;
+            border-left-color: #4CAF50;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left-color: #FF9800;
+        }
+
+        .error-box {
+            background: #ffebee;
+            border-left-color: #F44336;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+            background: rgba(255,255,255,0.9);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* Slide Indicator */
+        .slide-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #2196F3;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Full Screen Toggle */
+        .fullscreen-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .fullscreen-btn:hover {
+            background: white;
+            transform: scale(1.05);
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        /* Highlight Box */
+        .highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .highlight h3 {
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 40px 30px;
+            }
+
+            .slide h1 {
+                font-size: 2.5rem;
+            }
+
+            .slide h2 {
+                font-size: 2rem;
+            }
+
+            .slide h3 {
+                font-size: 1.5rem;
+            }
+
+            .two-column {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px 15px;
+            }
+
+            .slide-content {
+                justify-content: flex-start;
+                padding-top: 20px;
+            }
+
+            .slide-title h1 {
+                font-size: 2rem;
+            }
+
+            .slide-title h2 {
+                font-size: 1.5rem;
+            }
+
+            .slide h1 {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .slide h2 {
+                font-size: 1.5rem;
+                margin: 1rem 0 0.5rem 0;
+            }
+
+            .slide h3 {
+                font-size: 1.2rem;
+                margin: 0.75rem 0 0.5rem 0;
+            }
+
+            .slide p {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .slide ul, .slide ol {
+                font-size: 0.95rem;
+                margin-left: 1.5rem;
+                line-height: 1.6;
+            }
+
+            .slide li {
+                margin: 0.4rem 0;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .nav-controls {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+                padding: 0.5rem 1rem;
+                flex-wrap: wrap;
+            }
+
+            .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+                flex: 1;
+                min-width: 80px;
+            }
+
+            .slide-counter {
+                width: 100%;
+                justify-content: center;
+                order: 3;
+                margin-top: 0.5rem;
+            }
+
+            .slide-indicator {
+                top: 10px;
+                right: 10px;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .fullscreen-btn {
+                top: 10px;
+                left: 10px;
+                padding: 0.5rem 0.75rem;
+                font-size: 1rem;
+            }
+
+            .diagram-container {
+                padding: 1rem;
+                margin: 1rem 0;
+                overflow-x: auto;
+            }
+
+            .mermaid {
+                min-width: 100%;
+                overflow-x: auto;
+            }
+
+            pre {
+                font-size: 0.85rem;
+                padding: 1rem;
+                overflow-x: auto;
+            }
+
+            .example-box,
+            .success-box,
+            .warning-box,
+            .error-box,
+            .highlight {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+
+            .highlight h3 {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide {
+                padding: 15px 10px;
+            }
+
+            .slide-title h1 {
+                font-size: 1.5rem;
+            }
+
+            .slide-title h2 {
+                font-size: 1.2rem;
+            }
+
+            .slide h1 {
+                font-size: 1.5rem;
+            }
+
+            .slide h2 {
+                font-size: 1.3rem;
+            }
+
+            .slide h3 {
+                font-size: 1.1rem;
+            }
+
+            .slide p {
+                font-size: 0.9rem;
+            }
+
+            .slide ul, .slide ol {
+                font-size: 0.85rem;
+            }
+
+            .nav-controls {
+                bottom: 5px;
+                left: 5px;
+                right: 5px;
+                padding: 0.4rem 0.5rem;
+            }
+
+            .nav-btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .slide-indicator {
+                top: 5px;
+                right: 5px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .fullscreen-btn {
+                top: 5px;
+                left: 5px;
+                padding: 0.4rem 0.6rem;
+            }
+
+            pre {
+                font-size: 0.75rem;
+                padding: 0.75rem;
+            }
+        }
+
+        /* Extra Small Devices (330px - 480px) */
+        @media (max-width: 480px) and (min-width: 330px) {
+            .slide {
+                padding: 12px 8px;
+            }
+
+            .slide-content {
+                padding-top: 15px;
+            }
+
+            .slide-title h1 {
+                font-size: 1.3rem;
+            }
+
+            .slide-title h2 {
+                font-size: 1rem;
+            }
+
+            .slide-title .meta {
+                font-size: 0.85rem;
+                margin-top: 1.5rem;
+            }
+
+            .slide h1 {
+                font-size: 1.3rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .slide h2 {
+                font-size: 1.1rem;
+                margin: 0.75rem 0 0.5rem 0;
+            }
+
+            .slide h3 {
+                font-size: 1rem;
+                margin: 0.5rem 0 0.4rem 0;
+            }
+
+            .slide p {
+                font-size: 0.85rem;
+                line-height: 1.5;
+                margin: 0.75rem 0;
+            }
+
+            .slide ul, .slide ol {
+                font-size: 0.8rem;
+                margin-left: 1.25rem;
+                line-height: 1.5;
+            }
+
+            .slide li {
+                margin: 0.3rem 0;
+            }
+
+            .nav-controls {
+                bottom: 3px;
+                left: 3px;
+                right: 3px;
+                padding: 0.3rem 0.4rem;
+            }
+
+            .nav-btn {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.75rem;
+                min-width: 70px;
+            }
+
+            .slide-counter {
+                font-size: 0.75rem;
+            }
+
+            .slide-indicator {
+                top: 3px;
+                right: 3px;
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .fullscreen-btn {
+                top: 3px;
+                left: 3px;
+                padding: 0.35rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .diagram-container {
+                padding: 0.75rem;
+                margin: 0.75rem 0;
+            }
+
+            .mermaid {
+                font-size: 0.7rem;
+            }
+
+            pre {
+                font-size: 0.7rem;
+                padding: 0.6rem;
+                line-height: 1.4;
+            }
+
+            .example-box,
+            .success-box,
+            .warning-box,
+            .error-box,
+            .highlight {
+                padding: 0.75rem;
+                margin: 0.75rem 0;
+            }
+
+            .highlight h3 {
+                font-size: 1rem;
+            }
+
+            .two-column {
+                gap: 0.75rem;
+            }
+        }
+
+        /* Very Small Devices (330px and below) */
+        @media (max-width: 330px) {
+            .slide {
+                padding: 10px 6px;
+            }
+
+            .slide-content {
+                padding-top: 10px;
+            }
+
+            .slide-title h1 {
+                font-size: 1.1rem;
+            }
+
+            .slide-title h2 {
+                font-size: 0.9rem;
+            }
+
+            .slide-title .meta {
+                font-size: 0.75rem;
+                margin-top: 1rem;
+            }
+
+            .slide-title .meta p {
+                margin: 0.3rem 0;
+            }
+
+            .slide h1 {
+                font-size: 1.1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .slide h2 {
+                font-size: 1rem;
+                margin: 0.5rem 0 0.4rem 0;
+            }
+
+            .slide h3 {
+                font-size: 0.9rem;
+                margin: 0.4rem 0 0.3rem 0;
+            }
+
+            .slide p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+                margin: 0.6rem 0;
+            }
+
+            .slide ul, .slide ol {
+                font-size: 0.75rem;
+                margin-left: 1rem;
+                line-height: 1.4;
+            }
+
+            .slide li {
+                margin: 0.25rem 0;
+            }
+
+            .nav-controls {
+                bottom: 2px;
+                left: 2px;
+                right: 2px;
+                padding: 0.25rem 0.3rem;
+                border-radius: 30px;
+            }
+
+            .nav-btn {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.7rem;
+                min-width: 60px;
+                border-radius: 20px;
+            }
+
+            .slide-counter {
+                font-size: 0.7rem;
+            }
+
+            .slide-indicator {
+                top: 2px;
+                right: 2px;
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+                border-radius: 15px;
+            }
+
+            .fullscreen-btn {
+                top: 2px;
+                left: 2px;
+                padding: 0.3rem 0.4rem;
+                font-size: 0.8rem;
+                border-radius: 6px;
+            }
+
+            .diagram-container {
+                padding: 0.5rem;
+                margin: 0.5rem 0;
+            }
+
+            .mermaid {
+                font-size: 0.65rem;
+            }
+
+            pre {
+                font-size: 0.65rem;
+                padding: 0.5rem;
+                line-height: 1.3;
+            }
+
+            code {
+                font-size: 0.65rem;
+            }
+
+            .example-box,
+            .success-box,
+            .warning-box,
+            .error-box,
+            .highlight {
+                padding: 0.6rem;
+                margin: 0.6rem 0;
+            }
+
+            .example-box h3,
+            .success-box h3,
+            .warning-box h3,
+            .error-box h3,
+            .highlight h3 {
+                font-size: 0.9rem;
+            }
+
+            .two-column {
+                gap: 0.5rem;
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .slide {
+                padding: 15px 20px;
+            }
+
+            .slide h1 {
+                font-size: 1.5rem;
+            }
+
+            .slide h2 {
+                font-size: 1.3rem;
+            }
+
+            .nav-controls {
+                bottom: 5px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav-controls, .slide-indicator, .fullscreen-btn {
+                display: none;
+            }
+
+            .slide {
+                display: block !important;
+                page-break-after: always;
+                position: relative;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Toggle Fullscreen">⛶</button>
+        <div class="slide-indicator">
+            <span id="current-slide">1</span> / <span id="total-slides">15</span>
+        </div>
+
+        <div class="slides-wrapper">
+            <!-- Slide 1: Title -->
+            <div class="slide active slide-title">
+                <div class="slide-content">
+                    <h1>🧠 Behind the Scenes of LLMs</h1>
+                    <h2>How AI Turns English into SQL</h2>
+                    <div class="meta">
+                        <p><strong>Project:</strong> NL2SQL</p>
+                        <p><strong>Duration:</strong> 10-15 Minutes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: The Problem -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>The Problem We're Solving</h1>
+                    <h2>The Challenge</h2>
+                    <div class="two-column">
+                        <div class="example-box">
+                            <h3>Before LLMs:</h3>
+                            <pre><code>User: "Show me all students enrolled in 2024"
+Developer: Writes SQL manually
+  ↓
+SELECT * FROM students 
+WHERE enrollment_year = 2024</code></pre>
+                        </div>
+                        <div class="success-box">
+                            <h3>With LLMs:</h3>
+                            <pre><code>User: "Show me all students enrolled in 2024"
+AI: Automatically generates SQL
+  ↓
+SELECT * FROM students 
+WHERE enrollment_year = 2024</code></pre>
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <h3>Impact:</h3>
+                        <ul>
+                            <li>Non-technical users can query databases</li>
+                            <li>Faster development</li>
+                            <li>Natural language interface</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: What is an LLM -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>What is an LLM?</h1>
+                    <h2>Large Language Model (LLM)</h2>
+                    <p><strong>Definition:</strong> A neural network trained on massive text data to understand and generate human-like text.</p>
+                    <div class="two-column">
+                        <div>
+                            <h3>Key Numbers:</h3>
+                            <ul>
+                                <li><strong>GPT-3:</strong> 175 billion parameters</li>
+                                <li><strong>GPT-4:</strong> ~1.7 trillion parameters</li>
+                                <li><strong>Training Data:</strong> 500+ billion tokens</li>
+                            </ul>
+                        </div>
+                        <div class="highlight">
+                            <h3>Analogy: Super Librarian</h3>
+                            <ul>
+                                <li>Has read every book in the world</li>
+                                <li>Remembers patterns and relationships</li>
+                                <li>Can predict what comes next</li>
+                                <li>Understands context</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Transformer Architecture -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>The Transformer Architecture</h1>
+                    <h2>How LLMs Process Text</h2>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph LR
+                                A[Input Text] --> B[Tokenization]
+                                B --> C[Embedding]
+                                C --> D[Transformer Layers]
+                                D --> E[Output]
+                                
+                                style D fill:#4caf50
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div>
+                            <h3>Core Components:</h3>
+                            <ol>
+                                <li><strong>Tokenization:</strong> Convert text to numbers</li>
+                                <li><strong>Embeddings:</strong> Convert tokens to vectors</li>
+                                <li><strong>Attention:</strong> Focus on relevant parts</li>
+                                <li><strong>Layers:</strong> 96+ layers of processing</li>
+                            </ol>
+                        </div>
+                        <div class="success-box">
+                            <h3>Key Innovation:</h3>
+                            <ul>
+                                <li><strong>Parallel Processing:</strong> All words processed simultaneously</li>
+                                <li><strong>Attention Mechanism:</strong> Understands relationships between words</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Tokenization -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Tokenization</h1>
+                    <h2>Converting Words to Numbers</h2>
+                    <div class="two-column">
+                        <div>
+                            <h3>We see:</h3>
+                            <pre><code>"Show me students"</code></pre>
+                            <h3>LLM sees:</h3>
+                            <pre><code>[1234, 567, 8901]</code></pre>
+                        </div>
+                        <div>
+                            <h3>Process:</h3>
+                            <ol>
+                                <li>Text → Split into tokens</li>
+                                <li>Tokens → Convert to numbers</li>
+                                <li>Numbers → Process through neural network</li>
+                            </ol>
+                            <div class="example-box">
+                                <h3>Example:</h3>
+                                <pre><code>"unhappiness" → ["un", "happiness"]
+"playing" → ["play", "ing"]</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <h3>Why Subwords?</h3>
+                        <ul>
+                            <li>Handles unknown words</li>
+                            <li>More efficient vocabulary</li>
+                            <li>Better for different languages</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Attention Mechanism -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Attention Mechanism</h1>
+                    <h2>The Magic</h2>
+                    <div class="example-box">
+                        <h3>The Problem:</h3>
+                        <pre><code>"The cat sat on the mat because it was tired"
+                    ↑
+            What does "it" refer to?</code></pre>
+                    </div>
+                    <div class="success-box">
+                        <h3>The Solution: Attention</h3>
+                        <p>When processing "it", the model calculates:</p>
+                        <pre><code>Attention("it" to "cat") = 0.9  ← High! (refers to cat)
+Attention("it" to "mat") = 0.1  ← Low
+Attention("it" to "sat") = 0.2</code></pre>
+                    </div>
+                    <div class="highlight">
+                        <h3>Multi-Head Attention:</h3>
+                        <ul>
+                            <li>Head 1: Grammar (subject-verb)</li>
+                            <li>Head 2: Meaning (cat → animal)</li>
+                            <li>Head 3: Long-range dependencies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Text Generation -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>How LLMs Generate Text</h1>
+                    <h2>The Generation Process</h2>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            sequenceDiagram
+                                participant User
+                                participant LLM
+                                participant Decoder
+
+                                User->>LLM: "Show me students"
+                                LLM->>LLM: Process through 96 layers
+                                LLM->>Decoder: Probability distribution
+                                Decoder->>LLM: Sample "enrolled"
+                                LLM->>LLM: Process "Show me students enrolled"
+                                LLM->>Decoder: Probability distribution
+                                Decoder->>LLM: Sample "in"
+                                LLM->>User: "Show me students enrolled in 2024"
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div>
+                            <h3>Step-by-Step:</h3>
+                            <ol>
+                                <li>Input Processing: Tokenize and embed</li>
+                                <li>Layer Processing: 96 transformer layers</li>
+                                <li>Next Token Prediction: Probability distribution</li>
+                                <li>Sampling: Choose next token</li>
+                                <li>Iterate: Repeat until complete</li>
+                            </ol>
+                        </div>
+                        <div class="example-box">
+                            <h3>Probability Distribution:</h3>
+                            <pre><code>Token          Probability
+─────────────────────────────
+"enrolled"     0.35  ← Most likely
+"in"           0.25
+"with"         0.15
+"from"         0.10</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: Training -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Training LLMs</h1>
+                    <h2>Two Stages</h2>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph TD
+                                A[Massive Text Data] --> B[Pre-training]
+                                B --> C[Base LLM]
+                                C --> D[Fine-tuning]
+                                D --> E[Specialized LLM]
+                                
+                                style B fill:#ffeb3b
+                                style D fill:#4caf50
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div class="warning-box">
+                            <h3>Stage 1: Pre-training</h3>
+                            <ul>
+                                <li><strong>Data:</strong> Entire internet, books, code (500B+ tokens)</li>
+                                <li><strong>Task:</strong> Predict next word</li>
+                                <li><strong>Cost:</strong> Millions of dollars</li>
+                                <li><strong>Result:</strong> General language understanding</li>
+                            </ul>
+                        </div>
+                        <div class="success-box">
+                            <h3>Stage 2: Fine-tuning</h3>
+                            <ul>
+                                <li><strong>Data:</strong> Task-specific examples</li>
+                                <li><strong>Task:</strong> Adapt for specific use case</li>
+                                <li><strong>Result:</strong> Specialized model (e.g., SQL generation)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <h3>Your System:</h3>
+                        <p>Uses <strong>GPT-4</strong> (pre-trained) + <strong>Prompt Engineering</strong> + <strong>In-Context Learning</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9: Why LLMs Succeed -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Why LLMs Succeed</h1>
+                    <h2>The Success Factors</h2>
+                    <div class="two-column">
+                        <div>
+                            <h3>1. Scale Matters</h3>
+                            <pre><code>GPT-1:  117M parameters
+GPT-2:  1.5B parameters
+GPT-3:  175B parameters
+GPT-4:  ~1.7T parameters</code></pre>
+                            <p><strong>More parameters = Better performance</strong></p>
+                        </div>
+                        <div>
+                            <h3>2. Massive Training Data</h3>
+                            <ul>
+                                <li>Entire internet</li>
+                                <li>Books, articles, code</li>
+                                <li>Diverse sources = Better generalization</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div class="success-box">
+                            <h3>3. Architecture Advantages</h3>
+                            <ul>
+                                <li><strong>Parallelization:</strong> Process all tokens at once</li>
+                                <li><strong>Attention:</strong> Understand long-range dependencies</li>
+                                <li><strong>Transfer Learning:</strong> One model, many tasks</li>
+                            </ul>
+                        </div>
+                        <div class="highlight">
+                            <h3>4. In-Context Learning</h3>
+                            <ul>
+                                <li>Learns from examples in the prompt</li>
+                                <li>No retraining needed</li>
+                                <li>Adapts quickly to new tasks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 10: Why LLMs Fail -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Why LLMs Fail</h1>
+                    <h2>Common Failure Modes</h2>
+                    <div class="two-column">
+                        <div class="error-box">
+                            <h3>1. Hallucination</h3>
+                            <pre><code>User: "Show me students from Harvard"
+LLM: SELECT * FROM students 
+     WHERE university = 'Harvard'
+Reality: No 'university' column!</code></pre>
+                            <p>→ Makes up plausible but incorrect information</p>
+                        </div>
+                        <div class="warning-box">
+                            <h3>2. Context Limits</h3>
+                            <ul>
+                                <li>GPT-4: 8,192 tokens (~6,000 words)</li>
+                                <li>Can't process very long documents</li>
+                                <li><strong>Solution:</strong> Hybrid search finds only relevant parts</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div class="warning-box">
+                            <h3>3. Ambiguity</h3>
+                            <pre><code>"Show me active students"
+→ Currently enrolled?
+→ Recently active?
+→ Active status flag?</code></pre>
+                            <p>→ Multiple interpretations possible</p>
+                        </div>
+                        <div class="error-box">
+                            <h3>4. Schema Mismatch</h3>
+                            <ul>
+                                <li>Assumes schema that doesn't exist</li>
+                                <li><strong>Solution:</strong> Provide actual schema via tools</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 11: NL2SQL Challenge -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>NL2SQL - The Challenge</h1>
+                    <h2>Converting Natural Language to SQL</h2>
+                    <div class="example-box">
+                        <h3>The Problem:</h3>
+                        <pre><code>Input:  "Show me all students enrolled in 2024"
+Output: SELECT * FROM students 
+        WHERE enrollment_year = 2024</code></pre>
+                    </div>
+                    <div class="two-column">
+                        <div>
+                            <h3>Why It's Hard:</h3>
+                            <ol>
+                                <li><strong>Language Ambiguity:</strong> Multiple SQL interpretations</li>
+                                <li><strong>Schema Complexity:</strong> Large databases with many tables</li>
+                                <li><strong>Domain Knowledge:</strong> Need to understand business context</li>
+                                <li><strong>SQL Expertise:</strong> Must generate syntactically correct SQL</li>
+                            </ol>
+                        </div>
+                        <div class="success-box">
+                            <h3>Modern Approach (Yours):</h3>
+                            <ul>
+                                <li><strong>LLM-based:</strong> Pre-trained model + context</li>
+                                <li><strong>No training needed:</strong> Works out of the box</li>
+                                <li><strong>Flexible:</strong> Handles various query types</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 12: System Architecture -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Your NL2SQL System Architecture</h1>
+                    <h2>Complete Flow</h2>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph TD
+                                A[User Question] --> B[Intent Classification]
+                                B --> C{SQL or Docs?}
+                                C -->|SQL| D[Hybrid Search]
+                                C -->|Docs| E[Documentation]
+                                D --> F[Find Relevant Tables]
+                                F --> G[Build Context]
+                                G --> H[SQL Agent]
+                                H --> I[LLM + Tools]
+                                I --> J[Generate SQL]
+                                J --> K[Execute Query]
+                                K --> L[Return Results]
+                                
+                                style H fill:#4caf50
+                                style D fill:#ffeb3b
+                                style I fill:#2196f3
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <h3>Key Components:</h3>
+                        <ol>
+                            <li><strong>Intent Classification:</strong> Route to SQL or docs</li>
+                            <li><strong>Hybrid Search:</strong> Find relevant tables</li>
+                            <li><strong>SQL Agent:</strong> ReAct pattern (Reasoning + Acting)</li>
+                            <li><strong>LLM + Tools:</strong> Generate and execute SQL</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 13: Hybrid Search -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Hybrid Search</h1>
+                    <h2>Finding Relevant Tables</h2>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph LR
+                                A[User Query] --> B[Vector Search]
+                                A --> C[BM25 Search]
+                                B --> D[Semantic Similarity]
+                                C --> E[Keyword Matching]
+                                D --> F[Ensemble]
+                                E --> F
+                                F --> G[Top Tables]
+                                
+                                style D fill:#4caf50
+                                style E fill:#ffeb3b
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div class="success-box">
+                            <h3>Vector Search (Semantic):</h3>
+                            <ul>
+                                <li>Uses embeddings (text-embedding-3-large)</li>
+                                <li>Finds tables with similar meaning</li>
+                                <li>Example: "students" → matches "student_records", "enrollments"</li>
+                            </ul>
+                        </div>
+                        <div class="warning-box">
+                            <h3>BM25 Search (Keyword):</h3>
+                            <ul>
+                                <li>Traditional information retrieval</li>
+                                <li>Matches exact keywords</li>
+                                <li>Fast and reliable</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <h3>Why Hybrid?</h3>
+                        <p><strong>Vector:</strong> Handles synonyms, semantic similarity | <strong>BM25:</strong> Handles exact matches, technical terms | <strong>Together:</strong> Best of both worlds!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 14: ReAct Agent -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>SQL Agent - ReAct Pattern</h1>
+                    <h2>Reasoning + Acting</h2>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            sequenceDiagram
+                                participant User
+                                participant Agent
+                                participant LLM
+                                participant Tools
+                                participant DB
+
+                                User->>Agent: "Show me students in 2024"
+                                Agent->>LLM: Think: "I need students table"
+                                LLM->>Agent: Action: List tables
+                                Agent->>Tools: sql_db_list_tables()
+                                Tools->>DB: SHOW TABLES
+                                DB->>Tools: ["students", ...]
+                                Tools->>Agent: Observation
+                                Agent->>LLM: Think: "Check students schema"
+                                LLM->>Agent: Action: Get schema
+                                Agent->>Tools: sql_db_schema("students")
+                                Tools->>DB: DESCRIBE students
+                                DB->>Tools: Schema
+                                Tools->>Agent: Observation
+                                Agent->>LLM: Think: "Generate SQL"
+                                LLM->>Agent: SQL: SELECT * FROM students WHERE year = 2024
+                                Agent->>Tools: Execute SQL
+                                Tools->>DB: Query
+                                DB->>Tools: Results
+                                Agent->>User: Formatted results
+                        </div>
+                    </div>
+                    <div class="highlight">
+                        <h3>ReAct = Reasoning + Acting</h3>
+                        <ul>
+                            <li><strong>Reasoning:</strong> LLM explains its thought process</li>
+                            <li><strong>Acting:</strong> Uses tools to gather information</li>
+                            <li><strong>Iterative:</strong> Can refine based on observations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 15: Complete Example & Q&A -->
+            <div class="slide">
+                <div class="slide-content">
+                    <h1>Complete Example & Key Takeaways</h1>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph TD
+                                A[User] --> B[FastAPI]
+                                B --> C[Intent Classifier]
+                                C --> D{Type?}
+                                D -->|SQL| E[Hybrid Search]
+                                D -->|Docs| F[Docs System]
+                                E --> G[Vector DB]
+                                E --> H[BM25]
+                                G --> I[Ensemble]
+                                H --> I
+                                I --> J[Relevant Tables]
+                                J --> K[SQL Agent]
+                                K --> L[LangGraph]
+                                L --> M[GPT-4]
+                                M --> N[Tools]
+                                N --> O[Database]
+                                O --> P[Results]
+                                P --> A
+                        </div>
+                    </div>
+                    <div class="two-column">
+                        <div class="success-box">
+                            <h3>Example Walkthrough:</h3>
+                            <pre><code>User: "Show me all students enrolled in 2024"
+
+1. Intent: SQL (0.99 confidence)
+2. Hybrid Search: Finds "students" table
+3. SQL Agent: Generates SQL
+4. Execute: Returns results
+5. Format: Structured response</code></pre>
+                        </div>
+                        <div class="highlight">
+                            <h3>Key Takeaways:</h3>
+                            <ul>
+                                <li>LLMs are sophisticated pattern matching systems</li>
+                                <li>Scale matters: More parameters = better performance</li>
+                                <li>Context is crucial for good results</li>
+                                <li>Your system combines multiple techniques</li>
+                                <li>Validation prevents errors</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 2rem; font-size: 2rem; color: #2196F3;">
+                        <strong>Questions?</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="nav-controls">
+            <button class="nav-btn" id="prev-btn" onclick="previousSlide()">← Previous</button>
+            <div class="slide-counter">
+                <span id="slide-num">1</span> / <span id="total-num">15</span>
+            </div>
+            <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        // Initialize Mermaid
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+
+        function showSlide(n) {
+            if (n >= totalSlides) n = 0;
+            if (n < 0) n = totalSlides - 1;
+            
+            slides[currentSlide].classList.remove('active');
+            currentSlide = n;
+            slides[currentSlide].classList.add('active');
+            
+            updateNavigation();
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function updateNavigation() {
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            document.getElementById('slide-num').textContent = currentSlide + 1;
+            document.getElementById('total-slides').textContent = totalSlides;
+            document.getElementById('total-num').textContent = totalSlides;
+            
+            // Reinitialize mermaid for new slide
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'Home') {
+                showSlide(0);
+            } else if (e.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Fullscreen toggle
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Touch/Swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next slide
+                    nextSlide();
+                } else {
+                    // Swipe right - previous slide
+                    previousSlide();
+                }
+            }
+        }
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        // Prevent zoom on double tap
+        let lastTap = 0;
+        document.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 300 && tapLength > 0) {
+                e.preventDefault();
+            }
+            lastTap = currentTime;
+        }, false);
+
+        // Initialize
+        updateNavigation();
+    </script>
+</body>
+</html>
+

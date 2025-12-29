@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Presentation Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .diagram-container {
+            background: white;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2196F3;
+            text-align: center;
+        }
+        h2 {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>LLM Presentation Diagrams</h1>
+    
+    <div class="instructions">
+        <strong>Instructions:</strong> Use your browser's screenshot tool or print-to-PDF to capture each diagram. 
+        Then insert the images into your PowerPoint presentation.
+    </div>
+
+    <!-- Diagram 1: Transformer Architecture -->
+    <div class="diagram-container">
+        <h2>Diagram 1: Transformer Architecture</h2>
+        <div class="mermaid">
+            graph LR
+                A[Input Text] --> B[Tokenization]
+                B --> C[Embedding]
+                C --> D[Transformer Layers]
+                D --> E[Output]
+                
+                style D fill:#4caf50
+        </div>
+    </div>
+
+    <!-- Diagram 2: Detailed Transformer -->
+    <div class="diagram-container">
+        <h2>Diagram 2: Detailed Transformer Architecture</h2>
+        <div class="mermaid">
+            graph TD
+                A["Input: Show me students"] --> B[Tokenization]
+                B --> C[Embedding Layer]
+                C --> D[Positional Encoding]
+                D --> E[Multi-Head Attention]
+                E --> F[Feed Forward]
+                F --> G[Layer Norm]
+                G --> H{More Layers?}
+                H -->|Yes| E
+                H -->|No| I[Output Layer]
+                I --> J[Next Token Prediction]
+                J --> K[enrolled]
+        </div>
+    </div>
+
+    <!-- Diagram 3: Generation Process -->
+    <div class="diagram-container">
+        <h2>Diagram 3: Text Generation Process</h2>
+        <div class="mermaid">
+            sequenceDiagram
+                participant User
+                participant LLM
+                participant Decoder
+
+                User->>LLM: "Show me students"
+                LLM->>LLM: Process through 96 layers
+                LLM->>Decoder: Probability distribution
+                Decoder->>LLM: Sample "enrolled"
+                LLM->>LLM: Process "Show me students enrolled"
+                LLM->>Decoder: Probability distribution
+                Decoder->>LLM: Sample "in"
+                LLM->>User: "Show me students enrolled in 2024"
+        </div>
+    </div>
+
+    <!-- Diagram 4: Training Process -->
+    <div class="diagram-container">
+        <h2>Diagram 4: Training Process</h2>
+        <div class="mermaid">
+            graph TD
+                A[Massive Text Data] --> B[Pre-training]
+                B --> C[Base LLM]
+                C --> D[Fine-tuning]
+                D --> E[Specialized LLM]
+                
+                style B fill:#ffeb3b
+                style D fill:#4caf50
+        </div>
+    </div>
+
+    <!-- Diagram 5: NL2SQL System Architecture -->
+    <div class="diagram-container">
+        <h2>Diagram 5: NL2SQL System Architecture</h2>
+        <div class="mermaid">
+            graph TD
+                A[User Question] --> B[Intent Classification]
+                B --> C{SQL or Docs?}
+                C -->|SQL| D[Hybrid Search]
+                C -->|Docs| E[Documentation]
+                D --> F[Find Relevant Tables]
+                F --> G[Build Context]
+                G --> H[SQL Agent]
+                H --> I[LLM + Tools]
+                I --> J[Generate SQL]
+                J --> K[Execute Query]
+                K --> L[Return Results]
+                
+                style H fill:#4caf50
+                style D fill:#ffeb3b
+                style I fill:#2196f3
+        </div>
+    </div>
+
+    <!-- Diagram 6: Hybrid Search -->
+    <div class="diagram-container">
+        <h2>Diagram 6: Hybrid Search Process</h2>
+        <div class="mermaid">
+            graph LR
+                A[User Query] --> B[Vector Search]
+                A --> C[BM25 Search]
+                B --> D[Semantic Similarity]
+                C --> E[Keyword Matching]
+                D --> F[Ensemble]
+                E --> F
+                F --> G[Top Tables]
+                
+                style D fill:#4caf50
+                style E fill:#ffeb3b
+        </div>
+    </div>
+
+    <!-- Diagram 7: ReAct Agent Flow -->
+    <div class="diagram-container">
+        <h2>Diagram 7: ReAct Agent Flow</h2>
+        <div class="mermaid">
+            sequenceDiagram
+                participant User
+                participant Agent
+                participant LLM
+                participant Tools
+                participant DB
+
+                User->>Agent: "Show me students in 2024"
+                Agent->>LLM: Think: "I need students table"
+                LLM->>Agent: Action: List tables
+                Agent->>Tools: sql_db_list_tables()
+                Tools->>DB: SHOW TABLES
+                DB->>Tools: ["students", ...]
+                Tools->>Agent: Observation
+                Agent->>LLM: Think: "Check students schema"
+                LLM->>Agent: Action: Get schema
+                Agent->>Tools: sql_db_schema("students")
+                Tools->>DB: DESCRIBE students
+                DB->>Tools: Schema
+                Tools->>Agent: Observation
+                Agent->>LLM: Think: "Generate SQL"
+                LLM->>Agent: SQL: SELECT * FROM students WHERE year = 2024
+                Agent->>Tools: Execute SQL
+                Tools->>DB: Query
+                DB->>Tools: Results
+                Agent->>User: Formatted results
+        </div>
+    </div>
+
+    <!-- Diagram 8: Complete System Flow -->
+    <div class="diagram-container">
+        <h2>Diagram 8: Complete System Flow</h2>
+        <div class="mermaid">
+            graph TD
+                A[User] --> B[FastAPI]
+                B --> C[Intent Classifier]
+                C --> D{Type?}
+                D -->|SQL| E[Hybrid Search]
+                D -->|Docs| F[Docs System]
+                E --> G[Vector DB]
+                E --> H[BM25]
+                G --> I[Ensemble]
+                H --> I
+                I --> J[Relevant Tables]
+                J --> K[SQL Agent]
+                K --> L[LangGraph]
+                L --> M[GPT-4]
+                M --> N[Tools]
+                N --> O[Database]
+                O --> P[Results]
+                P --> A
+        </div>
+    </div>
+
+    <!-- Diagram 9: Failure Modes -->
+    <div class="diagram-container">
+        <h2>Diagram 9: Failure Modes Flow</h2>
+        <div class="mermaid">
+            graph TD
+                A[User Query] --> B{Valid?}
+                B -->|No| C[Intent Classification Fails]
+                B -->|Yes| D{Relevant Tables Found?}
+                D -->|No| E[Hybrid Search Fails]
+                D -->|Yes| F{Schema Understood?}
+                F -->|No| G[Hallucination]
+                F -->|Yes| H{SQL Generated?}
+                H -->|No| I[Generation Fails]
+                H -->|Yes| J{SQL Valid?}
+                J -->|No| K[Syntax Error]
+                J -->|Yes| L{Query Executes?}
+                L -->|No| M[Runtime Error]
+                L -->|Yes| N[Success!]
+                
+                style C fill:#f44336
+                style E fill:#f44336
+                style G fill:#f44336
+                style I fill:#f44336
+                style K fill:#f44336
+                style M fill:#f44336
+                style N fill:#4caf50
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+</body>
+</html>
+

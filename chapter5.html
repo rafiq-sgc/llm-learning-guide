@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training LLMs: Pre-training and Fine-tuning - LLM Learning Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+</script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+        <header class="header">
+            <h1>🎓 Training LLMs: Pre-training and Fine-tuning</h1>
+            <p class="subtitle">Chapter 5 of 11</p>
+        </header>
+
+        
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="chapter1.html">📖 Chapter 1: Introduction to LLMs</a></li>
+            <li><a href="chapter2.html">⚙️ Chapter 2: Transformer Architecture</a></li>
+            <li><a href="chapter3.html">🔢 Chapter 3: Tokenization</a></li>
+            <li><a href="chapter4.html">👁️ Chapter 4: Attention Mechanism</a></li>
+            <li><a href="chapter5.html">🎓 Chapter 5: Training LLMs</a></li>
+            <li><a href="chapter6.html">✨ Chapter 6: Text Generation</a></li>
+            <li><a href="chapter7.html">✅ Chapter 7: Why LLMs Succeed</a></li>
+            <li><a href="chapter8.html">❌ Chapter 8: Why LLMs Fail</a></li>
+            <li><a href="chapter9.html">💬 Chapter 9: NL2SQL Overview</a></li>
+            <li><a href="chapter10.html">🏗️ Chapter 10: Your NL2SQL System</a></li>
+            <li><a href="chapter11.html">📚 Chapter 11: Examples & Case Studies</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🎓 Training LLMs: Pre-training and Fine-tuning</h1>
+                <p>Chapter 5 of 11 - Complete Learning Guide</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter4.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter6.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>Two-Stage Training Process</h3>
+<p><div class="diagram-container"><div class="mermaid">
+graph TD
+    A[Raw Text Data] --> B[Pre-training]
+    B --> C[Base LLM]
+    C --> D[Fine-tuning]
+    D --> E[Specialized LLM]
+    
+    style B fill:#ffeb3b
+    style D fill:#4caf50
+</div></div></p>
+<h3>Stage 1: Pre-training (The Foundation)</h3>
+<p><strong>Goal</strong>: Learn general language patterns, grammar, facts, reasoning</p>
+<p><strong>Process:</strong></p>
+<ol>
+<li><strong>Data Collection</strong>: Gather massive text corpus (entire internet, books, code, etc.)</li>
+</ol>
+<ul>
+<li>GPT-3: ~500 billion tokens</li>
+<li>Your training data: Petabytes of text</li>
+</ul>
+<ol>
+<li><strong>Task</strong>: Next Token Prediction (Autoregressive)</li>
+</ol>
+<pre><code>   Input: "The cat sat on the"
+<p>Predict: "mat" (most likely next word)</p>
+<p></code></pre></p>
+<ol>
+<li><strong>Training Process</strong>:</li>
+</ol>
+<pre><code>   # Simplified training loop
+<p>for text in training_data:</p>
+<p>tokens = tokenize(text)</p>
+<p>for i in range(len(tokens)):</p>
+<p># Predict next token</p>
+<p>prediction = model(tokens[:i])</p>
+<p>loss = compare(prediction, tokens[i])</p>
+<p>update_weights(loss)</p>
+<p></code></pre></p>
+<ol>
+<li><strong>What the Model Learns</strong>:</li>
+</ol>
+<ul>
+<li>Grammar and syntax</li>
+<li>Word relationships</li>
+<li>Common facts</li>
+<li>Reasoning patterns</li>
+<li>Context understanding</li>
+</ul>
+<p><strong>Cost</strong>: Millions of dollars in compute (GPUs, time, electricity)</p>
+<h3>Stage 2: Fine-tuning (Specialization)</h3>
+<p><strong>Goal</strong>: Adapt the model for specific tasks</p>
+<p><strong>Types of Fine-tuning:</strong></p>
+<h4>A. <strong>Supervised Fine-tuning (SFT)</strong></h4>
+<ul>
+<li>Train on labeled examples</li>
+<li>Example: Question-answer pairs</li>
+</ul>
+<pre><code>Input: "What is SQL?"
+<p>Output: "SQL is a programming language for databases..."</p>
+<p></code></pre></p>
+<h4>B. <strong>Reinforcement Learning from Human Feedback (RLHF)</strong></h4>
+<ul>
+<li>Used by ChatGPT</li>
+<li>Humans rate responses</li>
+<li>Model learns to generate preferred responses</li>
+</ul>
+<h4>C. <strong>Instruction Tuning</strong></h4>
+<ul>
+<li>Train on instruction-following examples</li>
+<li>Makes the model better at following prompts</li>
+</ul>
+<h3>Training Your NL2SQL Model</h3>
+<p>In your system, you're using:</p>
+<ul>
+<li><strong>Base Model</strong>: GPT-4 (pre-trained by OpenAI)</li>
+<li><strong>Fine-tuning</strong>: System prompts + few-shot examples</li>
+<li><strong>In-context Learning</strong>: Providing examples in the prompt</li>
+</ul>
+<pre><code># From your code (llm/utils.py)
+<p>SQL_PREFIX = f"""You are AI Assist for Analytics...</p>
+<p>## Instructions for SQL Query Generation:</p>
+<ol>
+<li>Generate a syntactically correct SQL query...</li>
+<li>Execute the query using the available tools...</li>
+</ol>
+<p>...</p>
+<p>"""</p>
+<p></code></pre></p>
+<p>This is <strong>prompt engineering</strong> - a form of in-context fine-tuning!</p>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter4.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter6.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Complete LLM Learning Guide</p>
+            <p>Chapter 5 of 11</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+    </script>
+</body>
+</html>

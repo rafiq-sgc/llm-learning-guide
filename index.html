@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behind the Scenes of LLMs - Complete Learning Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <!-- Header -->
+        <header class="header">
+            <h1>🧠 Behind the Scenes of LLMs</h1>
+            <p class="subtitle">Complete Learning Guide: How AI Turns English into SQL</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="index.html" class="active">🏠 Home</a></li>
+                <li><a href="chapter1.html">📖 Chapter 1: Introduction to LLMs</a></li>
+                <li><a href="chapter2.html">⚙️ Chapter 2: Transformer Architecture</a></li>
+                <li><a href="chapter3.html">🔢 Chapter 3: Tokenization</a></li>
+                <li><a href="chapter4.html">👁️ Chapter 4: Attention Mechanism</a></li>
+                <li><a href="chapter5.html">🎓 Chapter 5: Training LLMs</a></li>
+                <li><a href="chapter6.html">✨ Chapter 6: Text Generation</a></li>
+                <li><a href="chapter7.html">✅ Chapter 7: Why LLMs Succeed</a></li>
+                <li><a href="chapter8.html">❌ Chapter 8: Why LLMs Fail</a></li>
+                <li><a href="chapter9.html">💬 Chapter 9: NL2SQL Overview</a></li>
+                <li><a href="chapter10.html">🏗️ Chapter 10: Your NL2SQL System</a></li>
+                <li><a href="chapter11.html">📚 Chapter 11: Examples & Case Studies</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="welcome-section">
+                <div class="hero">
+                    <h2>Welcome to the Complete LLM Learning Guide</h2>
+                    <p class="lead">A comprehensive guide to understanding Large Language Models and how they power Natural Language to SQL systems.</p>
+                </div>
+
+                <div class="overview-cards">
+                    <div class="card">
+                        <div class="card-icon">🎯</div>
+                        <h3>What You'll Learn</h3>
+                        <p>Deep understanding of how LLMs work, from tokenization to attention mechanisms, training processes, and real-world applications.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔬</div>
+                        <h3>Technical Depth</h3>
+                        <p>Detailed explanations of transformer architecture, attention mechanisms, and the complete NL2SQL pipeline.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💡</div>
+                        <h3>Practical Examples</h3>
+                        <p>Real-world examples from your NL2SQL system, including success cases and failure scenarios with solutions.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📊</div>
+                        <h3>Visual Learning</h3>
+                        <p>Interactive diagrams, flowcharts, and visualizations to help you understand complex concepts easily.</p>
+                    </div>
+                </div>
+
+                <div class="table-of-contents">
+                    <h2>📑 Table of Contents</h2>
+                    <div class="toc-grid">
+                        <a href="chapter1.html" class="toc-item">
+                            <span class="toc-number">01</span>
+                            <div class="toc-content">
+                                <h4>Introduction to Large Language Models</h4>
+                                <p>What are LLMs, their characteristics, evolution timeline, and real-world analogies.</p>
+                            </div>
+                        </a>
+                        <a href="chapter2.html" class="toc-item">
+                            <span class="toc-number">02</span>
+                            <div class="toc-content">
+                                <h4>How LLMs Work: The Transformer Architecture</h4>
+                                <p>Core components, embedding layers, positional encoding, multi-head attention, and architecture stack.</p>
+                            </div>
+                        </a>
+                        <a href="chapter3.html" class="toc-item">
+                            <span class="toc-number">03</span>
+                            <div class="toc-content">
+                                <h4>Tokenization: Converting Text to Numbers</h4>
+                                <p>Types of tokenization, BPE algorithm, token-to-number conversion, and real examples.</p>
+                            </div>
+                        </a>
+                        <a href="chapter4.html" class="toc-item">
+                            <span class="toc-number">04</span>
+                            <div class="toc-content">
+                                <h4>Attention Mechanism: The Core Innovation</h4>
+                                <p>Self-attention, attention scores, multi-head attention, and why attention is powerful.</p>
+                            </div>
+                        </a>
+                        <a href="chapter5.html" class="toc-item">
+                            <span class="toc-number">05</span>
+                            <div class="toc-content">
+                                <h4>Training LLMs: Pre-training and Fine-tuning</h4>
+                                <p>Two-stage training process, pre-training, fine-tuning types, and training your NL2SQL model.</p>
+                            </div>
+                        </a>
+                        <a href="chapter6.html" class="toc-item">
+                            <span class="toc-number">06</span>
+                            <div class="toc-content">
+                                <h4>How LLMs Generate Text</h4>
+                                <p>Generation process, next token prediction, sampling strategies, and iterative generation.</p>
+                            </div>
+                        </a>
+                        <a href="chapter7.html" class="toc-item">
+                            <span class="toc-number">07</span>
+                            <div class="toc-content">
+                                <h4>Why LLMs Succeed</h4>
+                                <p>Scale matters, massive training data, architecture advantages, in-context learning, and success factors.</p>
+                            </div>
+                        </a>
+                        <a href="chapter8.html" class="toc-item">
+                            <span class="toc-number">08</span>
+                            <div class="toc-content">
+                                <h4>Why LLMs Fail</h4>
+                                <p>Hallucination, context limits, ambiguity, schema mismatch, and common failure patterns.</p>
+                            </div>
+                        </a>
+                        <a href="chapter9.html" class="toc-item">
+                            <span class="toc-number">09</span>
+                            <div class="toc-content">
+                                <h4>NL2SQL: Natural Language to SQL</h4>
+                                <p>What is NL2SQL, why it's challenging, approaches, pipeline, and key components.</p>
+                            </div>
+                        </a>
+                        <a href="chapter10.html" class="toc-item">
+                            <span class="toc-number">10</span>
+                            <div class="toc-content">
+                                <h4>Your NL2SQL System Architecture</h4>
+                                <p>Complete system flow, intent classification, hybrid search, SQL agent, and data flow examples.</p>
+                            </div>
+                        </a>
+                        <a href="chapter11.html" class="toc-item">
+                            <span class="toc-number">11</span>
+                            <div class="toc-content">
+                                <h4>Practical Examples and Case Studies</h4>
+                                <p>Real-world examples, success cases, failure scenarios, and performance metrics.</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="quick-start">
+                    <h2>🚀 Quick Start</h2>
+                    <p>Start with Chapter 1 to build your foundation, then progress through each chapter sequentially. Each chapter builds on the previous one.</p>
+                    <div class="button-group">
+                        <a href="chapter1.html" class="btn btn-primary">Start Learning →</a>
+                        <a href="chapter10.html" class="btn btn-secondary">Jump to NL2SQL System</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Complete LLM Learning Guide</p>
+            <p>Created for understanding Behind the Scenes of LLMs</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: false,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

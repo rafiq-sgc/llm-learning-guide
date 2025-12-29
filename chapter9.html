@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NL2SQL: Natural Language to SQL - LLM Learning Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+</script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+        <header class="header">
+            <h1>💬 NL2SQL: Natural Language to SQL</h1>
+            <p class="subtitle">Chapter 9 of 11</p>
+        </header>
+
+        
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="chapter1.html">📖 Chapter 1: Introduction to LLMs</a></li>
+            <li><a href="chapter2.html">⚙️ Chapter 2: Transformer Architecture</a></li>
+            <li><a href="chapter3.html">🔢 Chapter 3: Tokenization</a></li>
+            <li><a href="chapter4.html">👁️ Chapter 4: Attention Mechanism</a></li>
+            <li><a href="chapter5.html">🎓 Chapter 5: Training LLMs</a></li>
+            <li><a href="chapter6.html">✨ Chapter 6: Text Generation</a></li>
+            <li><a href="chapter7.html">✅ Chapter 7: Why LLMs Succeed</a></li>
+            <li><a href="chapter8.html">❌ Chapter 8: Why LLMs Fail</a></li>
+            <li><a href="chapter9.html">💬 Chapter 9: NL2SQL Overview</a></li>
+            <li><a href="chapter10.html">🏗️ Chapter 10: Your NL2SQL System</a></li>
+            <li><a href="chapter11.html">📚 Chapter 11: Examples & Case Studies</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>💬 NL2SQL: Natural Language to SQL</h1>
+                <p>Chapter 9 of 11 - Complete Learning Guide</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter8.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter10.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>What is NL2SQL?</h3>
+<p><strong>NL2SQL</strong> (Natural Language to SQL) converts human questions into SQL queries.</p>
+<p><strong>Example:</strong></p>
+<pre><code>Input:  "Show me all students enrolled in 2024"
+<p>Output: SELECT * FROM students WHERE enrollment_year = 2024</p>
+<p></code></pre></p>
+<h3>Why NL2SQL is Challenging</h3>
+<ol>
+<li><strong>Language Ambiguity</strong>: Same question, multiple SQL interpretations</li>
+<li><strong>Schema Complexity</strong>: Large databases with many tables</li>
+<li><strong>Domain Knowledge</strong>: Need to understand business context</li>
+<li><strong>SQL Expertise</strong>: Must generate syntactically correct SQL</li>
+</ol>
+<h3>Approaches to NL2SQL</h3>
+<h4>1. <strong>Rule-Based</strong> (Old approach)</h4>
+<pre><code>If question contains "how many" → Use COUNT()
+<p>If question contains "list" → Use SELECT</p>
+<p>...</p>
+<p></code></pre></p>
+<p><strong>Limitation</strong>: Doesn't scale, brittle</p>
+<h4>2. <strong>Machine Learning</strong> (Traditional)</h4>
+<ul>
+<li>Train classifier to identify intent</li>
+<li>Use sequence-to-sequence models</li>
+<li><strong>Limitation</strong>: Requires labeled training data</li>
+</ul>
+<h4>3. <strong>LLM-Based</strong> (Modern - Your approach!)</h4>
+<ul>
+<li>Use pre-trained LLMs</li>
+<li>Provide schema context</li>
+<li>Generate SQL directly</li>
+<li><strong>Advantage</strong>: No training needed, works out of the box</li>
+</ul>
+<h3>NL2SQL Pipeline</h3>
+<p><div class="diagram-container"><div class="mermaid">
+graph LR
+    A[Natural Language Query] --> B[Intent Classification]
+    B --> C[Schema Retrieval]
+    C --> D[Context Building]
+    D --> E[LLM SQL Generation]
+    E --> F[SQL Validation]
+    F --> G[Query Execution]
+    G --> H[Result Formatting]
+    
+    style E fill:#4caf50
+    style C fill:#ffeb3b
+</div></div></p>
+<h3>Key Components</h3>
+<h4>1. <strong>Intent Classification</strong></h4>
+<p>Determine if query needs SQL or documentation:</p>
+<pre><code># From intent.py
+<p>"Show me students" → "sql" (confidence: 0.99)</p>
+<p>"How do I enroll?" → "docs" (confidence: 0.95)</p>
+<p></code></pre></p>
+<h4>2. <strong>Schema Retrieval</strong></h4>
+<p>Find relevant tables and columns:</p>
+<pre><code># From embedding/utils.py - hybrid_search
+<p>query = "Show me students enrolled in 2024"</p>
+<p>→ Finds: ["students", "enrollments"] tables</p>
+<p>→ Provides: Table descriptions, column info, relationships</p>
+<p></code></pre></p>
+<h4>3. <strong>Context Building</strong></h4>
+<p>Combine schema info into prompt:</p>
+<pre><code>context = f"""
+<p>Table: students</p>
+<p>Description: Contains student records</p>
+<p>Columns:</p>
+<ul>
+<li>student_id: Unique identifier</li>
+<li>enrollment_year: Year of enrollment</li>
+<li>name: Student full name</li>
+</ul>
+<p>...</p>
+<p>"""</p>
+<p></code></pre></p>
+<h4>4. <strong>SQL Generation</strong></h4>
+<p>LLM generates SQL with context:</p>
+<pre><code>prompt = f"""
+<p>System: {SQL_PREFIX}</p>
+<p>Context: {context}</p>
+<p>User: {question}</p>
+<p>"""</p>
+<p>sql = llm.generate(prompt)</p>
+<p></code></pre></p>
+<h4>5. <strong>Validation & Execution</strong></h4>
+<ul>
+<li>Check SQL syntax</li>
+<li>Execute query</li>
+<li>Return results</li>
+</ul>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter8.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter10.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Complete LLM Learning Guide</p>
+            <p>Chapter 9 of 11</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokenization: Converting Text to Numbers - LLM Learning Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+</script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+        <header class="header">
+            <h1>🔢 Tokenization: Converting Text to Numbers</h1>
+            <p class="subtitle">Chapter 3 of 11</p>
+        </header>
+
+        
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="chapter1.html">📖 Chapter 1: Introduction to LLMs</a></li>
+            <li><a href="chapter2.html">⚙️ Chapter 2: Transformer Architecture</a></li>
+            <li><a href="chapter3.html">🔢 Chapter 3: Tokenization</a></li>
+            <li><a href="chapter4.html">👁️ Chapter 4: Attention Mechanism</a></li>
+            <li><a href="chapter5.html">🎓 Chapter 5: Training LLMs</a></li>
+            <li><a href="chapter6.html">✨ Chapter 6: Text Generation</a></li>
+            <li><a href="chapter7.html">✅ Chapter 7: Why LLMs Succeed</a></li>
+            <li><a href="chapter8.html">❌ Chapter 8: Why LLMs Fail</a></li>
+            <li><a href="chapter9.html">💬 Chapter 9: NL2SQL Overview</a></li>
+            <li><a href="chapter10.html">🏗️ Chapter 10: Your NL2SQL System</a></li>
+            <li><a href="chapter11.html">📚 Chapter 11: Examples & Case Studies</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🔢 Tokenization: Converting Text to Numbers</h1>
+                <p>Chapter 3 of 11 - Complete Learning Guide</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter2.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter4.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>What is Tokenization?</h3>
+<p>LLMs don't understand words directly. They work with <strong>tokens</strong> - numerical representations of text chunks.</p>
+<h3>Types of Tokenization</h3>
+<h4>1. <strong>Word-Level Tokenization</strong></h4>
+<pre><code>"Hello world" → ["Hello", "world"]
+<p></code></pre></p>
+<ul>
+<li>Simple but creates huge vocabularies</li>
+<li>Can't handle unknown words</li>
+</ul>
+<h4>2. <strong>Subword Tokenization</strong> (Used by GPT, BERT)</h4>
+<pre><code>"unhappiness" → ["un", "happiness"]
+<p>"playing" → ["play", "ing"]</p>
+<p></code></pre></p>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Handles unknown words by breaking them into known parts</li>
+<li>More efficient vocabulary</li>
+<li>Better for different languages</li>
+</ul>
+<h4>3. <strong>Character-Level Tokenization</strong></h4>
+<pre><code>"Hello" → ["H", "e", "l", "l", "o"]
+<p></code></pre></p>
+<ul>
+<li>Very small vocabulary but loses word meaning</li>
+</ul>
+<h3>BPE (Byte Pair Encoding) - Used by GPT</h3>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Start with individual characters</li>
+<li>Find most frequent pair of tokens</li>
+<li>Merge them into a new token</li>
+<li>Repeat until desired vocabulary size</li>
+</ol>
+<p><strong>Example:</strong></p>
+<pre><code>Initial: "low" → ["l", "o", "w"]
+<p>After training: "low" → ["low"] (common word, single token)</p>
+<p>"lower" → ["low", "er"] (common pattern)</p>
+<p></code></pre></p>
+<h3>Token to Number Conversion</h3>
+<pre><code># Simplified example
+<p>text = "Show me students"</p>
+<p>tokens = tokenizer.encode(text)</p>
+<p># Result: [1234, 567, 8901]  (each token is a number)</p>
+<p># The model processes these numbers</p>
+<p></code></pre></p>
+<h3>Real Example from Your System</h3>
+<p>When a user asks: <strong>"Show me all students enrolled in 2024"</strong></p>
+<pre><code>Step 1: Tokenization
+<p>"Show me all students enrolled in 2024"</p>
+<p>↓</p>
+<p>Tokens: [1234, 567, 890, 12345, 6789, 12, 2024]</p>
+<p>Step 2: Embedding</p>
+<p>Each token → vector of 768+ dimensions</p>
+<p>Step 3: Processing through transformer layers</p>
+<p></code></pre></p>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter2.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter4.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Complete LLM Learning Guide</p>
+            <p>Chapter 3 of 11</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+    </script>
+</body>
+</html>

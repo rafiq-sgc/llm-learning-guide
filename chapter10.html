@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your NL2SQL System Architecture - LLM Learning Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+</script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+        <header class="header">
+            <h1>🏗️ Your NL2SQL System Architecture</h1>
+            <p class="subtitle">Chapter 10 of 11</p>
+        </header>
+
+        
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="chapter1.html">📖 Chapter 1: Introduction to LLMs</a></li>
+            <li><a href="chapter2.html">⚙️ Chapter 2: Transformer Architecture</a></li>
+            <li><a href="chapter3.html">🔢 Chapter 3: Tokenization</a></li>
+            <li><a href="chapter4.html">👁️ Chapter 4: Attention Mechanism</a></li>
+            <li><a href="chapter5.html">🎓 Chapter 5: Training LLMs</a></li>
+            <li><a href="chapter6.html">✨ Chapter 6: Text Generation</a></li>
+            <li><a href="chapter7.html">✅ Chapter 7: Why LLMs Succeed</a></li>
+            <li><a href="chapter8.html">❌ Chapter 8: Why LLMs Fail</a></li>
+            <li><a href="chapter9.html">💬 Chapter 9: NL2SQL Overview</a></li>
+            <li><a href="chapter10.html">🏗️ Chapter 10: Your NL2SQL System</a></li>
+            <li><a href="chapter11.html">📚 Chapter 11: Examples & Case Studies</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🏗️ Your NL2SQL System Architecture</h1>
+                <p>Chapter 10 of 11 - Complete Learning Guide</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter9.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter11.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>Complete System Flow</h3>
+<p><div class="diagram-container"><div class="mermaid">
+graph TD
+    A[User Question] --> B[FastAPI Endpoint]
+    B --> C[Intent Classification]
+    C --> D{Intent = SQL?}
+    D -->|No| E[Route to Docs]
+    D -->|Yes| F[Hybrid Search]
+    F --> G[Vector Search]
+    F --> H[BM25 Search]
+    G --> I[Ensemble Retriever]
+    H --> I
+    I --> J[Relevant Tables Found]
+    J --> K[Build Database Connection]
+    K --> L[Create SQL Agent]
+    L --> M[LangGraph ReAct Agent]
+    M --> N[LLM with Tools]
+    N --> O[Generate SQL]
+    O --> P[Execute Query]
+    P --> Q[Format Results]
+    Q --> R[Return to User]
+    
+    style M fill:#4caf50
+    style F fill:#ffeb3b
+    style N fill:#2196f3
+</div></div></p>
+<h3>Component Deep Dive</h3>
+<h4>1. <strong>Intent Classification</strong> (<code class="inline-code">llm/intent.py</code>)</h4>
+<pre><code>def determine_intent(question: str) -&gt; RouteQuery:
+<p># Uses structured output from LLM</p>
+<p># Few-shot examples guide classification</p>
+<p># Returns: {"datasource": "sql"|"docs", "confidence": 0.0-1.0}</p>
+<p></code></pre></p>
+<p><strong>Why it works:</strong></p>
+<ul>
+<li>Few-shot learning: Examples show the pattern</li>
+<li>Structured output: Guarantees valid response format</li>
+<li>High confidence threshold: Only routes when certain</li>
+</ul>
+<h4>2. <strong>Hybrid Search</strong> (<code class="inline-code">embedding/utils.py</code>)</h4>
+<p><strong>Two-stage retrieval:</strong></p>
+<p><div class="diagram-container"><div class="mermaid">
+graph LR
+    A[User Query] --> B[Vector Search]
+    A --> C[BM25 Search]
+    B --> D[Semantic Similarity]
+    C --> E[Keyword Matching]
+    D --> F[Ensemble Retriever]
+    E --> F
+    F --> G[Top Relevant Tables]
+    
+    style D fill:#4caf50
+    style E fill:#ffeb3b
+</div></div></p>
+<p><strong>Vector Search (Semantic):</strong></p>
+<ul>
+<li>Uses embeddings (text-embedding-3-large)</li>
+<li>Finds tables with similar meaning</li>
+<li>Example: "students" matches "student_records", "enrollments"</li>
+</ul>
+<p><strong>BM25 Search (Keyword):</strong></p>
+<ul>
+<li>Traditional information retrieval</li>
+<li>Matches exact keywords</li>
+<li>Fast and reliable for exact matches</li>
+</ul>
+<p><strong>Ensemble:</strong></p>
+<pre><code>ensemble_retriever = EnsembleRetriever(
+<p>retrievers=[vector_retriever, bm25_retriever],</p>
+<p>weights=[0.5, 0.5]  # Equal weight</p>
+<p>)</p>
+<p></code></pre></p>
+<p><strong>Why hybrid?</strong></p>
+<ul>
+<li>Vector: Handles synonyms, semantic similarity</li>
+<li>BM25: Handles exact matches, technical terms</li>
+<li>Together: Best of both worlds</li>
+</ul>
+<h4>3. <strong>SQL Agent</strong> (<code class="inline-code">llm/sql_agent.py</code>)</h4>
+<p><strong>ReAct Pattern</strong> (Reasoning + Acting):</p>
+<p><div class="diagram-container"><div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Agent
+    participant LLM
+    participant Tools
+    participant DB
+
+    User->>Agent: "Show me students in 2024"
+    Agent->>LLM: Generate thought + action
+    LLM->>Agent: "I need to find the students table"
+    Agent->>Tools: sql_db_list_tables()
+    Tools->>DB: SHOW TABLES
+    DB->>Tools: ["students", "courses", ...]
+    Tools->>Agent: Table list
+    Agent->>LLM: Observation + continue
+    LLM->>Agent: "Now I'll check schema of students table"
+    Agent->>Tools: sql_db_schema("students")
+    Tools->>DB: DESCRIBE students
+    DB->>Tools: Schema info
+    Tools->>Agent: Schema
+    Agent->>LLM: Observation + generate SQL
+    LLM->>Agent: "SELECT * FROM students WHERE year = 2024"
+    Agent->>Tools: sql_db_query(SQL)
+    Tools->>DB: Execute SQL
+    DB->>Tools: Results
+    Tools->>Agent: Data
+    Agent->>User: Formatted results
+</div></div></p>
+<p><strong>Tools Available:</strong></p>
+<ol>
+<li><code class="inline-code">sql_db_list_tables</code>: List all tables</li>
+<li><code class="inline-code">sql_db_schema</code>: Get table schema</li>
+<li><code class="inline-code">sql_db_query</code>: Execute SQL query</li>
+</ol>
+<p><strong>Why ReAct?</strong></p>
+<ul>
+<li><strong>Reasoning</strong>: LLM explains its thought process</li>
+<li><strong>Acting</strong>: Uses tools to gather information</li>
+<li><strong>Iterative</strong>: Can refine based on observations</li>
+</ul>
+<h4>4. <strong>System Prompt</strong> (<code class="inline-code">llm/utils.py</code>)</h4>
+<p>Your system prompt is comprehensive:</p>
+<pre><code>SQL_PREFIX = f"""
+<p>You are AI Assist for Analytics...</p>
+<p>## Instructions for SQL Query Generation:</p>
+<ol>
+<li>Generate syntactically correct SQL</li>
+<li>Execute using available tools</li>
+<li>Return accurate results</li>
+</ol>
+<h3>Query Construction Guidelines:</h3>
+<ul>
+<li>Limit to 5 rows</li>
+<li>Only SELECT relevant columns</li>
+<li>Use tables from: {extract_tables}</li>
+<li>Check SQL correctness before executing</li>
+<li>NEVER perform DML operations</li>
+</ul>
+<h3>Special Handling:</h3>
+<ul>
+<li>"How many" → Use COUNT()</li>
+<li>Proper nouns → Use LIKE '%value%'</li>
+<li>Code fields → Use = (exact match)</li>
+</ul>
+<p>...</p>
+<p>"""</p>
+<p></code></pre></p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li><strong>Clear instructions</strong>: Step-by-step guidance</li>
+<li><strong>Constraints</strong>: Prevents dangerous operations</li>
+<li><strong>Examples</strong>: Shows correct patterns</li>
+<li><strong>Context</strong>: Includes relevant tables and metadata</li>
+</ul>
+<h4>5. <strong>Structured Output</strong></h4>
+<pre><code>structured_response_format = {
+<p>"type": "object",</p>
+<p>"properties": {</p>
+<p>"columns": {"type": "array"},</p>
+<p>"data": {"type": "array"},</p>
+<p>"title": {"type": "string"},</p>
+<p>"short_description": {"type": "string"}</p>
+<p>}</p>
+<p>}</p>
+<p></code></pre></p>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Guaranteed format</li>
+<li>Easy to parse</li>
+<li>Consistent responses</li>
+</ul>
+<h3>Data Flow Example</h3>
+<p><strong>User Query</strong>: "Show me all students enrolled in 2024"</p>
+<p><strong>Step 1: Intent Classification</strong></p>
+<pre><code>determine_intent("Show me all students enrolled in 2024")
+<p>→ {"datasource": "sql", "confidence": 0.99}</p>
+<p></code></pre></p>
+<p><strong>Step 2: Hybrid Search</strong></p>
+<pre><code>hybrid_search("Show me all students enrolled in 2024")
+<p>→ Tables: ["students", "enrollments"]</p>
+<p>→ Metadata: "students table contains student records..."</p>
+<p>→ Entity: "Student Information System"</p>
+<p></code></pre></p>
+<p><strong>Step 3: Database Connection</strong></p>
+<pre><code>db = get_database(["students", "enrollments"])
+<p># Creates connection to Databricks with only relevant tables</p>
+<p></code></pre></p>
+<p><strong>Step 4: Agent Execution</strong></p>
+<pre><code>agent = create_react_agent(llm, toolkit.get_tools())
+<p>response = agent.invoke({</p>
+<p>"messages": [HumanMessage(content=question)]</p>
+<p>})</p>
+<p></code></pre></p>
+<p><strong>Step 5: SQL Generation</strong> (Inside agent)</p>
+<pre><code>Thought: "I need to find students enrolled in 2024"
+<p>Action: sql_db_schema("students")</p>
+<p>Observation: "Table has columns: student_id, name, enrollment_year..."</p>
+<p>Thought: "I'll query students where enrollment_year = 2024"</p>
+<p>Action: sql_db_query("SELECT * FROM students WHERE enrollment_year = 2024")</p>
+<p>Observation: [Results...]</p>
+<p></code></pre></p>
+<p><strong>Step 6: Result Formatting</strong></p>
+<pre><code>{
+<p>"columns": ["student_id", "name", "enrollment_year"],</p>
+<p>"data": [[1, "John Doe", 2024], [2, "Jane Smith", 2024]],</p>
+<p>"title": "Students Enrolled in 2024",</p>
+<p>"short_description": "List of all students enrolled in 2024"</p>
+<p>}</p>
+<p></code></pre></p>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="chapter9.html">← Previous Chapter</a><a href="index.html">🏠 Home</a><a href="chapter11.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Complete LLM Learning Guide</p>
+            <p>Chapter 10 of 11</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+    </script>
+</body>
+</html>
