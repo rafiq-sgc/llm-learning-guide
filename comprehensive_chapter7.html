@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How LLMs Are Trained - Complete Process - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎓 How LLMs Are Trained - Complete Process</h1>
+            <p class="subtitle">Chapter 7 of 15 - Comprehensive Guide</p>
+        </header>
+
+        
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="comprehensive_index.html">🏠 Home</a></li>
+            <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+            <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+            <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+            <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+            <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+            <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+            <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+            <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+            <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+            <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+            <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+            <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+            <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+            <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+            <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🎓 Chapter 7: How LLMs Are Trained - Complete Process</h1>
+                <p>Comprehensive Learning Guide - Detailed Presentation Material</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter6.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter8.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>Overview of LLM Training</h3>
+<p><strong>LLM training is a massive undertaking involving:</strong></p>
+<ul>
+<li>Petabytes of text data</li>
+<li>Thousands of GPUs</li>
+<li>Weeks to months of compute time</li>
+<li>Millions of dollars in costs</li>
+</ul>
+<h3>Training Pipeline</h3>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Flowchart:</h4>
+        <p><strong>What is a Flowchart?</strong> This diagram shows a step-by-step process or decision flow. Start from the top and follow the arrows to understand the complete workflow. Rectangles represent processes, diamonds represent decisions.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Step 2:</strong> 1. Data Collection</li><li><strong>Step 3:</strong> 2. Data Filtering & Cleaning</li><li><strong>Step 4:</strong> 3. Tokenization</li><li><strong>Step 5:</strong> 4. Preprocessing</li><li><strong>Step 6:</strong> 5. Initialize Model</li><li><strong>Step 7:</strong> 6. Training Loop</li><li><strong>Step 8:</strong> 7. Evaluation</li><li><strong>Step 9:</strong> 8. Save Model</li><li><strong>Decision Points:</strong><ul><li>Good<br/>Performance? - Choose Yes or No path</li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows from the start to understand the complete process flow. Decision points (diamond shapes) represent choices in the process - follow the appropriate path based on the condition.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Start([Start Training Process]) --> Data[1. Data Collection]
+    Data --> Filter[2. Data Filtering & Cleaning]
+    Filter --> Tokenize[3. Tokenization]
+    Tokenize --> Preprocess[4. Preprocessing]
+    Preprocess --> Init[5. Initialize Model]
+    Init --> Train[6. Training Loop]
+    Train --> Eval[7. Evaluation]
+    Eval --> Check{Good<br/>Performance?}
+    Check -->|No| Train
+    Check -->|Yes| Save[8. Save Model]
+    Save --> End([Training Complete])
+    
+    style Data fill:#e3f2fd
+    style Train fill:#fff3e0
+    style Save fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Step 1: Data Collection</h3>
+<p><strong>Sources of Training Data:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>Data</strong>: Training Data Sources</li><li><strong>Web</strong>: Web Pages<br/>Common Crawl</li><li><strong>Books</strong>: Books<br/>Project Gutenberg</li><li><strong>Wiki</strong>: Wikipedia</li><li><strong>Code</strong>: Code Repositories<br/>GitHub</li><li><strong>Papers</strong>: Scientific Papers<br/>arXiv</li><li><strong>News</strong>: News Articles</li><li><strong>Social</strong>: Social Media<br/>Reddit, Twitter</li><li><strong>Total</strong>: Total: 500B+ tokens<br/>for GPT-3</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Training Data Sources</strong> connects to <strong>Books<br/>Project Gutenberg</strong></li><li><strong>Training Data Sources</strong> connects to <strong>Wikipedia</strong></li><li><strong>Training Data Sources</strong> connects to <strong>Code Repositories<br/>GitHub</strong></li><li><strong>Training Data Sources</strong> connects to <strong>Scientific Papers<br/>arXiv</strong></li><li><strong>Training Data Sources</strong> connects to <strong>News Articles</strong></li><li><strong>Training Data Sources</strong> connects to <strong>Social Media<br/>Reddit, Twitter</strong></li><li><strong>Web Pages<br/>Common Crawl</strong> connects to <strong>Total: 500B+ tokens<br/>for GPT-3</strong></li><li><strong>Books<br/>Project Gutenberg</strong> connects to <strong>Total: 500B+ tokens<br/>for GPT-3</strong></li><li><strong>Wikipedia</strong> connects to <strong>Total: 500B+ tokens<br/>for GPT-3</strong></li><li><strong>Code Repositories<br/>GitHub</strong> connects to <strong>Total: 500B+ tokens<br/>for GPT-3</strong></li><li><strong>Scientific Papers<br/>arXiv</strong> connects to <strong>Total: 500B+ tokens<br/>for GPT-3</strong></li><li><strong>News Articles</strong> connects to <strong>Total: 500B+ tokens<br/>for GPT-3</strong></li><li><strong>Social Media<br/>Reddit, Twitter</strong> connects to <strong>Total: 500B+ tokens<br/>for GPT-3</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    Data[Training Data Sources] --> Web[Web Pages<br/>Common Crawl]
+    Data --> Books[Books<br/>Project Gutenberg]
+    Data --> Wiki[Wikipedia]
+    Data --> Code[Code Repositories<br/>GitHub]
+    Data --> Papers[Scientific Papers<br/>arXiv]
+    Data --> News[News Articles]
+    Data --> Social[Social Media<br/>Reddit, Twitter]
+    
+    Web --> Total[Total: 500B+ tokens<br/>for GPT-3]
+    Books --> Total
+    Wiki --> Total
+    Code --> Total
+    Papers --> Total
+    News --> Total
+    Social --> Total
+    
+    style Data fill:#e3f2fd
+    style Total fill:#fff3e0
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Data Scale:</strong></p>
+<ul>
+<li>GPT-3: ~500 billion tokens</li>
+<li>GPT-4: Estimated 1-2 trillion tokens</li>
+<li>Total size: Petabytes of text</li>
+</ul>
+<h3>Step 2: Data Filtering and Cleaning</h3>
+<p><strong>Process:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Flowchart:</h4>
+        <p><strong>What is a Flowchart?</strong> This diagram shows a step-by-step process or decision flow. Start from the top and follow the arrows to understand the complete workflow. Rectangles represent processes, diamonds represent decisions.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Step 2:</strong> Raw Text</li><li><strong>Step 3:</strong> Remove Duplicates</li><li><strong>Step 4:</strong> Quality Filtering</li><li><strong>Step 5:</strong> Remove Toxic Content</li><li><strong>Step 6:</strong> Language Detection</li><li><strong>Step 7:</strong> Clean Text</li><li><strong>Step 8:</strong> Final Dataset</li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows from the start to understand the complete process flow. Decision points (diamond shapes) represent choices in the process - follow the appropriate path based on the condition.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart LR
+    Raw[Raw Text] --> Dedup[Remove Duplicates]
+    Dedup --> Quality[Quality Filtering]
+    Quality --> Toxic[Remove Toxic Content]
+    Toxic --> Lang[Language Detection]
+    Lang --> Clean[Clean Text]
+    Clean --> Final[Final Dataset]
+    
+    style Raw fill:#ffebee
+    style Final fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Filtering Criteria:</strong></p>
+<ul>
+<li>Remove duplicates</li>
+<li>Filter low-quality content</li>
+<li>Remove toxic/harmful content</li>
+<li>Language detection (keep target languages)</li>
+<li>Remove very short or very long texts</li>
+<li>Balance different sources</li>
+</ul>
+<h3>Step 3: Tokenization</h3>
+<p><strong>Process:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>Text</strong>: "Raw Text:<br/>'Show me students'"</li><li><strong>BPE</strong>: BPE Tokenization</li><li><strong>Tokens</strong>: "Tokens:<br/>[1234, 567, 8901</li><li><strong>Vocab</strong>: Vocabulary Mapping</li><li><strong>IDs</strong>: "Token IDs:<br/>Ready for Training"</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>BPE Tokenization</strong> connects to <strong>"Tokens:<br/>[1234, 567, 8901</strong></li><li><strong>"Tokens:<br/>[1234, 567, 8901</strong> connects to <strong>Vocabulary Mapping</strong></li><li><strong>Vocabulary Mapping</strong> connects to <strong>"Token IDs:<br/>Ready for Training"</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    Text["Raw Text:<br/>'Show me students'"] --> BPE[BPE Tokenization]
+    BPE --> Tokens["Tokens:<br/>[1234, 567, 8901]"]
+    Tokens --> Vocab[Vocabulary Mapping]
+    Vocab --> IDs["Token IDs:<br/>Ready for Training"]
+    
+    style Text fill:#e3f2fd
+    style Tokens fill:#fff3e0
+    style IDs fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>BPE (Byte Pair Encoding) Process:</strong></p>
+<ol>
+<li>Start with characters</li>
+<li>Count most frequent pairs</li>
+<li>Merge most frequent pair</li>
+<li>Repeat until vocabulary size reached</li>
+<li>Result: Subword tokens</li>
+</ol>
+<h3>Step 4: Preprocessing</h3>
+<p><strong>Steps:</strong></p>
+<ol>
+<li><strong>Chunking</strong>: Split long texts into manageable chunks</li>
+<li><strong>Context Windows</strong>: Create sequences of fixed length (e.g., 2048 tokens)</li>
+<li><strong>Masking</strong>: For some tasks, mask tokens for prediction</li>
+<li><strong>Batching</strong>: Group sequences into batches</li>
+</ol>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>Chunks</strong>: Text Chunks</li><li><strong>Windows</strong>: Context Windows<br/>2048 tokens each</li><li><strong>Batches</strong>: Batches<br/>32-128 sequences</li><li><strong>Model</strong>: Model Input</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Context Windows<br/>2048 tokens each</strong> connects to <strong>Batches<br/>32-128 sequences</strong></li><li><strong>Batches<br/>32-128 sequences</strong> connects to <strong>Model Input</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph LR
+    Chunks[Text Chunks] --> Windows[Context Windows<br/>2048 tokens each]
+    Windows --> Batches[Batches<br/>32-128 sequences]
+    Batches --> Model[Model Input]
+    
+    style Chunks fill:#e3f2fd
+    style Batches fill:#fff3e0
+    style Model fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Step 5: Model Initialization</h3>
+<p><strong>Initialize Weights:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>Init</strong>: Initialize Model</li><li><strong>Weights</strong>: Random Weights<br/>Small random values</li><li><strong>Embed</strong>: Embedding Layer<br/>Token to Vector</li><li><strong>Layers</strong>: Transformer Layers<br/>96 layers for GPT-3</li><li><strong>Output</strong>: Output Layer<br/>Vocabulary Size</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Random Weights<br/>Small random values</strong> connects to <strong>Embedding Layer<br/>Token to Vector</strong></li><li><strong>Embedding Layer<br/>Token to Vector</strong> connects to <strong>Transformer Layers<br/>96 layers for GPT-3</strong></li><li><strong>Transformer Layers<br/>96 layers for GPT-3</strong> connects to <strong>Output Layer<br/>Vocabulary Size</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    Init[Initialize Model] --> Weights[Random Weights<br/>Small random values]
+    Weights --> Embed[Embedding Layer<br/>Token to Vector]
+    Embed --> Layers[Transformer Layers<br/>96 layers for GPT-3]
+    Layers --> Output[Output Layer<br/>Vocabulary Size]
+    
+    style Init fill:#e3f2fd
+    style Weights fill:#fff3e0
+    style Output fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Initialization Methods:</strong></p>
+<ul>
+<li><strong>Xavier/Glorot</strong>: For tanh/sigmoid</li>
+<li><strong>He Initialization</strong>: For ReLU</li>
+<li><strong>Small Random Values</strong>: Prevent symmetry breaking</li>
+</ul>
+<h3>Step 6: Training Loop - Detailed</h3>
+<p><strong>The Core Training Process:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding The Core Training Process:</h4>
+        <p><strong>What happens during training?</strong> This sequence diagram shows the complete training loop - the process that repeats millions of times to train an LLM. Each iteration processes one batch of data.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Participants in This Process:</strong>
+                    <ul>
+                        <li><strong>Training Data:</strong> The source of all training examples</li>
+                        <li><strong>LLM Model:</strong> The neural network being trained</li>
+                        <li><strong>Loss Function:</strong> Calculates how wrong predictions are</li>
+                        <li><strong>Optimizer:</strong> Updates model weights based on errors</li>
+                        <li><strong>GPU Cluster:</strong> Hardware running the computation</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Note: Training on Massive Scale</strong> - This entire process happens on thousands of GPUs simultaneously.</li>
+                
+                <li><strong>Loop: For Each Batch</strong> - The following steps repeat for every batch:
+                    <ol type="a">
+                        <li><strong>Step 1:</strong> Training Data sends a batch of sequences to the Model</li>
+                        <li><strong>Step 2:</strong> Model performs forward pass through all 96 layers, processing the batch</li>
+                        <li><strong>Step 3:</strong> Model sends predictions to Loss Function</li>
+                        <li><strong>Step 4:</strong> Loss Function calculates cross-entropy loss (measures prediction error)</li>
+                        <li><strong>Step 5:</strong> Loss Function sends error signal back to Model</li>
+                        <li><strong>Step 6:</strong> Model performs backward pass, calculating gradients for all weights</li>
+                        <li><strong>Step 7:</strong> Model sends gradients to Optimizer</li>
+                        <li><strong>Step 8:</strong> Optimizer updates model weights using AdamW algorithm</li>
+                        <li><strong>Step 9:</strong> Model signals GPU Cluster it's ready for next batch</li>
+                    </ol>
+                </li>
+                
+                <li><strong>Note: Repeat for millions of batches</strong> - This entire loop repeats millions of times until training is complete.</li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Training is a cycle: forward pass (predict) → calculate loss → backward pass (learn) → update weights → repeat. Each cycle makes the model slightly better.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Like practicing a skill - you try (forward pass), see how you did (loss), figure out what to improve (backward pass), adjust your technique (update weights), and try again. After millions of repetitions, you become an expert.</p>
+        
+        <p><strong>⏱️ Time Scale:</strong> For GPT-3, this loop ran ~100,000 times, processing 3.2 million tokens per batch, taking 34 days on 1,024 GPUs.</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+sequenceDiagram
+    participant Data as Training Data
+    participant Model as LLM Model
+    participant Loss as Loss Function
+    participant Opt as Optimizer
+    participant GPU as GPU Cluster
+
+    Note over Data: Training on Massive Scale
+    loop For Each Batch
+        Data->>Model: Batch of sequences
+        Model->>Model: Forward pass through all layers
+        Model->>Loss: Predictions
+        Loss->>Loss: Calculate loss cross-entropy
+        Loss->>Model: Error signal
+        Model->>Model: Backward pass gradients
+        Model->>Opt: Gradients
+        Opt->>Model: Update weights
+        Model->>GPU: Next batch
+    end
+    Note over GPU: Repeat for millions of batches
+        </div>
+    </div>
+</div>
+<p><strong>Detailed Training Step:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Detailed Training Step Flowchart:</h4>
+        <p><strong>What happens in a single training step?</strong> This flowchart shows the complete process for one batch of data, from loading to weight updates. Follow the arrows to see the step-by-step flow.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - Load Batch (Blue):</strong>
+                    <ul>
+                        <li>Load 32 sequences, each with 2048 tokens</li>
+                        <li>Total: 32 × 2048 = 65,536 tokens per batch</li>
+                        <li>This is one "mini-batch" of training data</li>
+                        <li>Example sequences: sentences, paragraphs, code snippets</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 2 - Embedding Layer:</strong>
+                    <ul>
+                        <li>Convert token IDs to vectors</li>
+                        <li>Each token becomes a 768-dimensional vector</li>
+                        <li>Shape: [32, 2048] → [32, 2048, 768]</li>
+                        <li>These vectors capture semantic meaning</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3 - Add Positional Encoding:</strong>
+                    <ul>
+                        <li>Add position information to each token</li>
+                        <li>Transformers need to know token order</li>
+                        <li>Position 0, 1, 2, ... up to 2047</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4-99 - Transformer Layers (1-96):</strong>
+                    <ul>
+                        <li><strong>Layer 1:</strong> First transformation - basic patterns</li>
+                        <li><strong>Layer 2:</strong> Second transformation - word relationships</li>
+                        <li><strong>...</strong> (94 more layers)</li>
+                        <li><strong>Layer 96:</strong> Final transformation - complex reasoning</li>
+                        <li>Each layer refines understanding</li>
+                        <li>Shape maintained: [32, 2048, 768]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 100 - Output Layer:</strong>
+                    <ul>
+                        <li>Converts 768-dim vectors to vocabulary size</li>
+                        <li>Vocabulary size: 50,257 tokens</li>
+                        <li>Shape: [32, 2048, 768] → [32, 2048, 50257]</li>
+                        <li>Each position gets probability for each token</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 101 - Calculate Loss (Red):</strong>
+                    <ul>
+                        <li>Cross-Entropy Loss calculation</li>
+                        <li>Compares predictions with actual next tokens</li>
+                        <li>Measures how wrong the model is</li>
+                        <li>Single loss value for the entire batch</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 102 - Backward Pass:</strong>
+                    <ul>
+                        <li>Calculate gradients for all weights</li>
+                        <li>Gradients flow backward through all 96 layers</li>
+                        <li>Each layer calculates how much its weights contributed to error</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 103 - Optimizer (AdamW):</strong>
+                    <ul>
+                        <li>Receives all gradients</li>
+                        <li>Uses AdamW algorithm to calculate weight updates</li>
+                        <li>Considers momentum and adaptive learning rates</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 104 - Update Weights (Green):</strong>
+                    <ul>
+                        <li>All weights are updated</li>
+                        <li>Model is now slightly better</li>
+                        <li>Ready for next batch</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 105 - Next Batch:</strong>
+                    <ul>
+                        <li>Process repeats with next batch</li>
+                        <li>Continues until all data is processed</li>
+                        <li>One "epoch" = one pass through all data</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Each training step processes one batch through the entire model (forward), calculates error (loss), learns from mistakes (backward), and improves (update). This happens millions of times.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Like learning from flashcards - you see a question (batch), think of an answer (forward pass), check if you're right (loss), figure out what you got wrong (backward pass), study more (update weights), then move to next card (next batch).</p>
+        
+        <p><strong>⏱️ Time per Step:</strong> On modern GPUs, one such step takes about 1-2 seconds. For GPT-3, ~100,000 steps × 1.5 seconds = ~42 hours of pure computation (plus overhead).</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart TD
+    Batch[Load Batch<br/>32 sequences x 2048 tokens] --> Embed[Embedding Layer<br/>Convert tokens to vectors]
+    Embed --> PosEnc[Add Positional Encoding]
+    PosEnc --> Layer1[Transformer Layer 1]
+    Layer1 --> Layer2[Transformer Layer 2]
+    Layer2 --> Dots[...]
+    Dots --> Layer96[Transformer Layer 96]
+    Layer96 --> Output[Output Layer<br/>Vocabulary size: 50,257]
+    Output --> Loss[Calculate Loss<br/>Cross-Entropy]
+    Loss --> Backward[Backward Pass<br/>Calculate Gradients]
+    Backward --> Optimizer[Optimizer<br/>AdamW]
+    Optimizer --> Update[Update Weights]
+    Update --> Next[Next Batch]
+    
+    style Batch fill:#e3f2fd
+    style Loss fill:#ffebee
+    style Update fill:#e8f5e9
+        </div>
+    </div>
+</div>
+<p><strong>Complete Training Step Breakdown:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Complete Training Step Breakdown:</h4>
+        <p><strong>Ultra-detailed view of one training step</strong> This sequence diagram shows every component involved in a single training step, with precise data shapes and operations. This is the most detailed view of the training process.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1: Load Batch</strong>
+                    <ul>
+                        <li><strong>Training Data → Data Loader:</strong> Provides next batch</li>
+                        <li>Batch size: 32 sequences × 2048 tokens = 65,536 tokens</li>
+                        <li><strong>Data Loader → Model:</strong> Sends token IDs</li>
+                        <li>Shape: [32, 2048] - 32 sequences, each with 2048 token IDs</li>
+                        <li>Example: [[1234, 567, 890, ...], [2345, 678, 901, ...], ...]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 2: Forward Pass (Inside Model)</strong>
+                    <ul>
+                        <li><strong>Embedding:</strong> [32, 2048] → [32, 2048, 768]</li>
+                        <li>Each token ID becomes a 768-dimensional vector</li>
+                        <li><strong>Add Positional Encoding:</strong> Adds position info to each token</li>
+                        <li><strong>Layer 1:</strong> Self-Attention + Feed Forward Network</li>
+                        <li>Self-Attention: Tokens attend to each other</li>
+                        <li>FFN: Processes each position independently</li>
+                        <li><strong>Layer 2:</strong> Same process, further refinement</li>
+                        <li><strong>... (Layers 3-95):</strong> Repeat 94 more times</li>
+                        <li><strong>Layer 96:</strong> Final transformer layer</li>
+                        <li><strong>Output Layer:</strong> [32, 2048, 768] → [32, 2048, 50257]</li>
+                        <li>Converts to vocabulary size (50,257 tokens)</li>
+                        <li><strong>Model → Loss:</strong> Sends logits (raw scores)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3: Calculate Loss</strong>
+                    <ul>
+                        <li><strong>Loss Function:</strong> Calculates Cross-Entropy Loss</li>
+                        <li>Compares predicted probabilities with actual next tokens</li>
+                        <li>Averages loss over entire batch and sequence</li>
+                        <li>Single loss value represents overall error</li>
+                        <li><strong>Loss → Gradient Calculator:</strong> Sends loss + initial gradients</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4: Backward Pass (Gradient Calculation)</strong>
+                    <ul>
+                        <li><strong>Gradient Calculator:</strong> Calculates gradients for Layer 96</li>
+                        <li>How much did Layer 96's weights contribute to error?</li>
+                        <li><strong>Layer 95:</strong> Calculate gradients, considering Layer 96's contribution</li>
+                        <li><strong>... (Layers 94-2):</strong> Backpropagate through all layers</li>
+                        <li><strong>Embedding:</strong> Calculate final gradients</li>
+                        <li>Gradients flow backward (opposite to forward pass)</li>
+                        <li><strong>Gradient Calculator → Gradient Sync:</strong> Sends all gradients</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 5: Synchronize (Distributed Training)</strong>
+                    <ul>
+                        <li><strong>Gradient Sync:</strong> Performs All-Reduce operation</li>
+                        <li>Collects gradients from all GPUs in the cluster</li>
+                        <li>Averages gradients across all GPUs</li>
+                        <li>Ensures all models stay synchronized</li>
+                        <li><strong>Gradient Sync → Optimizer:</strong> Sends averaged gradients</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 6: Update Weights</strong>
+                    <ul>
+                        <li><strong>Optimizer:</strong> Performs AdamW optimizer step</li>
+                        <li>Uses momentum, adaptive learning rates, weight decay</li>
+                        <li>Calculates new weight values</li>
+                        <li><strong>Optimizer → Model:</strong> Sends updated weights</li>
+                        <li><strong>Model:</strong> Replaces old weights with new ones</li>
+                        <li>Model is now ready for next batch</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Repeat:</strong> This entire process repeats for millions of batches until training is complete.</li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Every training step involves: loading data → forward pass (96 layers) → loss calculation → backward pass (96 layers) → gradient sync → weight update. This precise sequence happens millions of times.</p>
+        
+        <p><strong>🎯 Data Flow Example:</strong> 
+            <ul>
+                <li>Input: [32, 2048] token IDs</li>
+                <li>After Embedding: [32, 2048, 768] vectors</li>
+                <li>After 96 Layers: [32, 2048, 768] refined vectors</li>
+                <li>After Output: [32, 2048, 50257] probabilities</li>
+                <li>Loss: Single number representing error</li>
+                <li>Gradients: Same shape as weights (billions of numbers)</li>
+                <li>Updated Weights: Model improved slightly</li>
+            </ul>
+        </p>
+        
+        <p><strong>⏱️ Computational Complexity:</strong> For GPT-3, each step processes 65,536 tokens through 96 layers. With 175 billion parameters, this involves trillions of operations per step!</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+sequenceDiagram
+    participant Data as "Training Data"
+    participant Loader as "Data Loader"
+    participant Model as "LLM Model"
+    participant Loss as "Loss Function"
+    participant Grad as "Gradient Calculator"
+    participant Optim as "Optimizer"
+    participant Sync as "Gradient Sync"
+
+    Note over Data: Step 1: Load Batch
+    Data->>Loader: Get next batch (32 sequences x 2048 tokens)
+    Loader->>Model: Token IDs (shape: 32 x 2048)
+
+    Note over Model: Step 2: Forward Pass
+    Model->>Model: Embedding (32x2048 -> 32x2048x768)
+    Model->>Model: Add positional encoding
+    Model->>Model: Layer 1: Self-Attn + FFN
+    Model->>Model: Layer 2: Self-Attn + FFN
+    Note over Model: Repeat up to 96 layers
+    Model->>Model: Layer 96: Self-Attn + FFN
+    Model->>Model: Output head (32x2048x768 -> 32x2048x50257)
+    Model->>Loss: Logits (shape: 32 x 2048 x 50257)
+
+    Note over Loss: Step 3: Calculate Loss
+    Loss->>Loss: Cross-entropy loss
+    Loss->>Loss: Average over batch and sequence
+    Loss->>Grad: Loss value + upstream gradients
+
+    Note over Grad: Step 4: Backward Pass
+    Grad->>Grad: Backprop through Layer 96
+    Grad->>Grad: Backprop through Layer 95
+    Note over Grad: Continue through all layers
+    Grad->>Grad: Backprop through embeddings
+    Grad->>Sync: Gradients
+
+    Note over Sync: Step 5: Synchronize
+    Sync->>Sync: All-reduce gradients across GPUs
+    Sync->>Optim: Averaged gradients
+
+    Note over Optim: Step 6: Update Weights
+    Optim->>Optim: AdamW step
+    Optim->>Model: Updated weights
+    Model->>Model: Ready for next batch
+    
+    Note over Sync: Repeat for millions of batches
+        </div>
+    </div>
+</div>
+<p><strong>Forward Pass - Layer by Layer:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Forward Pass - Layer by Layer:</h4>
+        <p><strong>What happens inside ONE transformer layer?</strong> This flowchart shows the detailed operations within a single transformer layer. This same process repeats 96 times in GPT-3. Understanding this is key to understanding how LLMs work.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Input (Blue):</strong>
+                    <ul>
+                        <li>Shape: [batch, seq_len, 768]</li>
+                        <li>Example: [32, 2048, 768] for a batch</li>
+                        <li>32 sequences, each with 2048 tokens, each token is 768-dimensional vector</li>
+                        <li>This is the input to this transformer layer</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Layer Norm 1:</strong>
+                    <ul>
+                        <li>Normalizes the input vectors</li>
+                        <li>Makes training more stable</li>
+                        <li>Ensures values are in a good range</li>
+                        <li>Shape unchanged: [batch, seq_len, 768]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Linear Transformations - Q, K, V:</strong>
+                    <ul>
+                        <li>Creates three versions of the input: Query (Q), Key (K), Value (V)</li>
+                        <li>Each: 768 → 768 dimensions</li>
+                        <li>Q: "What am I looking for?"</li>
+                        <li>K: "What do I contain?"</li>
+                        <li>V: "What information do I have?"</li>
+                        <li>All three have shape: [batch, seq_len, 768]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Self-Attention (Orange - Most Important):</strong>
+                    <ul>
+                        <li><strong>Calculate QK^T:</strong> Matrix multiplication of Q and K transpose</li>
+                        <li>Result: [batch, seq_len, seq_len] - attention scores</li>
+                        <li>Shows how much each token attends to each other token</li>
+                        <li><strong>Softmax:</strong> Converts scores to probabilities (sum to 1)</li>
+                        <li><strong>Multiply by V:</strong> Weighted sum of values</li>
+                        <li>Result: [batch, seq_len, 768] - context-aware representations</li>
+                        <li>Each token now "knows" about all other tokens</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Linear Projection:</strong>
+                    <ul>
+                        <li>Projects attention output back to 768 dimensions</li>
+                        <li>Shape: [batch, seq_len, 768]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Residual Add 1:</strong>
+                    <ul>
+                        <li>Adds the original input to the attention output</li>
+                        <li>Formula: output = attention_output + input</li>
+                        <li>Helps with gradient flow during training</li>
+                        <li>Allows model to "skip" layers if needed</li>
+                        <li>Shape: [batch, seq_len, 768]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Layer Norm 2:</strong>
+                    <ul>
+                        <li>Normalizes again after attention</li>
+                        <li>Prepares for feed-forward network</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Feed Forward Network (FFN):</strong>
+                    <ul>
+                        <li><strong>FFN Layer 1:</strong> 768 → 3072 dimensions (expands)</li>
+                        <li>Applies linear transformation with weights W1</li>
+                        <li>Adds bias b1</li>
+                        <li>Shape: [batch, seq_len, 3072]</li>
+                        <li><strong>ReLU Activation:</strong> max(0, x) - removes negative values</li>
+                        <li>Adds non-linearity (enables learning complex patterns)</li>
+                        <li><strong>FFN Layer 2:</strong> 3072 → 768 dimensions (contracts)</li>
+                        <li>Applies linear transformation with weights W2</li>
+                        <li>Shape back to: [batch, seq_len, 768]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Residual Add 2:</strong>
+                    <ul>
+                        <li>Adds output from before FFN to FFN output</li>
+                        <li>Formula: final_output = ffn_output + pre_ffn_output</li>
+                        <li>Another skip connection</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Output (Green):</strong>
+                    <ul>
+                        <li>Shape: [batch, seq_len, 768]</li>
+                        <li>Refined understanding of the input</li>
+                        <li>This becomes input to next layer</li>
+                        <li>Process repeats in next transformer layer</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Each transformer layer has two main parts: Self-Attention (tokens interact) and Feed-Forward Network (processes each position). Residual connections help information flow. This same structure repeats 96 times!</p>
+        
+        <p><strong>🎯 Mathematical Summary:</strong>
+            <ul>
+                <li>Attention: <code>Attention(Q,K,V) = softmax(QK^T/√768) × V</code></li>
+                <li>FFN: <code>FFN(x) = ReLU(xW1 + b1)W2 + b2</code></li>
+                <li>Output: <code>Layer(x) = FFN(Norm(Attention(Norm(x)) + x)) + Attention(Norm(x)) + x</code></li>
+            </ul>
+        </p>
+        
+        <p><strong>🔢 Parameter Count per Layer:</strong> Each transformer layer has millions of parameters:
+            <ul>
+                <li>Q, K, V projections: 3 × (768 × 768) = ~1.8M</li>
+                <li>Output projection: 768 × 768 = ~0.6M</li>
+                <li>FFN Layer 1: 768 × 3072 = ~2.4M</li>
+                <li>FFN Layer 2: 3072 × 768 = ~2.4M</li>
+                <li>Total per layer: ~7.2M parameters</li>
+                <li>96 layers: ~690M parameters (just transformer layers, not embeddings)</li>
+            </ul>
+        </p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart TD
+    Input["Input (batch, seq_len, 768)"] --> Norm1["Layer Norm"]
+    Norm1 --> QKV["Linear Q, K, V<br/>768 → 768 each"]
+    QKV --> Attn["Self-Attention<br/>Q·Kᵀ, softmax, V"]
+    Attn --> Proj["Linear Projection<br/>768 → 768"]
+    Proj --> Add1["Residual Add"]
+    Input --> Add1
+
+    Add1 --> Norm2["Layer Norm"]
+    Norm2 --> FF1["FFN Layer 1<br/>768 → 3072"]
+    FF1 --> ReLU["ReLU Activation"]
+    ReLU --> FF2["FFN Layer 2<br/>3072 → 768"]
+    FF2 --> Add2["Residual Add"]
+    Add1 --> Add2
+
+    Add2 --> Output["Output (batch, seq_len, 768)"]
+
+    style Input fill:#e3f2fd
+    style Attn fill:#fff3e0
+    style Output fill:#e8f5e9
+
+        </div>
+    </div>
+</div>
+<p><strong>Mathematical Operations:</strong></p>
+<ol>
+<li><strong>Self-Attention</strong>:</li>
+</ol>
+<pre><code>   Q = X × W_q  [batch, seq, 768]
+<p>K = X × W_k  [batch, seq, 768]</p>
+<p>V = X × W_v  [batch, seq, 768]</p>
+<p>Scores = (Q × K^T) / √768  [batch, seq, seq]</p>
+<p>Attention = softmax(Scores) × V  [batch, seq, 768]</p>
+<p></code></pre></p>
+<ol>
+<li><strong>Feed Forward</strong>:</li>
+</ol>
+<pre><code>   FFN(x) = ReLU(x × W1 + b1) × W2 + b2
+<p>W1: [768, 3072], W2: [3072, 768]</p>
+<p></code></pre></p>
+<p><strong>Backward Pass - Gradient Flow:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Backward Pass - Gradient Flow:</h4>
+        <p><strong>What is Backward Pass?</strong> After the forward pass calculates predictions, the backward pass calculates how much each weight contributed to the error. This is called backpropagation - the gradients (error signals) flow backward through all layers.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - Loss Value (Red):</strong> The error is calculated at the output layer. This is the starting point for backpropagation.</li>
+                
+                <li><strong>Step 2 - Output Layer Gradients:</strong> Calculate how much the output layer weights contributed to the error.</li>
+                
+                <li><strong>Step 3 - Layer-by-Layer Backward Flow:</strong>
+                    <ul>
+                        <li>Gradients flow from Layer 96 → Layer 95 → ... → Layer 2 → Layer 1</li>
+                        <li>Each layer receives gradients from the layer above it</li>
+                        <li>Each layer calculates its own weight gradients</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4 - Embedding Gradients (Green):</strong> Finally, gradients reach the embedding layer - the first layer that processes input tokens.</li>
+                
+                <li><strong>Step 5 - Weight Updates:</strong> Each layer uses its gradients to update its weights:
+                    <ul>
+                        <li>Layer 96 updates its weights</li>
+                        <li>Layer 95 updates its weights</li>
+                        <li>... (all layers update)</li>
+                        <li>Layer 1 updates its weights</li>
+                        <li>Embedding layer updates its weights</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Gradients flow backward (opposite to forward pass) from the output layer all the way to the input embedding layer. This allows the model to learn which weights need to be adjusted to reduce the error.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Imagine you're learning to throw a ball. After each throw, you see where it landed (forward pass). Then you think backward: "My wrist was too loose" (Layer 1), "My arm angle was wrong" (Layer 2), etc. This is like backpropagation - you trace back what caused the error.</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+graph TD
+    Loss[Loss Value] --> OutputGrad[Output Layer Gradients]
+    OutputGrad --> Layer96[Layer 96 Gradients]
+    Layer96 --> Layer95[Layer 95 Gradients]
+    Layer95 --> Dots[...]
+    Dots --> Layer2[Layer 2 Gradients]
+    Layer2 --> Layer1[Layer 1 Gradients]
+    Layer1 --> EmbedGrad[Embedding Gradients]
+    
+    OutputGrad --> Update96[Update Layer 96 Weights]
+    Layer96 --> Update95[Update Layer 95 Weights]
+    Dots --> Update2[Update Layer 2 Weights]
+    Layer2 --> Update1[Update Layer 1 Weights]
+    Layer1 --> UpdateEmbed[Update Embedding Weights]
+    
+    style Loss fill:#ffebee
+    style EmbedGrad fill:#e8f5e9
+        </div>
+    </div>
+</div>
+<p><strong>Optimizer: AdamW - How It Updates Weights:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding AdamW Optimizer:</h4>
+        <p><strong>What is AdamW?</strong> AdamW is an advanced optimizer that combines the benefits of Adam (Adaptive Moment Estimation) with weight decay. It's used to update the model's weights during training to minimize the loss function.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - Input: Gradients (Blue):</strong> The optimizer receives gradients (error signals) from the backward pass. These tell us which direction to adjust each weight.</li>
+                
+                <li><strong>Step 2 - Update Momentum:</strong> 
+                    <ul>
+                        <li>Formula: <code>m = beta1*m + (1-beta1)*g</code></li>
+                        <li>Maintains a running average of gradients (momentum)</li>
+                        <li>Helps smooth out noisy gradients</li>
+                        <li>beta1 = 0.9 (keeps 90% of previous momentum)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3 - Update Velocity:</strong>
+                    <ul>
+                        <li>Formula: <code>v = beta2*v + (1-beta2)*g^2</code></li>
+                        <li>Tracks the squared gradients (velocity)</li>
+                        <li>Helps adapt learning rate per parameter</li>
+                        <li>beta2 = 0.999 (keeps 99.9% of previous velocity)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4 - Normalize Momentum:</strong>
+                    <ul>
+                        <li>Formula: <code>m_hat = m/(1-beta1^t)</code></li>
+                        <li>Corrects for bias in early training steps</li>
+                        <li>t = current training step number</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 5 - Normalize Velocity:</strong>
+                    <ul>
+                        <li>Formula: <code>v_hat = v/(1-beta2^t)</code></li>
+                        <li>Corrects for bias in velocity estimates</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 6 - Update Weight (Green):</strong>
+                    <ul>
+                        <li>Formula: <code>w = w - lr*(m_hat/(sqrt(v_hat) + eps) + lambda*w)</code></li>
+                        <li>lr = learning rate (how big steps to take)</li>
+                        <li>eps = small constant (1e-8) to prevent division by zero</li>
+                        <li>lambda = weight decay coefficient</li>
+                        <li>This adjusts the weight to reduce future errors</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> AdamW uses both momentum (to smooth gradients) and adaptive learning rates (different rates for different parameters) to efficiently update weights. The weight decay term (lambda*w) helps prevent overfitting.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Imagine learning to ride a bike. Momentum (m) is like your current speed - you don't stop instantly. Velocity (v) is like how much you're wobbling - if you're very stable, you can take bigger steps. The optimizer uses both to decide how much to adjust your balance (weights).</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+graph TD
+    Grad["Gradients (g)"] --> M["Update Momentum<br/>m = β1·m + (1-β1)·g"]
+    Grad --> V["Update Velocity<br/>v = β2·v + (1-β2)·g²"]
+    M --> MNorm["Bias-correct m<br/>m_hat = m / (1 - β1ᵗ)"]
+    V --> VNorm["Bias-correct v<br/>v_hat = v / (1 - β2ᵗ)"]
+    MNorm --> Update["Update Weight (AdamW)<br/>w = w - lr·( m_hat / (sqrt(v_hat) + ε) + λ·w )"]
+    VNorm --> Update
+
+    style Grad fill:#e3f2fd
+    style Update fill:#e8f5e9
+
+        </div>
+    </div>
+</div>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><strong>β1</strong> = 0.9 (momentum decay)</li>
+<li><strong>β2</strong> = 0.999 (velocity decay)</li>
+<li><strong>lr</strong> = learning rate (starts high, decreases)</li>
+<li><strong>λ</strong> = weight decay</li>
+<li><strong>ε</strong> = small constant (1e-8)</li>
+</ul>
+<p><strong>Learning Rate Schedule:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Learning Rate Schedule:</h4>
+        <p><strong>What is a Learning Rate Schedule?</strong> The learning rate determines how big steps the optimizer takes when updating weights. It's not constant - it changes during training to optimize learning.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - Start (Blue):</strong> Learning rate begins at 6e-4 (0.0006). This is a relatively high learning rate to allow the model to make significant updates initially.</li>
+                
+                <li><strong>Step 2 - Warmup Phase (Orange):</strong>
+                    <ul>
+                        <li>Learning rate gradually increases to 6e-4 over 375 million tokens</li>
+                        <li>Why warmup? Prevents early training instability</li>
+                        <li>Allows the model to adapt gradually to the data</li>
+                        <li>Think of it like warming up before exercise - you start slow</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3 - Cosine Decay (Transition):</strong>
+                    <ul>
+                        <li>After warmup, learning rate decreases gradually</li>
+                        <li>Uses cosine function for smooth decay</li>
+                        <li>Decreases to 10% of maximum value</li>
+                        <li>This allows fine-tuning as training progresses</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4 - End (Green):</strong> Learning rate ends at 6e-5 (0.00006), which is 10% of the maximum. Small steps help fine-tune the model without overshooting optimal weights.</li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Start high (to learn quickly), warmup (to stabilize), then decay (to fine-tune). This schedule helps the model learn efficiently throughout training.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Learning to drive - you start with big adjustments (high learning rate), then gradually make smaller, more precise adjustments (low learning rate) as you get better.</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+graph LR
+    Start[Start: lr = 6e-4] --> Warmup[Warmup Phase<br/>Increase to 6e-4<br/>over 375M tokens]
+    Warmup --> Decay[Cosine Decay<br/>Decrease gradually<br/>to 10% of max]
+    Decay --> End[End: lr = 6e-5]
+    
+    style Start fill:#e3f2fd
+    style Warmup fill:#fff3e0
+    style End fill:#e8f5e9
+        </div>
+    </div>
+</div>
+<p><strong>Why Warmup?</strong></p>
+<ul>
+<li>Prevents early training instability</li>
+<li>Allows model to adapt gradually</li>
+<li>Improves final performance</li>
+</ul>
+<p><strong>Training Statistics - GPT-3:</strong></p>
+<ul>
+<li><strong>Total Tokens</strong>: 300 billion (after filtering)</li>
+<li><strong>Batch Size</strong>: 3.2 million tokens per batch</li>
+<li><strong>Learning Rate</strong>: 6e-4 (with warmup and decay)</li>
+<li><strong>Training Steps</strong>: ~100,000 steps</li>
+<li><strong>Total Time</strong>: ~34 days on 1,024 V100 GPUs</li>
+<li><strong>Cost</strong>: ~$4.6 million in compute</li>
+</ul>
+<p><strong>What the Model Learns During Training:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Progressive Learning During Training:</h4>
+        <p><strong>What does the model learn at different stages?</strong> Training is not uniform - the model learns different types of knowledge at different stages. This diagram shows the progression of learning.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Early Training (Steps 0-10K) - Blue:</strong>
+                    <ul>
+                        <li>Learns basic patterns and word associations</li>
+                        <li>Example: "cat" is often followed by "sat", "dog" by "barked"</li>
+                        <li>Builds fundamental vocabulary relationships</li>
+                        <li>Like a child learning basic words and their connections</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Middle Training (Steps 10K-50K):</strong>
+                    <ul>
+                        <li>Learns syntax and grammar rules</li>
+                        <li>Example: Subject-verb agreement, sentence structure</li>
+                        <li>Understands how words should be ordered</li>
+                        <li>Like learning grammar in school</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Late Training (Steps 50K-100K):</strong>
+                    <ul>
+                        <li>Learns semantics - meaning and context</li>
+                        <li>Example: "bank" can mean financial institution or river edge</li>
+                        <li>Understands context-dependent meanings</li>
+                        <li>Like understanding idioms and metaphors</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Final Training (Steps 100K+) - Green:</strong>
+                    <ul>
+                        <li>Learns complex reasoning and patterns</li>
+                        <li>Example: Multi-step problem solving, logical inference</li>
+                        <li>Can connect distant concepts</li>
+                        <li>Like advanced critical thinking</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Learning is progressive - from simple patterns to complex reasoning. Each stage builds on the previous one, creating a sophisticated understanding of language.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Learning a language - first you learn words (early), then grammar (middle), then meaning (late), then you can write poetry and solve complex problems (final).</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+graph TD
+    Early[Early Training<br/>Steps 0-10K] --> E1[Learn basic patterns<br/>Word associations]
+    Mid[Middle Training<br/>Steps 10K-50K] --> M1[Learn syntax<br/>Grammar rules]
+    Late[Late Training<br/>Steps 50K-100K] --> L1[Learn semantics<br/>Meaning and context]
+    Final[Final Training<br/>Steps 100K+] --> F1[Learn reasoning<br/>Complex patterns]
+    
+    style Early fill:#e3f2fd
+    style Final fill:#e8f5e9
+        </div>
+    </div>
+</div>
+<p><strong>Emergent Abilities:</strong></p>
+<ul>
+<li><strong>Few-shot learning</strong>: Learns from examples in prompt</li>
+<li><strong>Chain-of-thought</strong>: Step-by-step reasoning</li>
+<li><strong>Code generation</strong>: Understands programming</li>
+<li><strong>Mathematical reasoning</strong>: Can solve math problems</li>
+</ul>
+<h3>Training Infrastructure</h3>
+<p><strong>Hardware Requirements:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Training Infrastructure:</h4>
+        <p><strong>What infrastructure is needed?</strong> Training LLMs requires massive computational resources. This diagram shows the components needed for large-scale training.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>GPUs (Graphics Processing Units):</strong>
+                    <ul>
+                        <li>Thousands of A100 or H100 GPUs needed</li>
+                        <li>GPUs are specialized for parallel computation</li>
+                        <li>Each GPU can process thousands of operations simultaneously</li>
+                        <li>Example: GPT-3 used 1,024 V100 GPUs</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Memory (RAM):</strong>
+                    <ul>
+                        <li>Terabytes of RAM required</li>
+                        <li>Stores model weights, activations, and gradients</li>
+                        <li>GPT-3 model weights alone are ~700GB</li>
+                        <li>Need extra memory for intermediate calculations</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Storage:</strong>
+                    <ul>
+                        <li>Petabytes of SSD/NVMe storage</li>
+                        <li>Stores training data (500B+ tokens)</li>
+                        <li>Fast storage needed for data loading</li>
+                        <li>Checkpoints saved regularly</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Network:</strong>
+                    <ul>
+                        <li>High-speed interconnects (InfiniBand)</li>
+                        <li>GPUs need to communicate gradients</li>
+                        <li>All-Reduce operations synchronize across GPUs</li>
+                        <li>Network speed critical for distributed training</li>
+                    </ul>
+                </li>
+                
+                <li><strong>GPU Cluster (Orange):</strong>
+                    <ul>
+                        <li>All components work together</li>
+                        <li>Distributed training across multiple nodes</li>
+                        <li>Each node has multiple GPUs</li>
+                        <li>Coordinated training process</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Total Cost (Red):</strong>
+                    <ul>
+                        <li>$2-10 million for GPT-3 scale training</li>
+                        <li>Includes hardware, electricity, cooling</li>
+                        <li>GPT-4 estimated at $50-100 million</li>
+                        <li>One of the most expensive AI operations</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Training LLMs requires massive infrastructure - thousands of GPUs, terabytes of memory, petabytes of storage, and high-speed networking. This is why only large organizations can train state-of-the-art models.</p>
+        
+        <p><strong>🎯 Real-World Example:</strong> GPT-3 training used 1,024 V100 GPUs running continuously for 34 days. That's equivalent to a single GPU running for over 93 years!</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+graph TD
+    Infra[Training Infrastructure] --> GPUs[GPUs<br/>Thousands of A100/H100]
+    Infra --> Memory[Memory<br/>Terabytes of RAM]
+    Infra --> Storage[Storage<br/>Petabytes SSD/NVMe]
+    Infra --> Network[Network<br/>InfiniBand/High-speed]
+    
+    GPUs --> Cluster[GPU Cluster<br/>Distributed Training]
+    Memory --> Cluster
+    Storage --> Cluster
+    Network --> Cluster
+    
+    Cluster --> Cost[Total Cost:<br/>$2-10 Million<br/>for GPT-3 scale]
+    
+    style Infra fill:#e3f2fd
+    style Cluster fill:#fff3e0
+    style Cost fill:#ffebee
+        </div>
+    </div>
+</div>
+<p><strong>Real Numbers:</strong></p>
+<ul>
+<li><strong>GPT-3 Training</strong>: ~3,640 GPU-days on V100 GPUs</li>
+<li><strong>GPT-4 Training</strong>: Estimated 10,000+ GPU-days on A100 GPUs</li>
+<li><strong>Cost</strong>: $2-5 million for GPT-3, $50-100 million for GPT-4</li>
+<li><strong>Time</strong>: Weeks to months of continuous training</li>
+</ul>
+<p><strong>Distributed Training Architecture:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Distributed Training Architecture:</h4>
+        <p><strong>How is training distributed across multiple GPUs?</strong> When training on thousands of GPUs, the work must be split efficiently. This diagram shows how data and computation are distributed.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - Training Data (Blue):</strong> 500 billion tokens of training data. This massive dataset needs to be processed.</li>
+                
+                <li><strong>Step 2 - Data Sharding:</strong>
+                    <ul>
+                        <li>Data is split into chunks (shards)</li>
+                        <li>Each shard goes to a different node</li>
+                        <li>Allows parallel data processing</li>
+                        <li>Example: If you have 100 nodes, each gets 1/100 of the data</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3 - Node Processing:</strong>
+                    <ul>
+                        <li><strong>Node 1:</strong> GPUs 0-7 process their data shard</li>
+                        <li><strong>Node 2:</strong> GPUs 8-15 process their data shard</li>
+                        <li><strong>Node N:</strong> More nodes process their shards</li>
+                        <li>Each node runs forward and backward pass independently</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4 - Gradient Synchronization:</strong>
+                    <ul>
+                        <li>Each node calculates gradients from its data</li>
+                        <li>Gradients need to be shared across all nodes</li>
+                        <li>Sync1, Sync2, SyncN collect gradients</li>
+                        <li>Gradients are averaged across all nodes</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 5 - All-Reduce Operation (Orange):</strong>
+                    <ul>
+                        <li>Critical operation for distributed training</li>
+                        <li>Combines gradients from all nodes</li>
+                        <li>Averages them to get global gradient</li>
+                        <li>Distributes averaged gradient back to all nodes</li>
+                        <li>Ensures all models stay synchronized</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 6 - Update All Models (Green):</strong>
+                    <ul>
+                        <li>All nodes update their model weights</li>
+                        <li>Using the same averaged gradients</li>
+                        <li>All models remain identical</li>
+                        <li>Ready for next batch</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Data is split across nodes, each processes independently, but gradients are synchronized through All-Reduce to keep all models identical. This allows training on massive datasets efficiently.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Like a group project - each person works on their part (data shard), but everyone shares their findings (gradients) and agrees on the final answer (synchronized model).</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+graph TD
+    Data[Training Data<br/>500B tokens] --> Split[Data Sharding]
+    Split --> Node1[Node 1<br/>GPUs 0-7]
+    Split --> Node2[Node 2<br/>GPUs 8-15]
+    Split --> NodeN[Node N<br/>GPUs ...]
+    
+    Node1 --> Sync1[Gradient Sync]
+    Node2 --> Sync2[Gradient Sync]
+    NodeN --> SyncN[Gradient Sync]
+    
+    Sync1 --> AllReduce[All-Reduce Operation]
+    Sync2 --> AllReduce
+    SyncN --> AllReduce
+    
+    AllReduce --> Update[Update All Models]
+    Update --> Next[Next Batch]
+    
+    style Data fill:#e3f2fd
+    style AllReduce fill:#fff3e0
+    style Update fill:#e8f5e9
+        </div>
+    </div>
+</div>
+<p><strong>Distributed Training Methods:</strong></p>
+<ul>
+<li><strong>Data Parallelism</strong>: Split data across GPUs</li>
+<li><strong>Model Parallelism</strong>: Split model across GPUs</li>
+<li><strong>Pipeline Parallelism</strong>: Split layers across GPUs</li>
+<li><strong>Mixed Precision</strong>: FP16/BF16 for speed</li>
+</ul>
+<h3>Training Objective: Next Token Prediction</h3>
+<p><strong>The Task:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Next Token Prediction:</h4>
+        <p><strong>What is the training objective?</strong> LLMs are trained to predict the next token (word/subword) given the previous tokens. This is called "autoregressive language modeling" - the model learns to complete sentences.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - Context (Blue):</strong> The model receives a sequence of tokens as context. Example: "The cat sat on the"</li>
+                
+                <li><strong>Step 2 - Model Processing:</strong>
+                    <ul>
+                        <li>The LLM processes the context through all its layers</li>
+                        <li>Each layer refines understanding</li>
+                        <li>Final layer produces a representation</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3 - Probability Distribution (Orange):</strong>
+                    <ul>
+                        <li>Model outputs probabilities for ALL possible tokens</li>
+                        <li>Vocabulary size: 50,257 tokens (for GPT-3)</li>
+                        <li>Each token gets a probability score</li>
+                        <li>Probabilities sum to 1.0</li>
+                        <li>Example: "mat" = 0.4, "floor" = 0.3, "rug" = 0.2, etc.</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4 - Next Token (Green):</strong>
+                    <ul>
+                        <li>Model predicts the most likely next token</li>
+                        <li>In this example: "mat" (40% probability)</li>
+                        <li>Complete sentence: "The cat sat on the mat"</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> The model learns by trying to predict the next token correctly. Every correct prediction strengthens the model's understanding of language patterns.</p>
+        
+        <p><strong>🎯 Real-World Example:</strong> When you type "Hello, how are" in a chat, the model predicts "you" as the next token because it learned this common phrase pattern during training.</p>
+        
+        <p><strong>📚 Training Process:</strong> During training, the model sees millions of sentences. For each sentence, it tries to predict each token. When it's wrong, it adjusts its weights. Over time, it learns language patterns.</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+graph LR
+    Context["Context:<br/>'The cat sat on the'"] --> Model[LLM Model]
+    Model --> Prob[Probability Distribution<br/>over all tokens]
+    Prob --> Next["Next Token:<br/>'mat' (most likely)"]
+    
+    style Context fill:#e3f2fd
+    style Prob fill:#fff3e0
+    style Next fill:#e8f5e9
+        </div>
+    </div>
+</div>
+<p><strong>Mathematical Formulation:</strong></p>
+<pre><code>Given: "The cat sat on the"
+<p>Predict: P(next_token | "The cat sat on the")</p>
+<p>Loss = -log(P("mat" | "The cat sat on the"))</p>
+<p></code></pre></p>
+<p><strong>Training Process:</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding the Training Process Sequence:</h4>
+        <p><strong>How does the model learn from text?</strong> This sequence diagram shows the step-by-step process of how an LLM learns from training text. It's a continuous cycle that repeats millions of times.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - Training Text Input:</strong>
+                    <ul>
+                        <li>Training text: "The cat sat on the mat"</li>
+                        <li>This is one example from the training corpus</li>
+                        <li>Millions of such examples are used</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 2 - Model Processing:</strong>
+                    <ul>
+                        <li>Model processes: "The cat sat on the"</li>
+                        <li>Goes through all transformer layers</li>
+                        <li>Creates internal representation</li>
+                        <li>Prepares to predict next token</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3 - Prediction:</strong>
+                    <ul>
+                        <li>Model predicts: "mat" (with some probability)</li>
+                        <li>Sends prediction to Loss Function</li>
+                        <li>This is the model's guess</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4 - Compare with Actual:</strong>
+                    <ul>
+                        <li>Loss Function compares prediction with actual token</li>
+                        <li>Actual token is "mat" (from training text)</li>
+                        <li>If prediction matches: low error</li>
+                        <li>If prediction differs: high error</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 5 - Calculate Error:</strong>
+                    <ul>
+                        <li>Loss Function calculates how wrong the prediction was</li>
+                        <li>Sends error signal back to model</li>
+                        <li>This tells model: "You were wrong, adjust!"</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 6 - Update Weights:</strong>
+                    <ul>
+                        <li>Model adjusts its weights based on error</li>
+                        <li>Weights are updated to reduce future errors</li>
+                        <li>This is the learning step</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 7 - Repeat:</strong>
+                    <ul>
+                        <li>Process repeats for every token in corpus</li>
+                        <li>For "The cat sat on the mat":</li>
+                        <li>- Predict "cat" given "The"</li>
+                        <li>- Predict "sat" given "The cat"</li>
+                        <li>- Predict "on" given "The cat sat"</li>
+                        <li>- ... and so on for every token</li>
+                        <li>Millions of such predictions and updates</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> The model learns by making predictions, comparing with the correct answer, and adjusting. This happens millions of times, gradually improving the model's ability to predict the next token correctly.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Like learning to complete sentences - you see "The cat sat on the..." and guess "mat". If you're right, you remember. If wrong, you learn the correct answer. After millions of examples, you become very good at predicting.</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+sequenceDiagram
+    participant Text as Training Text
+    participant Model as LLM
+    participant Loss as Loss Function
+    
+    Text->>Model: "The cat sat on the mat"
+    Model->>Model: Process: "The cat sat on the"
+    Model->>Loss: Prediction for "mat"
+    Loss->>Loss: Compare with actual "mat"
+    Loss->>Model: Calculate error
+    Model->>Model: Update weights
+    
+    Note over Text: Repeat for every token in corpus
+        </div>
+    </div>
+</div>
+<h3>Training Metrics</h3>
+<p><strong>What We Monitor:</strong></p>
+<ol>
+<li><strong>Training Loss</strong>: Should decrease over time</li>
+<li><strong>Validation Loss</strong>: Should track training loss</li>
+<li><strong>Perplexity</strong>: How "surprised" the model is</li>
+<li><strong>Learning Rate</strong>: Adjusted during training</li>
+<li><strong>Gradient Norm</strong>: Check for exploding/vanishing gradients</li>
+</ol>
+<h3>Training Challenges</h3>
+<p><strong>Common Issues:</strong></p>
+<ol>
+<li><strong>Overfitting</strong>: Model memorizes training data</li>
+</ol>
+<ul>
+<li>Solution: Early stopping, regularization</li>
+</ul>
+<ol>
+<li><strong>Underfitting</strong>: Model too simple</li>
+</ol>
+<ul>
+<li>Solution: Increase model size, more training</li>
+</ul>
+<ol>
+<li><strong>Catastrophic Forgetting</strong>: Forgets previous knowledge</li>
+</ol>
+<ul>
+<li>Solution: Careful fine-tuning</li>
+</ul>
+<ol>
+<li><strong>Computational Cost</strong>: Extremely expensive</li>
+</ol>
+<ul>
+<li>Solution: Efficient architectures, mixed precision</li>
+</ul>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter6.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter8.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 7 of 15</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

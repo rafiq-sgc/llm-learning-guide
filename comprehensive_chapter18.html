@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokenization vs Embeddings - Complete Training Process - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔗 Tokenization vs Embeddings - Complete Training Process</h1>
+            <p class="subtitle">Chapter 18 of 18 - Comprehensive Guide</p>
+        </header>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="comprehensive_index.html">🏠 Home</a></li>
+                <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+                <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+                <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+                <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+                <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+                <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+                <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+                <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+                <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+                <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+                <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+                <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+                <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🔗 Chapter 18: Tokenization vs Embeddings - Complete Training Process</h1>
+                <p>Understanding the Relationship Between Tokenization Vocabulary and Embedding Matrix - Step-by-Step LLM Training</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter17.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><span></span></div>
+
+            <div class="section">
+                <h2>Key Clarification: Two Different Tables!</h2>
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding the Two Separate Tables:</h4>
+                        <p><strong>Tokenization and Embeddings use DIFFERENT tables!</strong> This is a critical distinction. The tokenization vocabulary maps token strings to IDs (created before training, frozen). The embedding matrix maps token IDs to vectors (learned during training). They are completely separate!</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 The Two Tables Explained:</h5>
+                            <ol>
+                                <li><strong>Table 1: Tokenization Vocabulary (Frozen):</strong>
+                                    <ul>
+                                        <li><strong>Purpose:</strong> Convert token strings to token IDs</li>
+                                        <li><strong>Created:</strong> Before training (during data preprocessing)</li>
+                                        <li><strong>Status:</strong> FROZEN - Never changes during training</li>
+                                        <li><strong>Structure:</strong> Hash table / Dictionary</li>
+                                        <li><strong>Mapping:</strong> Token String → Token ID</li>
+                                        <li><strong>Example:</strong> "show" → 1234</li>
+                                        <li><strong>Size:</strong> 100,256 entries (vocabulary size)</li>
+                                        <li><strong>Storage:</strong> Just strings and IDs (small)</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Table 2: Embedding Matrix (Learned):</strong>
+                                    <ul>
+                                        <li><strong>Purpose:</strong> Convert token IDs to embedding vectors</li>
+                                        <li><strong>Created:</strong> Before training (random initialization)</li>
+                                        <li><strong>Status:</strong> LEARNED - Updated during training</li>
+                                        <li><strong>Structure:</strong> Matrix / 2D Array</li>
+                                        <li><strong>Mapping:</strong> Token ID → Embedding Vector</li>
+                                        <li><strong>Example:</strong> 1234 → [0.2, -0.5, 0.8, ..., 0.1] (12,288 numbers)</li>
+                                        <li><strong>Size:</strong> [100,256, 12,288] = 1.23 billion parameters</li>
+                                        <li><strong>Storage:</strong> Massive matrix of learned parameters</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> These are TWO COMPLETELY SEPARATE tables! Tokenization vocabulary is frozen and just maps strings to IDs. Embedding matrix is learned and maps IDs to vectors. They work together but are stored separately.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    subgraph Tokenization["Table 1: Tokenization Vocabulary<br/>FROZEN - Created Before Training"]
+        T1["Token String: 'show'"] --> T2["Token ID: 1234"]
+        T3["Token String: 'me'"] --> T4["Token ID: 567"]
+        T5["Token String: 'student'"] --> T6["Token ID: 890"]
+    end
+    
+    subgraph Embedding["Table 2: Embedding Matrix<br/>LEARNED - Updated During Training"]
+        E1["Token ID: 1234"] --> E2["Embedding Vector<br/>12,288 dimensions<br/>Learned parameters"]
+        E3["Token ID: 567"] --> E4["Embedding Vector<br/>12,288 dimensions<br/>Learned parameters"]
+        E5["Token ID: 890"] --> E6["Embedding Vector<br/>12,288 dimensions<br/>Learned parameters"]
+    end
+    
+    Tokenization --> Embedding
+    
+    style Tokenization fill:#e3f2fd
+    style Embedding fill:#fff3e0
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Complete LLM Training Process: Step-by-Step</h2>
+                <p><strong>How OpenAI Would Train a New LLM Model:</strong> This section shows the complete process from raw text to trained model, including when tokenization and embeddings are created and used.</p>
+
+                <h3>Phase 1: Pre-Training Data Preparation (Tokenization Vocabulary Creation)</h3>
+                <p><strong>This happens BEFORE model training starts!</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Phase 1: Tokenization Vocabulary Creation:</h4>
+                        <p><strong>How is the tokenization vocabulary created?</strong> This phase happens BEFORE any model training. It analyzes the training corpus and creates a vocabulary of tokens. This vocabulary is then FROZEN and used throughout training and inference.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Breakdown:</h5>
+                            <ol>
+                                <li><strong>Step 1 - Collect Training Corpus:</strong>
+                                    <ul>
+                                        <li>Gather massive text corpus</li>
+                                        <li>Example: 45+ TB of text data</li>
+                                        <li>Web pages, books, code, etc.</li>
+                                        <li>This is the raw training data</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 2 - Apply BPE Algorithm:</strong>
+                                    <ul>
+                                        <li>Run Byte Pair Encoding on corpus</li>
+                                        <li>Iteratively merge frequent character pairs</li>
+                                        <li>Continue until vocabulary size reached</li>
+                                        <li>Example: 100,256 tokens for GPT-4</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 3 - Create Tokenization Vocabulary:</strong>
+                                    <ul>
+                                        <li>Build hash table: token_string → token_ID</li>
+                                        <li>Each token gets unique ID (0 to 100,255)</li>
+                                        <li>Example: "show" → 1234, "me" → 567</li>
+                                        <li>This is just a mapping, no embeddings yet!</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 4 - Freeze Vocabulary:</strong>
+                                    <ul>
+                                        <li>Vocabulary is now FROZEN</li>
+                                        <li>Will never change during training</li>
+                                        <li>Used to tokenize all training data</li>
+                                        <li>Also used during inference</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 5 - Tokenize Training Data:</strong>
+                                    <ul>
+                                        <li>Use frozen vocabulary to tokenize corpus</li>
+                                        <li>Convert all text to token IDs</li>
+                                        <li>Result: Training data as token ID sequences</li>
+                                        <li>Example: "Show me students" → [1234, 567, 890]</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> Tokenization vocabulary is created BEFORE training and is FROZEN. It's just a mapping from strings to IDs. No embeddings exist yet at this stage!</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Start[Raw Training Corpus<br/>45+ TB of text] --> BPE[Apply BPE Algorithm<br/>Learn token vocabulary]
+    BPE --> Vocab[Create Tokenization Vocabulary<br/>token_string → token_ID<br/>100,256 entries]
+    Vocab --> Freeze[FREEZE Vocabulary<br/>Never changes]
+    Freeze --> Tokenize[Tokenize Training Data<br/>Text → Token IDs]
+    Tokenize --> Ready[Training Data Ready<br/>As token ID sequences]
+    
+    style Start fill:#e3f2fd
+    style Vocab fill:#fff3e0
+    style Ready fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Phase 2: Model Initialization (Embedding Matrix Creation)</h3>
+                <p><strong>This happens at the START of model training!</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Phase 2: Embedding Matrix Initialization:</h4>
+                        <p><strong>How is the embedding matrix created?</strong> When training starts, the embedding matrix is initialized with random values. It's a separate matrix that maps token IDs to embedding vectors. This matrix will be LEARNED during training.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Breakdown:</h5>
+                            <ol>
+                                <li><strong>Step 1 - Initialize Embedding Matrix:</strong>
+                                    <ul>
+                                        <li>Create matrix of size [vocab_size, embedding_dim]</li>
+                                        <li>For GPT-4: [100,256, 12,288]</li>
+                                        <li>Fill with small random values</li>
+                                        <li>Example: Random values between -0.1 and 0.1</li>
+                                        <li>No meaning yet - just random numbers</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 2 - Matrix Structure:</strong>
+                                    <ul>
+                                        <li>Row 0: Embedding for token ID 0</li>
+                                        <li>Row 1234: Embedding for token ID 1234</li>
+                                        <li>Row 100,255: Embedding for token ID 100,255</li>
+                                        <li>Each row is 12,288 numbers</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 3 - Separate from Tokenization:</strong>
+                                    <ul>
+                                        <li>This is a COMPLETELY SEPARATE table</li>
+                                        <li>Tokenization vocabulary: string → ID (frozen)</li>
+                                        <li>Embedding matrix: ID → vector (learned)</li>
+                                        <li>They work together but are stored separately</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 4 - Ready for Training:</strong>
+                                    <ul>
+                                        <li>Embedding matrix initialized</li>
+                                        <li>Will be updated during training</li>
+                                        <li>Learns semantic relationships</li>
+                                        <li>Part of model parameters</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> Embedding matrix is initialized with random values at the start of training. It's a separate matrix from the tokenization vocabulary. During training, this matrix learns to represent semantic meaning.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Init[Initialize Embedding Matrix<br/>Size: 100,256 x 12,288] --> Random[Fill with Random Values<br/>-0.1 to 0.1]
+    Random --> Structure[Matrix Structure<br/>Row 0: Token ID 0 embedding<br/>Row 1234: Token ID 1234 embedding<br/>Row 100,255: Token ID 100,255 embedding]
+    Structure --> Separate[Separate from Tokenization<br/>Different table, different purpose]
+    Separate --> Ready[Ready for Training<br/>Will learn during training]
+    
+    style Init fill:#e3f2fd
+    style Ready fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Phase 3: Training Loop (How They Work Together)</h3>
+                <p><strong>This is where tokenization and embeddings work together!</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Phase 3: Training Loop - How They Work Together:</h4>
+                        <p><strong>How do tokenization and embeddings work together during training?</strong> This sequence diagram shows exactly how the two tables are used together in each training step. Tokenization vocabulary (frozen) converts text to IDs, then embedding matrix (learned) converts IDs to vectors.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Breakdown (One Training Step):</h5>
+                            <ol>
+                                <li><strong>Step 1 - Input Text:</strong>
+                                    <ul>
+                                        <li>Training example: "Show me students"</li>
+                                        <li>Raw text from training corpus</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 2 - Tokenization (Use Frozen Vocabulary):</strong>
+                                    <ul>
+                                        <li>Use FROZEN tokenization vocabulary</li>
+                                        <li>Look up "show" → Token ID 1234</li>
+                                        <li>Look up "me" → Token ID 567</li>
+                                        <li>Look up "student" → Token ID 890</li>
+                                        <li>Result: [1234, 567, 890]</li>
+                                        <li>Vocabulary is NOT updated - it's frozen!</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 3 - Embedding Lookup (Use Learned Matrix):</strong>
+                                    <ul>
+                                        <li>Use LEARNED embedding matrix</li>
+                                        <li>Token ID 1234 → Row 1234 → Embedding vector</li>
+                                        <li>Token ID 567 → Row 567 → Embedding vector</li>
+                                        <li>Token ID 890 → Row 890 → Embedding vector</li>
+                                        <li>Result: [3, 12,288] matrix of embedding vectors</li>
+                                        <li>These vectors will be updated during training!</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 4 - Forward Pass:</strong>
+                                    <ul>
+                                        <li>Process embeddings through transformer layers</li>
+                                        <li>Make prediction for next token</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 5 - Calculate Loss:</strong>
+                                    <ul>
+                                        <li>Compare prediction with actual next token</li>
+                                        <li>Calculate error</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 6 - Backward Pass:</strong>
+                                    <ul>
+                                        <li>Calculate gradients for ALL parameters</li>
+                                        <li>Including gradients for embedding matrix</li>
+                                        <li>Gradients show how to improve embeddings</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 7 - Update Embeddings:</strong>
+                                    <ul>
+                                        <li>Update embedding matrix using gradients</li>
+                                        <li>Embedding vectors are adjusted</li>
+                                        <li>Similar tokens learn similar embeddings</li>
+                                        <li>Tokenization vocabulary stays frozen!</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 8 - Repeat:</strong>
+                                    <ul>
+                                        <li>Process next training example</li>
+                                        <li>Repeat millions of times</li>
+                                        <li>Embeddings gradually learn meaning</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> During training, tokenization vocabulary (frozen) converts text to IDs, then embedding matrix (learned) converts IDs to vectors. Only the embedding matrix is updated - tokenization vocabulary never changes!</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+sequenceDiagram
+    participant Text as Training Text
+    participant TokenVocab as Tokenization Vocabulary<br/>FROZEN
+    participant EmbedMatrix as Embedding Matrix<br/>LEARNED
+    participant Model as Transformer Model
+    participant Loss as Loss Function
+    participant Optimizer as Optimizer
+
+    Text->>TokenVocab: "Show me students"
+    TokenVocab->>TokenVocab: Lookup: "show" → 1234<br/>"me" → 567<br/>"student" → 890
+    Note over TokenVocab: Vocabulary FROZEN<br/>Never updated
+    TokenVocab->>EmbedMatrix: Token IDs: [1234, 567, 890]
+    EmbedMatrix->>EmbedMatrix: Lookup rows:<br/>Row 1234 → Vector<br/>Row 567 → Vector<br/>Row 890 → Vector
+    EmbedMatrix->>Model: Embedding Vectors<br/>[3, 12288]
+    Model->>Model: Forward pass through layers
+    Model->>Loss: Predictions
+    Loss->>Loss: Calculate loss
+    Loss->>Optimizer: Gradients
+    Optimizer->>EmbedMatrix: Update embedding vectors
+    Note over EmbedMatrix: Embeddings LEARNED<br/>Updated every step
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Complete Training Flow: Visual Overview</h2>
+                <p><strong>How Everything Works Together:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Complete Training Flow:</h4>
+                        <p><strong>What is the complete flow from raw text to trained model?</strong> This comprehensive flowchart shows all phases: tokenization vocabulary creation (frozen), embedding matrix initialization (random), and training loop (where embeddings learn).</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Complete Process Breakdown:</h5>
+                            <ol>
+                                <li><strong>Pre-Training Phase (Before Training):</strong>
+                                    <ul>
+                                        <li>Collect training corpus</li>
+                                        <li>Run BPE algorithm</li>
+                                        <li>Create tokenization vocabulary (frozen)</li>
+                                        <li>Tokenize all training data</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Initialization Phase (Start of Training):</strong>
+                                    <ul>
+                                        <li>Initialize embedding matrix (random)</li>
+                                        <li>Initialize transformer weights (random)</li>
+                                        <li>Model ready for training</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Training Phase (Main Loop):</strong>
+                                    <ul>
+                                        <li>For each training example:</li>
+                                        <li>Use frozen tokenization vocabulary → Token IDs</li>
+                                        <li>Use learned embedding matrix → Embedding vectors</li>
+                                        <li>Forward pass through transformer</li>
+                                        <li>Calculate loss</li>
+                                        <li>Backward pass (calculate gradients)</li>
+                                        <li>Update embedding matrix and transformer weights</li>
+                                        <li>Repeat millions of times</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Result:</strong>
+                                    <ul>
+                                        <li>Tokenization vocabulary: Still frozen (unchanged)</li>
+                                        <li>Embedding matrix: Learned semantic relationships</li>
+                                        <li>Transformer weights: Learned language patterns</li>
+                                        <li>Trained model ready for inference</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> Tokenization vocabulary is created and frozen before training. Embedding matrix is initialized randomly and learned during training. They work together but are completely separate tables!</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Start[Raw Training Corpus] --> BPE[BPE Algorithm<br/>Learn vocabulary]
+    BPE --> Vocab[Tokenization Vocabulary<br/>FROZEN<br/>token_string → token_ID]
+    Vocab --> Tokenize[Tokenize Training Data<br/>Text → Token IDs]
+    
+    Tokenize --> Init[Initialize Model]
+    Init --> EmbedInit[Embedding Matrix<br/>RANDOM initialization<br/>ID → Vector]
+    Init --> TransformerInit[Transformer Weights<br/>RANDOM initialization]
+    
+    EmbedInit --> Train[Training Loop]
+    TransformerInit --> Train
+    
+    Train --> Step1[Step 1: Use FROZEN<br/>tokenization vocabulary<br/>Text → Token IDs]
+    Step1 --> Step2[Step 2: Use LEARNED<br/>embedding matrix<br/>Token IDs → Vectors]
+    Step2 --> Step3[Step 3: Forward Pass<br/>Through Transformer]
+    Step3 --> Step4[Step 4: Calculate Loss]
+    Step4 --> Step5[Step 5: Backward Pass<br/>Calculate Gradients]
+    Step5 --> Step6[Step 6: Update Embeddings<br/>and Transformer Weights]
+    Step6 --> Check{More<br/>Examples?}
+    Check -->|Yes| Step1
+    Check -->|No| Trained[Trained Model<br/>Vocab: FROZEN<br/>Embeddings: LEARNED]
+    
+    style Vocab fill:#e3f2fd
+    style EmbedInit fill:#fff3e0
+    style Trained fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Storage and Memory: How They're Stored</h2>
+                <p><strong>Understanding How the Two Tables Are Stored:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Storage Structure:</h4>
+                        <p><strong>How are tokenization vocabulary and embedding matrix stored?</strong> They are stored completely separately in memory. The tokenization vocabulary is small (just strings and IDs). The embedding matrix is huge (billions of parameters).</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Storage Details:</h5>
+                            <ol>
+                                <li><strong>Tokenization Vocabulary Storage:</strong>
+                                    <ul>
+                                        <li><strong>Type:</strong> Hash table / Dictionary</li>
+                                        <li><strong>Size:</strong> ~100,256 entries</li>
+                                        <li><strong>Content:</strong> Token strings + Token IDs</li>
+                                        <li><strong>Memory:</strong> ~10-50 MB (small!)</li>
+                                        <li><strong>Location:</strong> CPU memory (fast lookup)</li>
+                                        <li><strong>Status:</strong> Frozen, never changes</li>
+                                        <li><strong>Example:</strong> {"show": 1234, "me": 567, ...}</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Embedding Matrix Storage:</strong>
+                                    <ul>
+                                        <li><strong>Type:</strong> 2D Matrix / Array</li>
+                                        <li><strong>Size:</strong> [100,256, 12,288]</li>
+                                        <li><strong>Content:</strong> Learned parameters (floats)</li>
+                                        <li><strong>Memory:</strong> ~5 GB (huge!)</li>
+                                        <li><strong>Location:</strong> GPU memory (for training)</li>
+                                        <li><strong>Status:</strong> Learned, updated during training</li>
+                                        <li><strong>Example:</strong> Matrix[row_1234] = [0.2, -0.5, ..., 0.1]</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> Tokenization vocabulary is small and stored in CPU memory. Embedding matrix is huge (billions of parameters) and stored in GPU memory. They are completely separate data structures!</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph LR
+    subgraph CPU["CPU Memory<br/>Small Storage"]
+        Vocab[Tokenization Vocabulary<br/>Hash Table<br/>100,256 entries<br/>~10-50 MB<br/>FROZEN]
+    end
+    
+    subgraph GPU["GPU Memory<br/>Large Storage"]
+        Embed[Embedding Matrix<br/>2D Array<br/>100,256 x 12,288<br/>~5 GB<br/>LEARNED]
+    end
+    
+    Text[Input Text] --> Vocab
+    Vocab --> IDs[Token IDs]
+    IDs --> Embed
+    Embed --> Vectors[Embedding Vectors]
+    
+    style Vocab fill:#e3f2fd
+    style Embed fill:#fff3e0
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Real Example: Training a New LLM</h2>
+                <p><strong>Complete Step-by-Step Process:</strong></p>
+
+                <h3>Example: Training "GPT-5" (Hypothetical New Model)</h3>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Complete Training Process:</h4>
+                        <p><strong>How would OpenAI train a new LLM from scratch?</strong> This detailed example shows the complete process with real numbers and steps. Follow along to understand exactly when tokenization and embeddings are created and used.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Complete Training Process:</h5>
+                            <ol>
+                                <li><strong>Phase 1: Data Collection (Month 1-2):</strong>
+                                    <ul>
+                                        <li>Collect 50+ TB of text data</li>
+                                        <li>Web pages, books, code, etc.</li>
+                                        <li>Clean and prepare data</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Phase 2: Tokenization Vocabulary Creation (Week 1):</strong>
+                                    <ul>
+                                        <li>Run BPE algorithm on corpus</li>
+                                        <li>Iteratively merge character pairs</li>
+                                        <li>Create vocabulary of 100,256 tokens</li>
+                                        <li>Build hash table: string → ID</li>
+                                        <li><strong>FREEZE this vocabulary</strong></li>
+                                        <li>Tokenize all training data using frozen vocabulary</li>
+                                        <li>Result: Training data as token ID sequences</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Phase 3: Model Initialization (Day 1):</strong>
+                                    <ul>
+                                        <li>Initialize embedding matrix: [100,256, 12,288]</li>
+                                        <li>Fill with random values (-0.1 to 0.1)</li>
+                                        <li>Initialize transformer weights (random)</li>
+                                        <li>Model ready for training</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Phase 4: Training Loop (Month 3-6):</strong>
+                                    <ul>
+                                        <li>For each batch of training data:</li>
+                                        <li><strong>Step A:</strong> Use FROZEN tokenization vocabulary</li>
+                                        <li>Convert text → Token IDs (vocabulary never changes)</li>
+                                        <li><strong>Step B:</strong> Use LEARNED embedding matrix</li>
+                                        <li>Convert Token IDs → Embedding vectors</li>
+                                        <li><strong>Step C:</strong> Forward pass through transformer</li>
+                                        <li><strong>Step D:</strong> Calculate loss</li>
+                                        <li><strong>Step E:</strong> Backward pass (calculate gradients)</li>
+                                        <li><strong>Step F:</strong> Update embedding matrix (and transformer weights)</li>
+                                        <li>Repeat for millions of batches</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Phase 5: Result:</strong>
+                                    <ul>
+                                        <li>Tokenization vocabulary: Still frozen (unchanged)</li>
+                                        <li>Embedding matrix: Learned semantic relationships</li>
+                                        <li>Transformer weights: Learned language patterns</li>
+                                        <li>Trained model ready!</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> Tokenization vocabulary is created and frozen BEFORE training. Embedding matrix is initialized randomly and learned DURING training. They work together but are completely separate!</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+gantt
+    title GPT-5 Training Timeline
+    dateFormat YYYY-MM-DD
+    section Data Prep
+    Collect Data           :a1, 2024-01-01, 60d
+    section Tokenization
+    Create Vocab           :a2, after a1, 7d
+    Tokenize Data          :a3, after a2, 14d
+    section Training
+    Initialize Model       :a4, after a3, 1d
+    Train Model            :a5, after a4, 120d
+    section Result
+    Trained Model          :a6, after a5, 1d
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Key Differences Summary</h2>
+                <table style="width:100%; border-collapse: collapse; margin: 2rem 0;">
+                    <tr style="background: #f5f5f5;">
+                        <th style="padding: 1rem; border: 1px solid #ddd; text-align: left;">Aspect</th>
+                        <th style="padding: 1rem; border: 1px solid #ddd; text-align: left;">Tokenization Vocabulary</th>
+                        <th style="padding: 1rem; border: 1px solid #ddd; text-align: left;">Embedding Matrix</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;"><strong>Purpose</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Token String → Token ID</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Token ID → Embedding Vector</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;"><strong>Created</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Before training (data prep)</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">At training start (initialization)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1px solid #ddd;"><strong>Status</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">FROZEN (never changes)</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">LEARNED (updated during training)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;"><strong>Structure</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Hash table / Dictionary</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">2D Matrix / Array</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;"><strong>Size</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">100,256 entries (small)</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">[100,256, 12,288] (huge)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;"><strong>Memory</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">~10-50 MB</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">~5 GB</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;"><strong>Storage</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">CPU memory</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">GPU memory</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border: 1px solid #ddd;"><strong>Updated</strong></td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Never (frozen)</td>
+                        <td style="padding: 1rem; border: 1px solid #ddd;">Every training step</td>
+                    </tr>
+                </table>
+
+                <h2>Common Misconceptions Clarified</h2>
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>❌ Common Misconceptions:</h4>
+                        <ul>
+                            <li><strong>Misconception 1:</strong> "Tokenization and embeddings use the same table"<br/>
+                                <strong>Reality:</strong> They are TWO SEPARATE tables with different purposes!</li>
+                            
+                            <li><strong>Misconception 2:</strong> "Embeddings are created during tokenization"<br/>
+                                <strong>Reality:</strong> Tokenization only creates string→ID mapping. Embeddings are learned during training!</li>
+                            
+                            <li><strong>Misconception 3:</strong> "Tokenization vocabulary is updated during training"<br/>
+                                <strong>Reality:</strong> Tokenization vocabulary is FROZEN and never changes!</li>
+                            
+                            <li><strong>Misconception 4:</strong> "Embeddings are stored in the tokenization table"<br/>
+                                <strong>Reality:</strong> Embeddings are in a completely separate matrix, stored separately in memory!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Final Summary</h2>
+                <p><strong>Key Points to Remember:</strong></p>
+                <ol>
+                    <li><strong>Tokenization Vocabulary:</strong> Created BEFORE training, FROZEN, maps strings to IDs, small (~10-50 MB)</li>
+                    <li><strong>Embedding Matrix:</strong> Initialized at training start, LEARNED, maps IDs to vectors, huge (~5 GB)</li>
+                    <li><strong>They Work Together:</strong> Tokenization converts text→IDs, then embeddings convert IDs→vectors</li>
+                    <li><strong>They Are Separate:</strong> Different tables, different storage, different purposes</li>
+                    <li><strong>Training Process:</strong> Use frozen tokenization vocabulary, learn embedding matrix</li>
+                </ol>
+
+                <p><strong>💡 Final Insight:</strong> Think of tokenization vocabulary as a "dictionary" (frozen, just maps words to numbers). Think of embedding matrix as "meanings" (learned, represents what words mean). They work together but are completely separate!</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter17.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><span></span></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 18 of 18</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

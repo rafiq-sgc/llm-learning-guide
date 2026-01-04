@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Applications and Future - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🚀 LLM Applications and Future</h1>
+            <p class="subtitle">Chapter 15 of 18 - Comprehensive Guide</p>
+        </header>
+
+        
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="comprehensive_index.html">🏠 Home</a></li>
+            <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+            <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+            <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+            <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+            <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+            <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+            <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+            <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+            <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+            <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+            <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+            <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+            <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+            </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🚀 Chapter 15: LLM Applications and Future</h1>
+                <p>Comprehensive Learning Guide - Detailed Presentation Material</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter14.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter16.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>Current Applications</h3>
+<ol>
+<li><strong>Text Generation</strong>: Writing, content creation</li>
+<li><strong>Code Generation</strong>: GitHub Copilot, coding assistants</li>
+<li><strong>Translation</strong>: Multi-language support</li>
+<li><strong>Question Answering</strong>: Chatbots, assistants</li>
+<li><strong>Summarization</strong>: Long text → short summary</li>
+<li><strong>NL2SQL</strong>: Your project - natural language to SQL</li>
+</ol>
+<h3>Future Directions</h3>
+<ol>
+<li><strong>Multimodal</strong>: Text + Images + Audio</li>
+<li><strong>Reasoning</strong>: Better logical reasoning</li>
+<li><strong>Efficiency</strong>: Smaller, faster models</li>
+<li><strong>Safety</strong>: Better alignment and control</li>
+<li><strong>Specialization</strong>: Domain-specific models</li>
+</ol>
+            <p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter14.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter16.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 15 of 18</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

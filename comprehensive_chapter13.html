@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Inference - Complete Flow - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>⚙️ LLM Inference - Complete Flow</h1>
+            <p class="subtitle">Chapter 13 of 15 - Comprehensive Guide</p>
+        </header>
+
+        
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="comprehensive_index.html">🏠 Home</a></li>
+            <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+            <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+            <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+            <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+            <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+            <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+            <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+            <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+            <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+            <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+            <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+            <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+            <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+            <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+            <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>⚙️ Chapter 13: LLM Inference - Complete Flow</h1>
+                <p>Comprehensive Learning Guide - Detailed Presentation Material</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter12.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter14.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>Inference vs Training</h3>
+<p><strong>Key Differences:</strong></p>
+
+        <div class="diagram-section">
+            <div class="diagram-explanation">
+                <h4>📊 Understanding Inference vs Training:</h4>
+                <p><strong>What's the difference between training and inference?</strong> This diagram shows the key differences. Training is when the model learns (weights are updated). Inference is when the model is used (weights are fixed, just generating predictions).</p>
+                
+                <div class="step-by-step">
+                    <h5>🔍 Step-by-Step Breakdown:</h5>
+                    <ol>
+                        <li><strong>Training Process (Orange - Learning Phase):</strong>
+                            <ul>
+                                <li><strong>Forward Pass:</strong> Process input, make predictions</li>
+                                <li><strong>Calculate Loss:</strong> Compare predictions with correct answers</li>
+                                <li><strong>Backward Pass:</strong> Calculate gradients (how to improve)</li>
+                                <li><strong>Update Weights:</strong> Adjust model weights to reduce error</li>
+                                <li><strong>Loop:</strong> Repeat millions of times</li>
+                                <li>Model is learning and improving</li>
+                                <li>Happens once (or periodically for fine-tuning)</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Inference Process (Green - Using Phase):</strong>
+                            <ul>
+                                <li><strong>Forward Pass:</strong> Process input through model</li>
+                                <li><strong>Generate Token:</strong> Sample next token from probabilities</li>
+                                <li><strong>Add to Sequence:</strong> Add generated token to input</li>
+                                <li><strong>Check Complete:</strong> Is generation done?</li>
+                                <li><strong>If No:</strong> Go back to forward pass (iterative generation)</li>
+                                <li><strong>If Yes:</strong> Return final result</li>
+                                <li>Model weights are FIXED (not updated)</li>
+                                <li>Happens every time user makes a query</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <p><strong>💡 Key Takeaway:</strong> Training = learning (weights change). Inference = using (weights fixed). Training happens once, inference happens every time you use the model. Training is expensive and slow, inference is faster.</p>
+                
+                <p><strong>🎯 Real-World Analogy:</strong>
+                    <ul>
+                        <li><strong>Training:</strong> Like studying for an exam - you learn and improve</li>
+                        <li><strong>Inference:</strong> Like taking the exam - you use what you learned, but you're not learning during the exam</li>
+                    </ul>
+                </p>
+                
+                <p><strong>📊 Key Differences:</strong>
+                    <table style="width:100%; border-collapse: collapse; margin: 1rem 0;">
+                        <tr style="background: #f5f5f5;">
+                            <th style="padding: 0.5rem; border: 1px solid #ddd;">Aspect</th>
+                            <th style="padding: 0.5rem; border: 1px solid #ddd;">Training</th>
+                            <th style="padding: 0.5rem; border: 1px solid #ddd;">Inference</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Weights</td>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Updated</td>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Fixed</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Backward Pass</td>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Yes</td>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">No</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Purpose</td>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Learn</td>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Use</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Frequency</td>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Once/rarely</td>
+                            <td style="padding: 0.5rem; border: 1px solid #ddd;">Every query</td>
+                        </tr>
+                    </table>
+                </p>
+            </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph LR
+    subgraph Training["Training"]
+        T1[Forward Pass] --> T2[Calculate Loss]
+        T2 --> T3[Backward Pass]
+        T3 --> T4[Update Weights]
+        T4 --> T1
+    end
+    
+    subgraph Inference["Inference"]
+        I1[Forward Pass] --> I2[Generate Token]
+        I2 --> I3[Add to Sequence]
+        I3 --> I4{Complete?}
+        I4 -->|No| I1
+        I4 -->|Yes| I5[Return Result]
+    end
+    
+    style Training fill:#fff3e0
+    style Inference fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Complete Inference Process</h3>
+<p><strong>Step-by-Step:</strong></p>
+
+        <div class="diagram-section">
+            <div class="diagram-explanation">
+                <h4>📊 Understanding Complete Inference Process:</h4>
+                <p><strong>What happens when you use an LLM?</strong> This flowchart shows the complete inference process - what happens every time you send a query to ChatGPT or any LLM. This is the process that generates responses.</p>
+                
+                <div class="step-by-step">
+                    <h5>🔍 Step-by-Step Breakdown:</h5>
+                    <ol>
+                        <li><strong>Step 1 - User Query (Blue):</strong>
+                            <ul>
+                                <li>Your input: "What is SQL?"</li>
+                                <li>This is what you want the model to process</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 2 - Tokenize:</strong>
+                            <ul>
+                                <li>Convert text to token IDs</li>
+                                <li>Example: "What is SQL?" → [1234, 567, 890]</li>
+                                <li>Fast operation (< 1ms)</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 3 - Embed:</strong>
+                            <ul>
+                                <li>Convert token IDs to vectors</li>
+                                <li>Lookup in embedding matrix</li>
+                                <li>Shape: [1, 3] → [1, 3, 768]</li>
+                                <li>Fast operation (~2ms)</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 4 - Process Through Model:</strong>
+                            <ul>
+                                <li>Forward pass through all 96 layers</li>
+                                <li>Each layer: Self-Attention + FFN</li>
+                                <li>Most time-consuming step (~150ms)</li>
+                                <li>Creates rich representations</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 5 - Output Probabilities:</strong>
+                            <ul>
+                                <li>Output layer converts to vocabulary probabilities</li>
+                                <li>Shape: [1, 3, 768] → [1, 3, 50257]</li>
+                                <li>Softmax converts to probabilities</li>
+                                <li>For last position: probabilities for next token</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 6 - Sample Token:</strong>
+                            <ul>
+                                <li>Select one token based on probabilities</li>
+                                <li>Could be greedy (highest) or sampled</li>
+                                <li>Example: Selects "SQL" token</li>
+                                <li>Fast operation (~1ms)</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 7 - Add to Sequence:</strong>
+                            <ul>
+                                <li>Add selected token to input</li>
+                                <li>New sequence: "What is SQL? SQL"</li>
+                                <li>This becomes new input</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 8 - Decision: Complete?</strong>
+                            <ul>
+                                <li>Check if generation is done</li>
+                                <li>Criteria: End token, max length, stop condition</li>
+                                <li><strong>If No:</strong> Go back to Step 4 (process again)</li>
+                                <li><strong>If Yes:</strong> Continue to return result</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 9 - Return Result (Green):</strong>
+                            <ul>
+                                <li>Complete generated text</li>
+                                <li>Example: "SQL is a programming language..."</li>
+                                <li>Returned to user</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <p><strong>💡 Key Takeaway:</strong> Inference is iterative - the model generates one token at a time. Each new token is added to the sequence, and the entire sequence is reprocessed to generate the next token. This continues until completion.</p>
+                
+                <p><strong>🎯 Real-World Example:</strong> When you ask "What is SQL?":
+                    <ol>
+                        <li>Model processes: "What is SQL?"</li>
+                        <li>Generates: "SQL"</li>
+                        <li>Processes: "What is SQL? SQL"</li>
+                        <li>Generates: " is"</li>
+                        <li>Processes: "What is SQL? SQL is"</li>
+                        <li>Generates: " a"</li>
+                        <li>... continues until complete answer</li>
+                    </ol>
+                </p>
+                
+                <p><strong>⏱️ Time per Token:</strong> ~160ms per token. For a 50-token response, that's ~8 seconds total. This is why longer responses take more time!</p>
+            </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Query[User Query] --> Token[1. Tokenize]
+    Token --> Embed[2. Embed]
+    Embed --> Process[3. Process Through Model]
+    Process --> Output[4. Output Probabilities]
+    Output --> Sample[5. Sample Token]
+    Sample --> Add[6. Add to Sequence]
+    Add --> Check{7. Complete?}
+    Check -->|No| Process
+    Check -->|Yes| Result[8. Return Result]
+    
+    style Query fill:#e3f2fd
+    style Result fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Inference Optimization</h3>
+<p><strong>Techniques:</strong></p>
+<ol>
+<li><strong>KV Caching</strong>: Cache key-value pairs to avoid recomputation</li>
+<li><strong>Quantization</strong>: Use lower precision (FP16, INT8)</li>
+<li><strong>Pruning</strong>: Remove unnecessary weights</li>
+<li><strong>Distillation</strong>: Smaller model learns from larger</li>
+</ol>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter12.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter14.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 13 of 15</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How LLMs Process User Queries - Step by Step - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔄 How LLMs Process User Queries - Step by Step</h1>
+            <p class="subtitle">Chapter 9 of 15 - Comprehensive Guide</p>
+        </header>
+
+        
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="comprehensive_index.html">🏠 Home</a></li>
+            <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+            <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+            <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+            <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+            <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+            <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+            <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+            <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+            <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+            <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+            <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+            <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+            <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+            <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+            <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🔄 Chapter 9: How LLMs Process User Queries - Step by Step</h1>
+                <p>Comprehensive Learning Guide - Detailed Presentation Material</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter8.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter10.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>Complete Query Processing Flow</h3>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Complete Query Processing Flow:</h4>
+        <p><strong>What happens when you ask an LLM a question?</strong> This flowchart shows the complete end-to-end process from your question to the final answer. This is how ChatGPT, Claude, and other LLMs work when you interact with them.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1: Tokenization (Blue Start)</strong>
+                    <ul>
+                        <li>User Query: "Show me students enrolled in 2024"</li>
+                        <li>Text is split into tokens (subwords)</li>
+                        <li>Example: ["Show", " me", " students", " enrolled", " in", " 2024"]</li>
+                        <li>Each token gets a unique ID number</li>
+                        <li>Result: [1234, 567, 890, 12345, 12, 2024]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 2: Embedding</strong>
+                    <ul>
+                        <li>Each token ID is converted to a vector</li>
+                        <li>Token 1234 → [0.2, -0.5, 0.8, ..., 0.1] (768 numbers)</li>
+                        <li>These vectors capture semantic meaning</li>
+                        <li>Shape: [1, 7] → [1, 7, 768]</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3: Positional Encoding</strong>
+                    <ul>
+                        <li>Adds position information to each token</li>
+                        <li>Token at position 0 gets position encoding for 0</li>
+                        <li>Token at position 1 gets position encoding for 1</li>
+                        <li>Model needs to know word order</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4: Process Layer 1</strong>
+                    <ul>
+                        <li>First transformer layer processes the embeddings</li>
+                        <li>Self-attention: tokens interact with each other</li>
+                        <li>Feed-forward: processes each position</li>
+                        <li>Output: Refined understanding</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 5: Process Layer 2</strong>
+                    <ul>
+                        <li>Second layer further refines understanding</li>
+                        <li>Builds on Layer 1's output</li>
+                        <li>Learns more complex patterns</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 6-N: Process Layers 3-96</strong>
+                    <ul>
+                        <li>94 more layers process the data</li>
+                        <li>Each layer adds more understanding</li>
+                        <li>Early layers: basic patterns</li>
+                        <li>Middle layers: syntax and grammar</li>
+                        <li>Late layers: complex reasoning</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step N+1: Output Layer (Orange)</strong>
+                    <ul>
+                        <li>Converts final representations to vocabulary probabilities</li>
+                        <li>Shape: [1, 7, 768] → [1, 7, 50257]</li>
+                        <li>Each position gets probability for each of 50,257 tokens</li>
+                        <li>For last position: probabilities for next token</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step N+2: Probability Distribution</strong>
+                    <ul>
+                        <li>Softmax converts raw scores to probabilities</li>
+                        <li>Example: "enrolled" = 0.35, "in" = 0.25, "with" = 0.15, ...</li>
+                        <li>All probabilities sum to 1.0</li>
+                        <li>Model is "confident" about some tokens, uncertain about others</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step N+3: Sample Next Token</strong>
+                    <ul>
+                        <li>Selects one token based on probabilities</li>
+                        <li>Could be greedy (highest probability) or sampled (random based on probabilities)</li>
+                        <li>Example: Selects "enrolled" (35% chance)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step N+4: Add to Sequence</strong>
+                    <ul>
+                        <li>Adds selected token to the sequence</li>
+                        <li>New sequence: "Show me students enrolled"</li>
+                        <li>This becomes the new input</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Decision Point: Complete?</strong>
+                    <ul>
+                        <li>Checks if generation is complete</li>
+                        <li>Criteria: End token, max length, or stop condition</li>
+                        <li><strong>If No:</strong> Go back to Step 1 (tokenize the new sequence)</li>
+                        <li><strong>If Yes:</strong> Return final result</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Final Result (Green):</strong>
+                    <ul>
+                        <li>Complete generated text</li>
+                        <li>Example: "Show me students enrolled in 2024"</li>
+                        <li>Returned to user</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Processing is iterative - the model generates one token at a time. Each new token is added to the sequence, and the entire sequence is reprocessed through all 96 layers to generate the next token. This continues until completion.</p>
+        
+        <p><strong>🎯 Real-World Example:</strong> When you ask ChatGPT "What is AI?", it:
+            <ol>
+                <li>Tokenizes your question</li>
+                <li>Processes through 96 layers</li>
+                <li>Generates first token: "Artificial"</li>
+                <li>Adds "Artificial" and processes again</li>
+                <li>Generates second token: " intelligence"</li>
+                <li>Continues until complete answer is generated</li>
+            </ol>
+        </p>
+        
+        <p><strong>⏱️ Time Breakdown:</strong> For a 10-token response:
+            <ul>
+                <li>Tokenization: < 1ms</li>
+                <li>Embedding: ~2ms</li>
+                <li>96 Layers (per token): ~150ms</li>
+                <li>Output + Sampling: ~5ms</li>
+                <li>Total per token: ~160ms</li>
+                <li>10 tokens: ~1.6 seconds</li>
+            </ul>
+        </p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+flowchart TD
+    User[User Query] --> Tokenize[Step 1: Tokenization]
+    Tokenize --> Embed[Step 2: Embedding]
+    Embed --> PosEnc[Step 3: Positional Encoding]
+    PosEnc --> Layer1[Step 4: Process Layer 1]
+    Layer1 --> Layer2[Step 5: Process Layer 2]
+    Layer2 --> Dots[Step 6-N: Process Layers 3-96]
+    Dots --> Output[Step N+1: Output Layer]
+    Output --> Prob[Step N+2: Probability Distribution]
+    Prob --> Sample[Step N+3: Sample Next Token]
+    Sample --> Add[Step N+4: Add to Sequence]
+    Add --> Check{Complete?}
+    Check -->|No| Tokenize
+    Check -->|Yes| Result[Final Result]
+    
+    style User fill:#e3f2fd
+    style Prob fill:#fff3e0
+    style Result fill:#e8f5e9
+        </div>
+    </div>
+</div>
+<h3>Step-by-Step Detailed Process</h3>
+<h4>Step 1: Tokenization (Detailed)</h4>
+<p><strong>Example Query: "Show me all students enrolled in 2024"</strong></p>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Tokenization Process:</h4>
+        <p><strong>How is text converted to numbers?</strong> LLMs work with numbers, not text. Tokenization is the process of converting human-readable text into token IDs that the model can process. This is the first and crucial step.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - User Input (Blue):</strong>
+                    <ul>
+                        <li>Raw text: "Show me all students enrolled in 2024"</li>
+                        <li>This is what the user types</li>
+                        <li>Human-readable format</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 2 - Preprocessing:</strong>
+                    <ul>
+                        <li><strong>Normalize:</strong> Convert to lowercase (usually)</li>
+                        <li><strong>Clean:</strong> Remove extra spaces, special characters</li>
+                        <li>Result: "show me all students enrolled in 2024"</li>
+                        <li>Standardizes the input</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3 - Split into Subwords:</strong>
+                    <ul>
+                        <li>Text is split into smaller pieces (subwords)</li>
+                        <li>Uses BPE (Byte Pair Encoding) algorithm</li>
+                        <li>Example splits: ["show", " me", " all", " students", " enrolled", " in", " 2024"]</li>
+                        <li>Subwords can be whole words or parts of words</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4 - Apply BPE Merges:</strong>
+                    <ul>
+                        <li>BPE was trained on a large corpus</li>
+                        <li>Learned common subword patterns</li>
+                        <li>Applies learned merges to split text optimally</li>
+                        <li>Example: "students" might become ["student", "s"]</li>
+                        <li>Handles unknown words by breaking them into known subwords</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 5 - Vocabulary Lookup:</strong>
+                    <ul>
+                        <li>Each subword is looked up in the vocabulary</li>
+                        <li>Vocabulary size: 50,257 tokens (for GPT-3)</li>
+                        <li>Each token has a unique ID number</li>
+                        <li>Example lookups:
+                            <ul>
+                                <li>"show" → ID 1234</li>
+                                <li>" me" → ID 567</li>
+                                <li>" students" → ID 890</li>
+                                <li>" enrolled" → ID 12345</li>
+                                <li>" in" → ID 12</li>
+                                <li>" 2024" → ID 2024</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 6 - Token IDs (Green):</strong>
+                    <ul>
+                        <li>Result: [1234, 567, 890, 12345, 6789, 12, 2024]</li>
+                        <li>Array of integers</li>
+                        <li>Each number represents a token</li>
+                        <li>Model can now process these numbers</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 7 - Shape Information:</strong>
+                    <ul>
+                        <li>Shape: [1, 7]</li>
+                        <li>1 = batch size (one sequence)</li>
+                        <li>7 = sequence length (7 tokens)</li>
+                        <li>This shape is important for processing</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Tokenization converts text to numbers. BPE ensures even unknown words can be tokenized by breaking them into known subwords. This allows the model to handle any text, even if it contains words not seen during training.</p>
+        
+        <p><strong>🎯 Real-World Example:</strong> The word "ChatGPT" might not be in the vocabulary, but BPE can split it into ["Chat", "G", "PT"] which are all in the vocabulary. This is why LLMs can handle new words and even typos!</p>
+        
+        <p><strong>📚 Why Subwords?</strong> Using whole words would require a huge vocabulary (millions of words). Using characters would be too granular. Subwords are the sweet spot - compact vocabulary but can handle any word.</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+graph TD
+    Text["User Input:<br/>'Show me all students enrolled in 2024'"] --> Preprocess[Preprocessing<br/>Normalize, clean]
+    Preprocess --> Split[Split into subwords]
+    Split --> BPE[Apply BPE merges]
+    BPE --> Lookup[Vocabulary Lookup]
+    Lookup --> Tokens["Token IDs:<br/>[1234, 567, 890, 12345, 6789, 12, 2024]"]
+    Tokens --> Shape["Shape: [1, 7]<br/>1 sequence, 7 tokens"]
+    
+    style Text fill:#e3f2fd
+    style Tokens fill:#e8f5e9
+        </div>
+    </div>
+</div>
+<p><strong>Detailed Process:</strong></p>
+<ol>
+<li>Text normalization (lowercase, remove extra spaces)</li>
+<li>Split into subwords using BPE</li>
+<li>Look up each subword in vocabulary (50,257 tokens)</li>
+<li>Convert to token IDs</li>
+<li>Result: Array of integers</li>
+</ol>
+<h4>Step 2: Embedding (Detailed)</h4>
+<div class="diagram-section">
+    <div class="diagram-explanation">
+        <h4>📊 Understanding Embedding Process:</h4>
+        <p><strong>How are token IDs converted to meaningful vectors?</strong> Embedding is the process of converting token IDs (just numbers) into dense vectors that capture semantic meaning. This is where the model's "understanding" begins.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+                <li><strong>Step 1 - Token IDs Input (Blue):</strong>
+                    <ul>
+                        <li>Input: [1234, 567, 890, 12345, 6789, 12, 2024]</li>
+                        <li>These are just integer IDs</li>
+                        <li>No meaning yet - just numbers</li>
+                        <li>Shape: [1, 7] - 1 sequence with 7 tokens</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 2 - Embedding Matrix:</strong>
+                    <ul>
+                        <li>Size: [50257, 768]</li>
+                        <li>50,257 rows (one for each token in vocabulary)</li>
+                        <li>768 columns (embedding dimension)</li>
+                        <li>Total: ~38.6 million parameters</li>
+                        <li>Each row is a learned vector representing that token</li>
+                        <li>Learned during training - similar tokens have similar vectors</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 3 - Lookup Process:</strong>
+                    <ul>
+                        <li><strong>Token 1234:</strong> Look up row 1234 in embedding matrix</li>
+                        <li>Result: vector[768] = [0.2, -0.5, 0.8, 0.1, ..., -0.3]</li>
+                        <li><strong>Token 567:</strong> Look up row 567</li>
+                        <li>Result: vector[768] = [0.3, 0.1, -0.2, 0.9, ..., 0.5]</li>
+                        <li><strong>Token 890:</strong> Look up row 890</li>
+                        <li>Result: vector[768] = [-0.1, 0.8, 0.4, -0.6, ..., 0.2]</li>
+                        <li>... (repeat for all 7 tokens)</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Step 4 - Result: Embeddings (Green):</strong>
+                    <ul>
+                        <li>Shape: [1, 7, 768]</li>
+                        <li>1 = batch size (one sequence)</li>
+                        <li>7 = sequence length (7 tokens)</li>
+                        <li>768 = embedding dimension (each token is 768 numbers)</li>
+                        <li>Each token is now a dense vector with semantic meaning</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        
+        <p><strong>💡 Key Takeaway:</strong> Embedding converts meaningless token IDs into meaningful vectors. These vectors capture semantic relationships - similar words have similar vectors. The embedding matrix is learned during training.</p>
+        
+        <p><strong>🎯 Real-World Analogy:</strong> Like a dictionary that doesn't just define words, but represents each word as a point in 768-dimensional space. Words with similar meanings are close together. "Cat" and "dog" are closer than "cat" and "airplane".</p>
+        
+        <p><strong>📊 Mathematical Operation:</strong>
+            <ul>
+                <li>Embedding = Embedding_Matrix[token_ids]</li>
+                <li>Simple array indexing operation</li>
+                <li>Very fast - just memory lookup</li>
+                <li>Shape transformation: [1, 7] → [1, 7, 768]</li>
+            </ul>
+        </p>
+        
+        <p><strong>🔢 Why 768 Dimensions?</strong> This is a hyperparameter. More dimensions = more capacity to represent meaning, but also more parameters. 768 is a good balance for GPT-3. GPT-4 uses different dimensions.</p>
+    </div>
+    
+    <div class="diagram-container">
+        <div class="mermaid">
+sequenceDiagram
+    participant Tokens as Token IDs
+    participant Embed as Embedding Matrix
+    participant Result as Embeddings
+
+    Tokens->>Embed: [1234, 567, 890, ...]
+    Note over Embed: Embedding Matrix:<br/>[50257, 768]<br/>50,257 tokens x 768 dimensions
+    Embed->>Embed: Lookup row 1234 to vector[768]
+    Embed->>Embed: Lookup row 567 to vector[768]
+    Embed->>Embed: Lookup row 890 to vector[768]
+    Note over Embed: ... (for all tokens)
+    Embed->>Result: Embeddings: [1, 7, 768]<br/>1 batch, 7 tokens, 768 dims
+        </div>
+    </div>
+</div>
+<p><strong>Mathematical:</strong></p>
+<pre><code>Embedding = Embedding_Matrix[token_ids]
+<p>Shape: [1, 7] → [1, 7, 768]</p>
+<p></code></pre></p>
+<p><strong>Process:</strong></p>
+<ul>
+<li>Each token ID → lookup in embedding matrix</li>
+<li>Get corresponding vector</li>
+<li>Result: Matrix of shape [batch_size, sequence_length, embedding_dim]</li>
+</ul>
+<h4>Step 3: Positional Encoding</h4>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>Embed</strong>: Token Embeddings</li><li><strong>Add</strong>: Add</li><li><strong>Pos</strong>: Position Embeddings</li><li><strong>Final</strong>: Final Embeddings<br/>with position info</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Add</strong> connects to <strong>Final Embeddings<br/>with position info</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph LR
+    Embed[Token Embeddings] --> Add[Add]
+    Pos[Position Embeddings] --> Add
+    Add --> Final[Final Embeddings<br/>with position info]
+    
+    style Embed fill:#e3f2fd
+    style Final fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Process:</strong></p>
+<ul>
+<li>Add position information to each token</li>
+<li>Position 0, 1, 2, ... encoded</li>
+<li>Result: Embeddings now include position</li>
+</ul>
+<h4>Step 4-N: Transformer Layers (Ultra Detailed)</h4>
+<p><strong>What Happens in Each Transformer Layer:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Flowchart:</h4>
+        <p><strong>What is a Flowchart?</strong> This diagram shows a step-by-step process or decision flow. Start from the top and follow the arrows to understand the complete workflow. Rectangles represent processes, diamonds represent decisions.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Step 1 - Start:</strong> "Input: [1, 7, 768</li><li><strong>Step 2:</strong> Layer Norm 1</li><li><strong>Step 3:</strong> Linear Transformations<br/>Q, K, V: 768 to 768</li><li><strong>Step 4:</strong> "Q: [1, 7, 768</li><li><strong>Step 5:</strong> "K: [1, 7, 768</li><li><strong>Step 6:</strong> "V: [1, 7, 768</li><li><strong>Step 7:</strong> Calculate Scores<br/>Q × K^T / √768</li><li><strong>Step 8:</strong> Softmax<br/>Convert to probabilities</li><li><strong>Step 9:</strong> "Attention Weights<br/>[1, 7, 7</li><li><strong>Step 10:</strong> Weighted Sum<br/>Weights × V</li><li><strong>Step 11:</strong> Linear Projection<br/>768 to 768</li><li><strong>Step 12:</strong> Residual Add</li><li><strong>Step 13:</strong> Layer Norm 2</li><li><strong>Step 14:</strong> FFN Layer 1<br/>768 to 3072</li><li><strong>Step 15:</strong> ReLU</li><li><strong>Step 16:</strong> FFN Layer 2<br/>3072 to 768</li><li><strong>Step 17:</strong> Residual Add</li><li><strong>Step 18:</strong> "Output: [1, 7, 768</li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows from the start to understand the complete process flow. Decision points (diamond shapes) represent choices in the process - follow the appropriate path based on the condition.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Input["Input: [1, 7, 768]<br/>7 tokens, 768 dimensions"] --> Norm1[Layer Norm 1]
+    Norm1 --> QKV[Linear Transformations<br/>Q, K, V: 768 to 768]
+    
+    QKV --> Q["Q: [1, 7, 768]<br/>What am I looking for?"]
+    QKV --> K["K: [1, 7, 768]<br/>What do I contain?"]
+    QKV --> V["V: [1, 7, 768]<br/>What info do I have?"]
+    
+    Q --> Scores[Calculate Scores<br/>Q × K^T / √768]
+    K --> Scores
+    Scores --> Softmax[Softmax<br/>Convert to probabilities]
+    Softmax --> Weights["Attention Weights<br/>[1, 7, 7]<br/>7×7 matrix"]
+    
+    Weights --> Weighted[Weighted Sum<br/>Weights × V]
+    V --> Weighted
+    Weighted --> Proj[Linear Projection<br/>768 to 768]
+    Proj --> Add1[Residual Add]
+    Input --> Add1
+    Add1 --> Norm2[Layer Norm 2]
+    Norm2 --> FF1[FFN Layer 1<br/>768 to 3072]
+    FF1 --> ReLU[ReLU]
+    ReLU --> FF2[FFN Layer 2<br/>3072 to 768]
+    FF2 --> Add2[Residual Add]
+    Add1 --> Add2
+    Add2 --> Output["Output: [1, 7, 768]<br/>Refined understanding"]
+    
+    style Input fill:#e3f2fd
+    style Weights fill:#fff3e0
+    style Output fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Attention Weights Example:</strong></p>
+<p>When processing token "students" (position 2):</p>
+<pre><code>Attention weights for "students":
+<p>┌─────────┬──────────┬─────────┬─────────┬─────────┬─────────┬─────────┐</p>
+<p>│  Show   │   me     │ students│ enrolled│    in   │   2024  │   &lt;/w&gt;  │</p>
+<p>├─────────┼──────────┼─────────┼─────────┼─────────┼─────────┼─────────┤</p>
+<p>│   0.05  │   0.10   │   1.00  │   0.85  │   0.60  │   0.40  │   0.20  │</p>
+<p>└─────────┴──────────┴─────────┴─────────┴─────────┴─────────┴─────────┘</p>
+<p>↑                    ↑                    ↑</p>
+<p>Low attention        High attention      Medium attention</p>
+<p></code></pre></p>
+<p><strong>What Happens in Each Layer:</strong></p>
+<ol>
+<li><strong>Self-Attention</strong>:</li>
+</ol>
+<ul>
+<li>Each token "attends" to all other tokens</li>
+<li>Calculates relationships</li>
+<li>Creates context-aware representations</li>
+<li>Mathematical: Attention(Q,K,V) = softmax(QK^T/√d_k) × V</li>
+</ul>
+<ol>
+<li><strong>Feed Forward</strong>:</li>
+</ol>
+<ul>
+<li>Processes each position independently</li>
+<li>Adds non-linearity</li>
+<li>Refines features</li>
+<li>Mathematical: FFN(x) = ReLU(xW1 + b1)W2 + b2</li>
+</ul>
+<ol>
+<li><strong>Residual Connections</strong>:</li>
+</ol>
+<ul>
+<li>Adds input to output</li>
+<li>Helps with gradient flow</li>
+<li>Enables deep networks</li>
+</ul>
+<p><strong>Visual Flow Through Layers:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>L0</strong>: Layer 0 Input<br/>Raw embeddings</li><li><strong>L1</strong>: Layer 1<br/>Basic patterns</li><li><strong>L2</strong>: Layer 2<br/>Word relationships</li><li><strong>L3</strong>: Layer 3<br/>Phrase understanding</li><li><strong>Dots</strong>: ...</li><li><strong>L48</strong>: Layer 48<br/>Complex reasoning</li><li><strong>L96</strong>: Layer 96<br/>Final understanding</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Layer 1<br/>Basic patterns</strong> connects to <strong>Layer 2<br/>Word relationships</strong></li><li><strong>Layer 2<br/>Word relationships</strong> connects to <strong>Layer 3<br/>Phrase understanding</strong></li><li><strong>Layer 3<br/>Phrase understanding</strong> connects to <strong>...</strong></li><li><strong>...</strong> connects to <strong>Layer 48<br/>Complex reasoning</strong></li><li><strong>Layer 48<br/>Complex reasoning</strong> connects to <strong>Layer 96<br/>Final understanding</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    L0[Layer 0 Input<br/>Raw embeddings] --> L1[Layer 1<br/>Basic patterns]
+    L1 --> L2[Layer 2<br/>Word relationships]
+    L2 --> L3[Layer 3<br/>Phrase understanding]
+    L3 --> Dots[...]
+    Dots --> L48[Layer 48<br/>Complex reasoning]
+    L48 --> L96[Layer 96<br/>Final understanding]
+    
+    style L0 fill:#e3f2fd
+    style L96 fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h4>Step N+1: Output Layer (Detailed)</h4>
+<p><strong>Final Processing:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Sequence Diagram:</h4>
+        <p><strong>What is a Sequence Diagram?</strong> This diagram shows how different components interact with each other over time. Read from top to bottom to follow the sequence of operations. Each arrow represents a message or data flow between components.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Participants:</strong> This diagram involves the following components:<ul><li><strong>LastLayer</strong>: Layer 96 Output</li><li><strong>Linear</strong>: Linear Layer</li><li><strong>Logits</strong>: Logits</li><li><strong>Softmax</strong>: Softmax</li><li><strong>Prob</strong>: Probabilities</li></ul></li><li><strong>Note:</strong> Weight Matrix:<br/>[768: Note also applies to  50257]<br/>768 to 50,257</li><li><strong>Note:</strong> explogit_i / Σexp(logit_j)<br/>for each position</li><li><strong>Step 8:</strong> <strong>LastLayer</strong> sends "[1, 7, 768]" to <strong>Linear</strong></li><li><strong>Step 9:</strong> <strong>Linear</strong> sends "[1, 7, 50257]<br/>Raw scores for each token" to <strong>Logits</strong></li><li><strong>Step 10:</strong> <strong>Logits</strong> sends "Apply softmax per position" to <strong>Softmax</strong></li><li><strong>Step 11:</strong> <strong>Softmax</strong> sends "[1: Note also applies to  7, 50257]<br/>Probabilities sum to 1.0" to <strong>Prob</strong></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows from top to bottom to understand the complete flow of operations. Sequence diagrams are excellent for understanding the order of operations and data flow.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+sequenceDiagram
+    participant LastLayer as Layer 96 Output
+    participant Linear as Linear Layer
+    participant Logits as Logits
+    participant Softmax as Softmax
+    participant Prob as Probabilities
+
+    LastLayer->>Linear: [1, 7, 768]
+    Note over Linear: Weight Matrix:<br/>[768: Note also applies to  50257]<br/>768 to 50,257
+    Linear->>Logits
+    Note over  50257]<br/>768 to 50,257
+    Linear->>Logits: [1, 7, 50257]<br/>Raw scores for each token
+    Logits->>Softmax: Apply softmax per position
+    Note over Softmax: explogit_i / Σexp(logit_j)<br/>for each position
+    Softmax->>Prob: [1: Note also applies to  7, 50257]<br/>Probabilities sum to 1.0
+    
+    style LastLayer fill
+    Note over  7, 50257]<br/>Probabilities sum to 1.0
+    
+    style LastLayer fill:#e3f2fd
+    style Prob fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>For Last Token (position 6):</strong></p>
+<pre><code>Logits for position 6 (after "in"):
+<ul>
+<li>Token 12345 ("2024"): 8.5</li>
+<li>Token 567 ("enrolled"): 6.2</li>
+<li>Token 890 ("students"): 5.1</li>
+<li>... (50,254 more tokens)</li>
+</ul>
+<p>After Softmax:</p>
+<ul>
+<li>Token 12345 ("2024"): 0.40 (40% probability)</li>
+<li>Token 567 ("enrolled"): 0.15</li>
+<li>Token 890 ("students"): 0.08</li>
+<li>... (sum = 1.0)</li>
+</ul>
+<p></code></pre></p>
+<p><strong>Mathematical:</strong></p>
+<pre><code>logits = W × hidden_state + b
+<p>probabilities = softmax(logits)</p>
+<p></code></pre></p>
+<h4>Step N+2: Sampling Next Token</h4>
+<p><strong>Process:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>Prob</strong>: Probability Distribution<br/>over 50,257 tokens</li><li><strong>Greedy</strong>: Pick highest<br/>probability</li><li><strong>Temp</strong>: Apply temperature<br/>add randomness</li><li><strong>TopK</strong>: Sample from<br/>top k tokens</li><li><strong>TopP</strong>: Sample from<br/>top p probability mass</li><li><strong>Token</strong>: Selected Token</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Pick highest<br/>probability</strong> connects to <strong>Selected Token</strong></li><li><strong>Apply temperature<br/>add randomness</strong> connects to <strong>Selected Token</strong></li><li><strong>Sample from<br/>top k tokens</strong> connects to <strong>Selected Token</strong></li><li><strong>Sample from<br/>top p probability mass</strong> connects to <strong>Selected Token</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    Prob[Probability Distribution<br/>over 50,257 tokens] --> Strategy{Sampling<br/>Strategy}
+    Strategy -->|Greedy| Greedy[Pick highest<br/>probability]
+    Strategy -->|Temperature| Temp[Apply temperature<br/>add randomness]
+    Strategy -->|Top-k| TopK[Sample from<br/>top k tokens]
+    Strategy -->|Top-p| TopP[Sample from<br/>top p probability mass]
+    Greedy --> Token[Selected Token]
+    Temp --> Token
+    TopK --> Token
+    TopP --> Token
+    
+    style Prob fill:#e3f2fd
+    style Token fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Example:</strong></p>
+<pre><code>Probabilities:
+<ul>
+<li>"enrolled" = 0.35</li>
+<li>"in" = 0.25</li>
+<li>"with" = 0.15</li>
+<li>"from" = 0.10</li>
+<li>... (50,253 more tokens)</li>
+</ul>
+<p>Selected: "enrolled" (highest probability)</p>
+<p></code></pre></p>
+<h4>Step N+3: Iterative Generation</h4>
+<p><strong>Complete Generation Loop:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Sequence Diagram:</h4>
+        <p><strong>What is a Sequence Diagram?</strong> This diagram shows how different components interact with each other over time. Read from top to bottom to follow the sequence of operations. Each arrow represents a message or data flow between components.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Step 1:</strong> <strong>User</strong> sends ""Show me students"" to <strong>Model</strong></li><li><strong>Step 2:</strong> <strong>Model</strong> sends "Process through 96 layers" to <strong>Model</strong></li><li><strong>Step 3:</strong> <strong>Model</strong> sends ""enrolled" probability: 0.35" to <strong>Output</strong></li><li><strong>Step 4:</strong> <strong>Output</strong> sends ""Show me students enrolled"" to <strong>Model</strong></li><li><strong>Step 5:</strong> <strong>Model</strong> sends "Process again" to <strong>Model</strong></li><li><strong>Step 6:</strong> <strong>Model</strong> sends ""in" probability: 0.25" to <strong>Output</strong></li><li><strong>Step 7:</strong> <strong>Output</strong> sends ""Show me students enrolled in"" to <strong>Model</strong></li><li><strong>Step 8:</strong> <strong>Model</strong> sends "Process again" to <strong>Model</strong></li><li><strong>Step 9:</strong> <strong>Model</strong> sends ""2024" probability: 0.40" to <strong>Output</strong></li><li><strong>Step 10:</strong> <strong>Output</strong> sends ""Show me students enrolled in 2024"" to <strong>User</strong></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows from top to bottom to understand the complete flow of operations. Sequence diagrams are excellent for understanding the order of operations and data flow.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Model
+    participant Output
+
+    User->>Model: "Show me students"
+    Model->>Model: Process through 96 layers
+    Model->>Output: "enrolled" probability: 0.35
+    Output->>Model: "Show me students enrolled"
+    Model->>Model: Process again
+    Model->>Output: "in" probability: 0.25
+    Output->>Model: "Show me students enrolled in"
+    Model->>Model: Process again
+    Model->>Output: "2024" probability: 0.40
+    Output->>User: "Show me students enrolled in 2024"
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Visual Representation:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>S1</strong>: "Step 1:<br/>'Show me students'"</li><li><strong>T1</strong>: Generate: 'enrolled'</li><li><strong>S2</strong>: "Step 2:<br/>'Show me students enrolled'"</li><li><strong>T2</strong>: Generate: 'in'</li><li><strong>S3</strong>: "Step 3:<br/>'Show me students enrolled in'"</li><li><strong>T3</strong>: Generate: '2024'</li><li><strong>Final</strong>: "Final:<br/>'Show me students enrolled in 2024'"</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Generate: 'enrolled'</strong> connects to <strong>"Step 2:<br/>'Show me students enrolled'"</strong></li><li><strong>"Step 2:<br/>'Show me students enrolled'"</strong> connects to <strong>Generate: 'in'</strong></li><li><strong>Generate: 'in'</strong> connects to <strong>"Step 3:<br/>'Show me students enrolled in'"</strong></li><li><strong>"Step 3:<br/>'Show me students enrolled in'"</strong> connects to <strong>Generate: '2024'</strong></li><li><strong>Generate: '2024'</strong> connects to <strong>"Final:<br/>'Show me students enrolled in 2024'"</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph LR
+    S1["Step 1:<br/>'Show me students'"] --> T1[Generate: 'enrolled']
+    T1 --> S2["Step 2:<br/>'Show me students enrolled'"]
+    S2 --> T2[Generate: 'in']
+    T2 --> S3["Step 3:<br/>'Show me students enrolled in'"]
+    S3 --> T3[Generate: '2024']
+    T3 --> Final["Final:<br/>'Show me students enrolled in 2024'"]
+    
+    style S1 fill:#e3f2fd
+    style Final fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Complete Example: Processing "Show me students"</h3>
+<p><strong>Detailed Step-by-Step:</strong></p>
+<p><div class="diagram-container"><div class="mermaid">
+graph TD
+    Text["User Input:<br/>'Show me all students enrolled in 2024'"] --> Preprocess[Preprocessing<br/>Normalize, clean]
+    Preprocess --> Split[Split into subwords]
+    Split --> BPE[Apply BPE merges]
+    BPE --> Lookup[Vocabulary Lookup]
+    Lookup --> Tokens["Token IDs:<br/>[1234, 567, 890, 12345, 6789, 12, 2024]"]
+    Tokens --> Shape["Shape: [1, 7]<br/>1 sequence, 7 tokens"]
+    
+    style Text fill:#e3f2fd
+    style Tokens fill:#e8f5e9
+</div></div>0</p>
+<h3>Complete Processing Timeline</h3>
+<p><strong>Time Breakdown (Approximate):</strong></p>
+<p><div class="diagram-container"><div class="mermaid">
+graph TD
+    Text["User Input:<br/>'Show me all students enrolled in 2024'"] --> Preprocess[Preprocessing<br/>Normalize, clean]
+    Preprocess --> Split[Split into subwords]
+    Split --> BPE[Apply BPE merges]
+    BPE --> Lookup[Vocabulary Lookup]
+    Lookup --> Tokens["Token IDs:<br/>[1234, 567, 890, 12345, 6789, 12, 2024]"]
+    Tokens --> Shape["Shape: [1, 7]<br/>1 sequence, 7 tokens"]
+    
+    style Text fill:#e3f2fd
+    style Tokens fill:#e8f5e9
+</div></div>1</p>
+<p><strong>Real Numbers:</strong></p>
+<ul>
+<li><strong>Tokenization</strong>: < 1ms</li>
+<li><strong>Embedding</strong>: ~2ms</li>
+<li><strong>96 Layers</strong>: ~150ms (on GPU)</li>
+<li><strong>Output + Sampling</strong>: ~5ms</li>
+<li><strong>Total</strong>: ~160ms per token</li>
+<li><strong>For 10 tokens</strong>: ~1.6 seconds</li>
+</ul>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter8.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter10.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 9 of 15</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

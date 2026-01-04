@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Architecture - Detailed Breakdown - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏗️ LLM Architecture - Detailed Breakdown</h1>
+            <p class="subtitle">Chapter 8 of 15 - Comprehensive Guide</p>
+        </header>
+
+        
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="comprehensive_index.html">🏠 Home</a></li>
+            <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+            <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+            <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+            <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+            <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+            <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+            <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+            <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+            <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+            <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+            <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+            <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+            <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+            <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+            <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🏗️ Chapter 8: LLM Architecture - Detailed Breakdown</h1>
+                <p>Comprehensive Learning Guide - Detailed Presentation Material</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter7.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter9.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>Complete LLM Architecture</h3>
+
+        <div class="diagram-section">
+            <div class="diagram-explanation">
+                <h4>📊 Understanding Complete LLM Architecture:</h4>
+                <p><strong>What is the complete architecture of an LLM?</strong> This diagram shows the end-to-end architecture of a Large Language Model like GPT-3. It shows how text flows through the model from input to output, step by step.</p>
+                
+                <div class="step-by-step">
+                    <h5>🔍 Step-by-Step Breakdown:</h5>
+                    <ol>
+                        <li><strong>Input Text (Blue):</strong>
+                            <ul>
+                                <li>User's query or prompt</li>
+                                <li>Example: "Show me students enrolled in 2024"</li>
+                                <li>Raw text format</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Tokenization:</strong>
+                            <ul>
+                                <li>Converts text to token IDs</li>
+                                <li>Splits into subwords using BPE</li>
+                                <li>Result: Array of integers</li>
+                                <li>Example: [1234, 567, 890, ...]</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Embedding Layer:</strong>
+                            <ul>
+                                <li>Converts token IDs to 768-dimensional vectors</li>
+                                <li>Each token becomes a dense vector</li>
+                                <li>Shape: [batch, sequence_length, 768]</li>
+                                <li>Learned during training</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Positional Encoding:</strong>
+                            <ul>
+                                <li>Adds position information to each token</li>
+                                <li>Model needs to know word order</li>
+                                <li>Can be learned or fixed</li>
+                                <li>Result: Position-aware embeddings</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Transformer Blocks (Orange - Multiple Layers):</strong>
+                            <ul>
+                                <li><strong>Block 1:</strong> First transformation</li>
+                                <li><strong>Block 2:</strong> Second transformation</li>
+                                <li><strong>...</strong> (94 more blocks)</li>
+                                <li><strong>Block 96:</strong> Final transformation (for GPT-3)</li>
+                                <li>Each block: Self-Attention + Feed-Forward</li>
+                                <li>Each layer refines understanding</li>
+                                <li>Shape maintained: [batch, seq_len, 768]</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Layer Normalization:</strong>
+                            <ul>
+                                <li>Final normalization after all transformer blocks</li>
+                                <li>Stabilizes the output</li>
+                                <li>Prepares for output layer</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Output Layer:</strong>
+                            <ul>
+                                <li>Converts 768-dim vectors to vocabulary size</li>
+                                <li>Vocabulary size: 50,257 tokens (for GPT-3)</li>
+                                <li>Shape: [batch, seq_len, 768] → [batch, seq_len, 50257]</li>
+                                <li>Linear transformation</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Probability Distribution:</strong>
+                            <ul>
+                                <li>Softmax converts raw scores to probabilities</li>
+                                <li>Each position gets probability for each token</li>
+                                <li>Probabilities sum to 1.0</li>
+                                <li>Shape: [batch, seq_len, 50257]</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Sample Next Token (Green):</strong>
+                            <ul>
+                                <li>Selects one token based on probabilities</li>
+                                <li>Can be greedy, top-k, top-p, or temperature sampling</li>
+                                <li>Result: Next token ID</li>
+                                <li>Added to sequence for next iteration</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <p><strong>💡 Key Takeaway:</strong> The complete architecture processes text through tokenization → embedding → positional encoding → 96 transformer blocks → output layer → probability distribution → sampling. This process repeats for each generated token.</p>
+                
+                <p><strong>🎯 Real-World Flow:</strong> When you ask ChatGPT a question:
+                    <ol>
+                        <li>Your text is tokenized</li>
+                        <li>Converted to embeddings</li>
+                        <li>Processed through 96 layers (GPT-3) or more (GPT-4)</li>
+                        <li>Output layer generates probabilities</li>
+                        <li>Model samples next token</li>
+                        <li>Process repeats until complete response</li>
+                    </ol>
+                </p>
+                
+                <p><strong>📊 Scale:</strong> GPT-3 has 96 transformer blocks, 175 billion parameters. GPT-4 has even more layers and parameters, enabling more sophisticated understanding and generation.</p>
+            </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    Input[Input Text] --> Token[Tokenization]
+    Token --> Embed[Embedding Layer<br/>Token to 768-dim vector]
+    Embed --> PosEnc[Positional Encoding<br/>Add position info]
+    PosEnc --> Layer1[Transformer Block 1]
+    
+    Layer1 --> Layer2[Transformer Block 2]
+    Layer2 --> Dots[...]
+    Dots --> LayerN[Transformer Block N<br/>N = 96 for GPT-3]
+    
+    LayerN --> Norm[Layer Normalization]
+    Norm --> Output[Output Layer<br/>Vocabulary size]
+    Output --> Prob[Probability Distribution]
+    Prob --> Sample[Sample Next Token]
+    
+    style Input fill:#e3f2fd
+    style Layer1 fill:#fff3e0
+    style Output fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Transformer Block Detail</h3>
+<p><strong>Single Transformer Block:</strong></p>
+
+        <div class="diagram-section">
+            <div class="diagram-explanation">
+                <h4>📊 Understanding Single Transformer Block:</h4>
+                <p><strong>What's inside one transformer block?</strong> This diagram shows the detailed structure of a single transformer block. This exact structure is repeated 96 times in GPT-3. Understanding this is crucial - it's the building block of all LLMs.</p>
+                
+                <div class="step-by-step">
+                    <h5>🔍 Step-by-Step Breakdown:</h5>
+                    <ol>
+                        <li><strong>Input Vectors:</strong>
+                            <ul>
+                                <li>Vector representations from previous layer</li>
+                                <li>Shape: [batch, sequence_length, 768]</li>
+                                <li>Each token is a 768-dimensional vector</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Layer Norm 1:</strong>
+                            <ul>
+                                <li>Normalizes input vectors</li>
+                                <li>Makes training stable</li>
+                                <li>Applied before attention (pre-norm)</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Multi-Head Self-Attention (Orange - Core):</strong>
+                            <ul>
+                                <li>Self-attention mechanism</li>
+                                <li>Each token attends to all tokens</li>
+                                <li>Multiple heads (e.g., 12 heads) capture different patterns</li>
+                                <li>Creates context-aware representations</li>
+                                <li>Most important component!</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Residual Connection 1:</strong>
+                            <ul>
+                                <li>Adds original input to attention output</li>
+                                <li>Formula: output = attention_output + input</li>
+                                <li>Helps gradients flow during training</li>
+                                <li>Allows model to "skip" layers if needed</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Layer Norm 2:</strong>
+                            <ul>
+                                <li>Normalizes after attention</li>
+                                <li>Prepares for feed-forward network</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Feed Forward Network (Green):</strong>
+                            <ul>
+                                <li>Two linear layers with ReLU</li>
+                                <li>Expands: 768 → 3072 dimensions</li>
+                                <li>Then contracts: 3072 → 768 dimensions</li>
+                                <li>Processes each position independently</li>
+                                <li>Adds non-linearity</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Residual Connection 2:</strong>
+                            <ul>
+                                <li>Adds output from before FFN to FFN output</li>
+                                <li>Another skip connection</li>
+                                <li>Helps information flow</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Output Vectors:</strong>
+                            <ul>
+                                <li>Refined representations</li>
+                                <li>Same shape as input: [batch, seq_len, 768]</li>
+                                <li>Becomes input to next transformer block</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <p><strong>💡 Key Takeaway:</strong> Each transformer block has two main parts: Self-Attention (tokens interact) and Feed-Forward Network (processes each position). Residual connections help information flow and make deep networks trainable.</p>
+                
+                <p><strong>🎯 Why This Design:</strong>
+                    <ul>
+                        <li><strong>Attention:</strong> Captures relationships between tokens</li>
+                        <li><strong>FFN:</strong> Adds non-linearity and processes features</li>
+                        <li><strong>Residual Connections:</strong> Enable deep networks (96 layers!)</li>
+                        <li><strong>Layer Norm:</strong> Stabilizes training</li>
+                    </ul>
+                </p>
+                
+                <p><strong>📚 Mathematical Flow:</strong> <code>Layer(x) = FFN(Norm(Attention(Norm(x)) + x)) + Attention(Norm(x)) + x</code></p>
+            </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    Input[Input Vectors] --> Norm1[Layer Norm 1]
+    Norm1 --> Attn[Multi-Head Self-Attention]
+    Attn --> Add1[Residual Connection]
+    Input --> Add1
+    Add1 --> Norm2[Layer Norm 2]
+    Norm2 --> FFN[Feed Forward Network]
+    FFN --> Add2[Residual Connection]
+    Add1 --> Add2
+    Add2 --> Output[Output Vectors]
+    
+    style Attn fill:#fff3e0
+    style FFN fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Embedding Layer</h3>
+<p><strong>How It Works:</strong></p>
+
+        <div class="diagram-section">
+            <div class="diagram-explanation">
+                <h4>📊 Understanding Embedding Layer:</h4>
+                <p><strong>How does the embedding layer work?</strong> The embedding layer is the first layer that processes tokens. It converts token IDs (just numbers) into dense vectors that capture semantic meaning. This is where the model's "understanding" begins.</p>
+                
+                <div class="step-by-step">
+                    <h5>🔍 Step-by-Step Breakdown:</h5>
+                    <ol>
+                        <li><strong>Token ID Input (Blue):</strong>
+                            <ul>
+                                <li>Input: Token ID number</li>
+                                <li>Example: 1234</li>
+                                <li>This is just an integer - no meaning yet</li>
+                                <li>From vocabulary (e.g., token 1234 = "students")</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Embedding Lookup:</strong>
+                            <ul>
+                                <li>Look up row 1234 in embedding matrix</li>
+                                <li>Embedding matrix size: [50257, 768]</li>
+                                <li>50,257 rows (one per token)</li>
+                                <li>768 columns (embedding dimension)</li>
+                                <li>Simple array indexing operation</li>
+                                <li>Very fast - just memory lookup</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Vector Output (Green):</strong>
+                            <ul>
+                                <li>Result: 768-dimensional vector</li>
+                                <li>Example: [0.2, -0.5, 0.8, 0.1, ..., -0.3]</li>
+                                <li>768 numbers representing the token</li>
+                                <li>This vector captures semantic meaning</li>
+                                <li>Similar tokens have similar vectors</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <p><strong>💡 Key Takeaway:</strong> Embedding converts meaningless token IDs into meaningful vectors. These vectors are learned during training - similar words end up with similar vectors. This is the foundation of how LLMs understand language.</p>
+                
+                <p><strong>🎯 Real-World Analogy:</strong> Like a dictionary that doesn't just define words, but represents each word as a point in 768-dimensional space. Words with similar meanings are close together. "Cat" and "dog" are closer than "cat" and "airplane".</p>
+                
+                <p><strong>📊 Embedding Matrix Details:</strong>
+                    <ul>
+                        <li>Size: 50,257 tokens × 768 dimensions</li>
+                        <li>Total parameters: ~38.6 million</li>
+                        <li>Each row is learned during training</li>
+                        <li>Similar tokens learn similar vectors</li>
+                        <li>Example: "cat" and "kitten" have similar vectors</li>
+                    </ul>
+                </p>
+                
+                <p><strong>🔢 Why 768 Dimensions?</strong> This is a hyperparameter. More dimensions = more capacity to represent meaning, but also more parameters. 768 is a good balance for GPT-3. Different models use different dimensions (e.g., 1024, 2048).</p>
+            </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph LR
+    Token["Token ID:<br/>1234"] --> Lookup[Embedding Lookup]
+    Lookup --> Vector["Vector:<br/>[0.2, -0.5, 0.8, ...]<br/>768 dimensions"]
+    
+    style Token fill:#e3f2fd
+    style Vector fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Embedding Matrix:</strong></p>
+<ul>
+<li>Size: Vocabulary × Embedding Dimension</li>
+<li>Example: 50,257 tokens × 768 dimensions = ~38M parameters</li>
+<li>Learned during training</li>
+</ul>
+<h3>Positional Encoding</h3>
+<p><strong>Why Needed:</strong></p>
+<ul>
+<li>Transformers don't have inherent order</li>
+<li>Need to know token positions</li>
+</ul>
+<p><strong>Methods:</strong></p>
+<ol>
+<li><strong>Sinusoidal Encoding</strong> (Original Transformer)</li>
+</ol>
+<pre><code>   PE(pos, 2i) = sin(pos / 10000^(2i/d_model))
+<p>PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))</p>
+<p></code></pre></p>
+<ol>
+<li><strong>Learned Positional Embeddings</strong> (GPT, BERT)</li>
+</ol>
+<ul>
+<li>Learned during training</li>
+<li>Similar to token embeddings</li>
+</ul>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>Token</strong>: Token Embedding</li><li><strong>Add</strong>: Add</li><li><strong>Pos</strong>: Position Embedding</li><li><strong>Final</strong>: Final Embedding</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Add</strong> connects to <strong>Final Embedding</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph TD
+    Token[Token Embedding] --> Add[Add]
+    Pos[Position Embedding] --> Add
+    Add --> Final[Final Embedding]
+    
+    style Token fill:#e3f2fd
+    style Pos fill:#fff3e0
+    style Final fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Feed Forward Network</h3>
+<p><strong>Structure:</strong></p>
+
+        <div class="diagram-section">
+            
+    <div class="diagram-explanation">
+        <h4>📊 Understanding This Diagram:</h4>
+        <p><strong>What does this show?</strong> This diagram illustrates the relationships and hierarchy between different concepts or components. Follow the arrows to understand how elements connect and relate to each other.</p>
+        
+        <div class="step-by-step">
+            <h5>🔍 Step-by-Step Breakdown:</h5>
+            <ol>
+    <li><strong>Main Components:</strong><ul><li><strong>Input</strong>: Input<br/>768 dim</li><li><strong>Linear1</strong>: Linear Layer 1<br/>768 to 3072</li><li><strong>ReLU</strong>: ReLU Activation</li><li><strong>Linear2</strong>: Linear Layer 2<br/>3072 to 768</li><li><strong>Output</strong>: Output<br/>768 dim</li></ul></li><li><strong>Relationships:</strong> The arrows show how components connect:<ul><li><strong>Linear Layer 1<br/>768 to 3072</strong> connects to <strong>ReLU Activation</strong></li><li><strong>ReLU Activation</strong> connects to <strong>Linear Layer 2<br/>3072 to 768</strong></li><li><strong>Linear Layer 2<br/>3072 to 768</strong> connects to <strong>Output<br/>768 dim</strong></li></ul></li>
+            </ol>
+        </div>
+        <p><strong>💡 Key Takeaway:</strong> Follow the arrows to understand how different elements relate to each other in the overall structure. The hierarchy and connections reveal the organization of concepts.</p>
+    </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+graph LR
+    Input[Input<br/>768 dim] --> Linear1[Linear Layer 1<br/>768 to 3072]
+    Linear1 --> ReLU[ReLU Activation]
+    ReLU --> Linear2[Linear Layer 2<br/>3072 to 768]
+    Linear2 --> Output[Output<br/>768 dim]
+    
+    style Input fill:#e3f2fd
+    style ReLU fill:#fff3e0
+    style Output fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<p><strong>Mathematical:</strong></p>
+<pre><code>FFN(x) = max(0, xW1 + b1)W2 + b2
+<p></code></pre></p>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter7.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter9.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 8 of 15</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

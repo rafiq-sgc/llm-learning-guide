@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Tokenization - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔤 LLM Tokenization</h1>
+            <p class="subtitle">Chapter 16 of 18 - Comprehensive Guide</p>
+        </header>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="comprehensive_index.html">🏠 Home</a></li>
+                <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+                <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+                <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+                <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+                <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+                <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+                <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+                <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+                <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+                <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+                <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+                <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+                <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🔤 Chapter 16: LLM Tokenization - Deep Dive</h1>
+                <p>Understanding How Text Becomes Numbers - Complete Step-by-Step Process</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter15.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter17.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h2>What is Tokenization?</h2>
+                <p><strong>Tokenization</strong> is the process of converting human-readable text into a sequence of numbers (token IDs) that the LLM can process. It's the first step in processing any text input.</p>
+                
+                <p><strong>Why Tokenization?</strong></p>
+                <ul>
+                    <li>LLMs work with numbers, not text</li>
+                    <li>Text must be converted to numerical representations</li>
+                    <li>Tokenization breaks text into manageable pieces (tokens)</li>
+                    <li>Each token gets a unique ID from the vocabulary</li>
+                </ul>
+
+                <h3>Complete Tokenization Process Overview</h3>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Complete Tokenization Flow:</h4>
+                        <p><strong>How does text become token IDs?</strong> This diagram shows the complete tokenization process from raw text to token IDs. Understanding this flow is crucial for understanding how LLMs process text.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Breakdown:</h5>
+                            <ol>
+                                <li><strong>Input Text (Blue):</strong>
+                                    <ul>
+                                        <li>Raw text from user</li>
+                                        <li>Example: "Show me students enrolled in 2024"</li>
+                                        <li>Human-readable format</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Text Normalization:</strong>
+                                    <ul>
+                                        <li>Clean and normalize text</li>
+                                        <li>Remove extra spaces, normalize unicode</li>
+                                        <li>Handle special characters</li>
+                                        <li>Prepare for tokenization</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>BPE Tokenization:</strong>
+                                    <ul>
+                                        <li>Byte Pair Encoding algorithm</li>
+                                        <li>Breaks text into subword tokens</li>
+                                        <li>Uses learned vocabulary</li>
+                                        <li>Result: List of token strings</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Vocabulary Lookup:</strong>
+                                    <ul>
+                                        <li>Look up each token in vocabulary</li>
+                                        <li>GPT-4 vocabulary: 100,256 tokens</li>
+                                        <li>Each token string → token ID</li>
+                                        <li>Fast hash table lookup</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Token IDs (Green):</strong>
+                                    <ul>
+                                        <li>Final numerical representation</li>
+                                        <li>Array of integers</li>
+                                        <li>Example: [1234, 567, 890, 123, 456]</li>
+                                        <li>Ready for embedding layer</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> Tokenization converts text → normalized text → token strings → token IDs. Each step transforms the data into a format the model can process. The vocabulary lookup is a critical step that maps tokens to IDs.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Input[Input Text<br/>Show me students enrolled in 2024] --> Normalize[Text Normalization<br/>Clean and normalize]
+    Normalize --> BPE[BPE Tokenization<br/>Break into subwords]
+    BPE --> Tokens[Token Strings<br/>show, _me, students, _enrolled, _in, 2024]
+    Tokens --> Lookup[Vocabulary Lookup<br/>Look up in vocabulary table]
+    Lookup --> IDs[Token IDs<br/>1234, 567, 890, 123, 456, 789]
+    
+    style Input fill:#e3f2fd
+    style IDs fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>GPT-4 Tokenization Specifications</h2>
+                <p><strong>GPT-4 Tokenizer Details:</strong></p>
+                <ul>
+                    <li><strong>Vocabulary Size:</strong> 100,256 tokens</li>
+                    <li><strong>Tokenization Method:</strong> Byte Pair Encoding (BPE)</li>
+                    <li><strong>Special Tokens:</strong> 
+                        <ul>
+                            <li>&lt;|endoftext|&gt; - End of text marker</li>
+                            <li>&lt;|fim_prefix|&gt; - Fill-in-middle prefix</li>
+                            <li>&lt;|fim_middle|&gt; - Fill-in-middle middle</li>
+                            <li>&lt;|fim_suffix|&gt; - Fill-in-middle suffix</li>
+                            <li>And many more task-specific tokens</li>
+                        </ul>
+                    </li>
+                    <li><strong>Character Coverage:</strong> Handles all Unicode characters</li>
+                </ul>
+
+                <h2>Byte Pair Encoding (BPE) - How It Works</h2>
+                <p><strong>BPE</strong> is the tokenization algorithm used by GPT-4. It learns to break text into subword units that balance between words and characters.</p>
+
+                <h3>BPE Training Process (How Vocabulary is Built)</h3>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding BPE Training Process:</h4>
+                        <p><strong>How is the BPE vocabulary created?</strong> This diagram shows how BPE learns to tokenize text by iteratively merging the most frequent character pairs. This process creates a vocabulary optimized for the training data.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Breakdown:</h5>
+                            <ol>
+                                <li><strong>Step 1 - Start with Characters:</strong>
+                                    <ul>
+                                        <li>Begin with individual characters</li>
+                                        <li>Each character is a token</li>
+                                        <li>Example: "low" → ['l', 'o', 'w']</li>
+                                        <li>Add end-of-word marker: ['l', 'o', 'w', '&lt;/w&gt;']</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 2 - Count Pairs:</strong>
+                                    <ul>
+                                        <li>Count frequency of all character pairs</li>
+                                        <li>Example: ('l','o') appears 2 times</li>
+                                        <li>('o','w') appears 2 times</li>
+                                        <li>Find most frequent pair</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 3 - Merge Most Frequent:</strong>
+                                    <ul>
+                                        <li>Merge the most frequent pair into one token</li>
+                                        <li>Example: Merge ('o','w') → 'ow'</li>
+                                        <li>Text becomes: ['l', 'ow', '&lt;/w&gt;']</li>
+                                        <li>Vocabulary now includes 'ow'</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Step 4 - Repeat:</strong>
+                                    <ul>
+                                        <li>Count pairs again in new text</li>
+                                        <li>Merge next most frequent pair</li>
+                                        <li>Continue until vocabulary size reached</li>
+                                        <li>GPT-4: Repeat ~100,000 times</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Final Vocabulary:</strong>
+                                    <ul>
+                                        <li>Contains common words, subwords, and characters</li>
+                                        <li>Optimized for training data</li>
+                                        <li>Can tokenize any text</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> BPE learns by iteratively merging frequent character pairs. This creates a vocabulary that efficiently represents common words while still handling rare words through subword units.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Start[Start: Characters<br/>l o w e r n e w e s t] --> Count[Count Character Pairs<br/>l-o: 2, o-w: 2, e-s: 2]
+    Count --> Find[Find Most Frequent<br/>o-w appears 2 times]
+    Find --> Merge[Merge Pair<br/>l ow e r n e w e s t]
+    Merge --> Check{Vocabulary<br/>Size<br/>Reached?}
+    Check -->|No| Count
+    Check -->|Yes| Final[Final Vocabulary<br/>100,256 tokens]
+    
+    style Start fill:#e3f2fd
+    style Final fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h3>BPE Tokenization Example (Step-by-Step)</h3>
+                <p><strong>Real Example: Tokenizing "Show me students"</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding BPE Tokenization in Action:</h4>
+                        <p><strong>How does BPE tokenize a real sentence?</strong> This diagram shows the step-by-step process of tokenizing "Show me students" using GPT-4's BPE algorithm. Each step applies merge rules learned during training.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Breakdown:</h5>
+                            <ol>
+                                <li><strong>Input Text:</strong>
+                                    <ul>
+                                        <li>"Show me students"</li>
+                                        <li>Normalize: "show me students" (lowercase)</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Initial Split:</strong>
+                                    <ul>
+                                        <li>Split by spaces: ["show", "me", "students"]</li>
+                                        <li>Add word boundaries: ["show&lt;/w&gt;", "me&lt;/w&gt;", "students&lt;/w&gt;"]</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Apply BPE Merges:</strong>
+                                    <ul>
+                                        <li>Start with characters: ['s','h','o','w','&lt;/w&gt;']</li>
+                                        <li>Apply merge rule 1: 'sh' → ['sh','o','w','&lt;/w&gt;']</li>
+                                        <li>Apply merge rule 2: 'ow' → ['sh','ow','&lt;/w&gt;']</li>
+                                        <li>Continue applying merges...</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Final Tokens:</strong>
+                                    <ul>
+                                        <li>"show" → ["show"] (common word, single token)</li>
+                                        <li>"me" → ["me"] (common word, single token)</li>
+                                        <li>"students" → ["student", "s"] (split into word + plural)</li>
+                                        <li>Result: ["show", "me", "student", "s"]</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> BPE tokenization applies learned merge rules greedily. Common words become single tokens, while less common words are split into subwords. This balances vocabulary size with coverage.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph LR
+    Input["Input: 'Show me students'"] --> Normalize["Normalize: 'show me students'"]
+    Normalize --> Split["Split: ['show', 'me', 'students']"]
+    Split --> BPE1["Apply BPE:<br/>'show' → ['show']"]
+    Split --> BPE2["Apply BPE:<br/>'me' → ['me']"]
+    Split --> BPE3["Apply BPE:<br/>'students' → ['student', 's']"]
+    BPE1 --> Final["Final Tokens:<br/>['show', 'me', 'student', 's']"]
+    BPE2 --> Final
+    BPE3 --> Final
+    
+    style Input fill:#e3f2fd
+    style Final fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Vocabulary Lookup - How Token IDs are Found</h2>
+                <p><strong>The Vocabulary Table:</strong> GPT-4 has a vocabulary of 100,256 tokens. Each token string has a unique ID (0 to 100,255).</p>
+
+                <h3>Vocabulary Structure</h3>
+                <p><strong>How the Vocabulary is Organized:</strong></p>
+                <ul>
+                    <li><strong>Token Strings:</strong> The actual text of each token</li>
+                    <li><strong>Token IDs:</strong> Unique integer for each token</li>
+                    <li><strong>Storage:</strong> Hash table for fast lookup</li>
+                    <li><strong>Size:</strong> ~100,256 entries</li>
+                </ul>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Vocabulary Lookup Process:</h4>
+                        <p><strong>How does the model find token IDs?</strong> This diagram shows how token strings are looked up in the vocabulary table to get their corresponding token IDs. This is a critical step that happens billions of times during training and inference.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Breakdown:</h5>
+                            <ol>
+                                <li><strong>Token Strings (Input):</strong>
+                                    <ul>
+                                        <li>Result from BPE tokenization</li>
+                                        <li>Example: ["show", "me", "student", "s"]</li>
+                                        <li>These are still text strings</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Vocabulary Table (Hash Map):</strong>
+                                    <ul>
+                                        <li>Massive lookup table</li>
+                                        <li>Key: Token string (e.g., "show")</li>
+                                        <li>Value: Token ID (e.g., 1234)</li>
+                                        <li>Size: 100,256 entries</li>
+                                        <li>Stored in memory for fast access</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Lookup Process:</strong>
+                                    <ul>
+                                        <li>For each token string:</li>
+                                        <li>Hash the token string</li>
+                                        <li>Look up in hash table</li>
+                                        <li>Get corresponding token ID</li>
+                                        <li>Very fast: O(1) average time</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Token IDs (Output):</strong>
+                                    <ul>
+                                        <li>Array of integers</li>
+                                        <li>Example: [1234, 567, 890, 123]</li>
+                                        <li>Each number represents a token</li>
+                                        <li>Ready for embedding layer</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> Vocabulary lookup is a simple but critical operation. It converts token strings to token IDs using a hash table, making it extremely fast. This happens for every token in every input.</p>
+                        
+                        <p><strong>🎯 Real-World Example:</strong>
+                            <ul>
+                                <li>"show" → Hash lookup → Token ID: 1234</li>
+                                <li>"me" → Hash lookup → Token ID: 567</li>
+                                <li>"student" → Hash lookup → Token ID: 890</li>
+                                <li>"s" → Hash lookup → Token ID: 123</li>
+                                <li>Result: [1234, 567, 890, 123]</li>
+                            </ul>
+                        </p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Tokens[Token Strings<br/>show, me, student, s] --> Hash[Hash Function<br/>Fast lookup]
+    Hash --> Table[Vocabulary Table<br/>100,256 entries<br/>Key: Token String<br/>Value: Token ID]
+    Table --> IDs[Token IDs<br/>1234, 567, 890, 123]
+    
+    Table --> Example1["'show' → 1234"]
+    Table --> Example2["'me' → 567"]
+    Table --> Example3["'student' → 890"]
+    Table --> Example4["'s' → 123"]
+    
+    style Tokens fill:#e3f2fd
+    style IDs fill:#e8f5e9
+    style Table fill:#fff3e0
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Complete Example: "Show me students enrolled in 2024"</h3>
+                <p><strong>Full Tokenization Process:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Understanding Complete Tokenization Example:</h4>
+                        <p><strong>How is a complete sentence tokenized?</strong> This sequence diagram shows the complete tokenization process for a real sentence, from input text to final token IDs. This is exactly what happens when you send a query to GPT-4.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Breakdown:</h5>
+                            <ol>
+                                <li><strong>User Input:</strong>
+                                    <ul>
+                                        <li>Raw text: "Show me students enrolled in 2024"</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Text Normalization:</strong>
+                                    <ul>
+                                        <li>Lowercase: "show me students enrolled in 2024"</li>
+                                        <li>Remove extra spaces</li>
+                                        <li>Normalize unicode</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>BPE Tokenization:</strong>
+                                    <ul>
+                                        <li>Apply BPE algorithm</li>
+                                        <li>Break into subwords</li>
+                                        <li>Result: ["show", "me", "student", "s", "enrolled", "in", "2024"]</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Vocabulary Lookup:</strong>
+                                    <ul>
+                                        <li>Look up each token in vocabulary</li>
+                                        <li>"show" → 1234</li>
+                                        <li>"me" → 567</li>
+                                        <li>"student" → 890</li>
+                                        <li>"s" → 123</li>
+                                        <li>"enrolled" → 456</li>
+                                        <li>"in" → 789</li>
+                                        <li>"2024" → 234</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Final Token IDs:</strong>
+                                    <ul>
+                                        <li>[1234, 567, 890, 123, 456, 789, 234]</li>
+                                        <li>7 tokens total</li>
+                                        <li>Ready for embedding layer</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        
+                        <p><strong>💡 Key Takeaway:</strong> The complete tokenization process transforms human-readable text into a sequence of numbers. Each step is optimized for speed and accuracy. This happens in milliseconds for typical queries.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Normalize as Text Normalizer
+    participant BPE as BPE Tokenizer
+    participant Vocab as Vocabulary Table
+    participant Model as LLM Model
+
+    User->>Normalize: "Show me students enrolled in 2024"
+    Normalize->>Normalize: Lowercase, clean
+    Normalize->>BPE: "show me students enrolled in 2024"
+    BPE->>BPE: Apply BPE merges
+    BPE->>Vocab: ["show", "me", "student", "s", "enrolled", "in", "2024"]
+    Vocab->>Vocab: Lookup each token
+    Vocab->>Model: [1234, 567, 890, 123, 456, 789, 234]
+    Model->>Model: Process token IDs
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Tokenization Details</h2>
+                <h3>Special Tokens</h3>
+                <p><strong>GPT-4 Special Tokens:</strong></p>
+                <ul>
+                    <li><strong>&lt;|endoftext|&gt;:</strong> Marks end of text (ID: 50256)</li>
+                    <li><strong>&lt;|fim_prefix|&gt;:</strong> Fill-in-middle prefix</li>
+                    <li><strong>&lt;|fim_middle|&gt;:</strong> Fill-in-middle middle</li>
+                    <li><strong>&lt;|fim_suffix|&gt;:</strong> Fill-in-middle suffix</li>
+                    <li><strong>Task-specific tokens:</strong> Many more for different tasks</li>
+                </ul>
+
+                <h3>Tokenization Properties</h3>
+                <p><strong>Key Characteristics:</strong></p>
+                <ul>
+                    <li><strong>Deterministic:</strong> Same text always produces same tokens</li>
+                    <li><strong>Reversible:</strong> Token IDs can be converted back to text</li>
+                    <li><strong>Fast:</strong> Optimized for speed (milliseconds)</li>
+                    <li><strong>Handles Unicode:</strong> Works with all languages</li>
+                    <li><strong>Subword Units:</strong> Balances vocabulary size and coverage</li>
+                </ul>
+
+                <h2>Tokenization Performance</h2>
+                <p><strong>GPT-4 Tokenization Speed:</strong></p>
+                <ul>
+                    <li><strong>Speed:</strong> ~1-2 milliseconds per token</li>
+                    <li><strong>Throughput:</strong> Thousands of tokens per second</li>
+                    <li><strong>Memory:</strong> Vocabulary table ~50-100 MB</li>
+                    <li><strong>Optimization:</strong> Hash tables, efficient algorithms</li>
+                </ul>
+
+                <h2>Common Tokenization Patterns</h2>
+                <p><strong>How Different Text Types are Tokenized:</strong></p>
+                <ul>
+                    <li><strong>Common Words:</strong> Usually single token (e.g., "the", "and")</li>
+                    <li><strong>Less Common Words:</strong> Split into subwords (e.g., "students" → "student" + "s")</li>
+                    <li><strong>Numbers:</strong> Often single tokens (e.g., "2024" → one token)</li>
+                    <li><strong>Punctuation:</strong> Usually separate tokens</li>
+                    <li><strong>Code:</strong> Special handling for programming syntax</li>
+                </ul>
+
+                <p><strong>💡 Key Insight:</strong> Tokenization is the bridge between human language and machine processing. Understanding tokenization helps you understand how LLMs "see" text and why certain inputs behave differently.</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter15.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter17.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 16 of 17</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

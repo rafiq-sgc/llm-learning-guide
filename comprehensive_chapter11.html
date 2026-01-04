@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Data and Preprocessing - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📚 Training Data and Preprocessing</h1>
+            <p class="subtitle">Chapter 11 of 15 - Comprehensive Guide</p>
+        </header>
+
+        
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+    <nav class="nav-sidebar" id="nav-sidebar">
+        <ul>
+            <li><a href="comprehensive_index.html">🏠 Home</a></li>
+            <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+            <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+            <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+            <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+            <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+            <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+            <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+            <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+            <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+            <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+            <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+            <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+            <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+            <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+            <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+        </ul>
+    </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>📚 Chapter 11: Training Data and Preprocessing</h1>
+                <p>Comprehensive Learning Guide - Detailed Presentation Material</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter10.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter12.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h3>Data Collection at Scale</h3>
+<p><strong>The Challenge:</strong></p>
+<ul>
+<li>Need massive amounts of high-quality text</li>
+<li>Must be diverse and representative</li>
+<li>Must be clean and safe</li>
+</ul>
+<h3>Data Sources Breakdown</h3>
+
+        <div class="diagram-section">
+            <div class="diagram-explanation">
+                <h4>📊 Understanding Training Data Sources Distribution:</h4>
+                <p><strong>Where does training data come from?</strong> This pie chart shows the distribution of data sources used to train GPT-3. Understanding the data sources helps understand what the model learned and its capabilities.</p>
+                
+                <div class="step-by-step">
+                    <h5>🔍 Step-by-Step Breakdown:</h5>
+                    <ol>
+                        <li><strong>Common Crawl (Web) - 60% (Largest):</strong>
+                            <ul>
+                                <li>Web pages crawled from the internet</li>
+                                <li>Billions of web pages</li>
+                                <li>Very diverse content</li>
+                                <li>Includes blogs, forums, websites</li>
+                                <li>Quality varies - needs heavy filtering</li>
+                                <li>Provides broad knowledge</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Books - 22% (Second Largest):</strong>
+                            <ul>
+                                <li>Digital books from various sources</li>
+                                <li>Project Gutenberg, digitized libraries</li>
+                                <li>High-quality, well-written text</li>
+                                <li>Good grammar and structure</li>
+                                <li>Helps model learn proper language</li>
+                                <li>Important for language quality</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Wikipedia - 3%:</strong>
+                            <ul>
+                                <li>Wikipedia articles</li>
+                                <li>High-quality, factual content</li>
+                                <li>Well-structured and edited</li>
+                                <li>Good for factual knowledge</li>
+                                <li>Relatively small but high quality</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Code (GitHub) - 5%:</strong>
+                            <ul>
+                                <li>Source code from GitHub</li>
+                                <li>Programming languages, documentation</li>
+                                <li>Enables code generation abilities</li>
+                                <li>Helps model understand programming</li>
+                                <li>Important for technical tasks</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>News Articles - 5%:</strong>
+                            <ul>
+                                <li>News articles from various sources</li>
+                                <li>Current events, journalism</li>
+                                <li>Recent information (up to training cutoff)</li>
+                                <li>Good for understanding current events</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Other - 5%:</strong>
+                            <ul>
+                                <li>Various other sources</li>
+                                <li>Scientific papers, Reddit, etc.</li>
+                                <li>Diverse additional content</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <p><strong>💡 Key Takeaway:</strong> The majority of training data comes from web pages (60%), providing broad knowledge. Books (22%) ensure high language quality. The combination creates a model with both broad knowledge and good language skills.</p>
+                
+                <p><strong>🎯 Why This Distribution Matters:</strong>
+                    <ul>
+                        <li><strong>Web (60%):</strong> Broad knowledge, diverse topics</li>
+                        <li><strong>Books (22%):</strong> High-quality language, proper grammar</li>
+                        <li><strong>Wikipedia (3%):</strong> Factual, structured information</li>
+                        <li><strong>Code (5%):</strong> Programming capabilities</li>
+                        <li><strong>News (5%):</strong> Current events understanding</li>
+                    </ul>
+                </p>
+                
+                <p><strong>📊 Total Scale:</strong> GPT-3 was trained on ~500 billion tokens from these sources. That's equivalent to reading millions of books!</p>
+            </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+pie title Training Data Sources for GPT-3
+    "Common Crawl (Web)" : 60
+    "Books" : 22
+    "Wikipedia" : 3
+    "Code (GitHub)" : 5
+    "News Articles" : 5
+    "Other" : 5
+                </div>
+            </div>
+        </div>
+        
+<h3>Data Preprocessing Pipeline</h3>
+
+        <div class="diagram-section">
+            <div class="diagram-explanation">
+                <h4>📊 Understanding Data Preprocessing Pipeline:</h4>
+                <p><strong>How is raw data prepared for training?</strong> This flowchart shows the complete data preprocessing pipeline. Raw data from the web is messy and needs extensive cleaning before it can be used for training. This process is crucial for model quality.</p>
+                
+                <div class="step-by-step">
+                    <h5>🔍 Step-by-Step Breakdown:</h5>
+                    <ol>
+                        <li><strong>Step 1 - Raw Text Data (Red - Starting Point):</strong>
+                            <ul>
+                                <li>Petabytes of raw text from various sources</li>
+                                <li>Web pages, books, code, etc.</li>
+                                <li>Very messy: HTML, duplicates, low quality</li>
+                                <li>Needs extensive cleaning</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 2 - Deduplication:</strong>
+                            <ul>
+                                <li>Remove exact duplicate texts</li>
+                                <li>Prevents model from overfitting to repeated content</li>
+                                <li>Can remove 10-30% of data</li>
+                                <li>Important for data quality</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 3 - Quality Filtering:</strong>
+                            <ul>
+                                <li>Remove low-quality text</li>
+                                <li>Criteria: Perplexity, repetition, information content</li>
+                                <li>Removes spam, gibberish, low-information content</li>
+                                <li>Keeps only high-quality text</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 4 - Toxicity Filtering:</strong>
+                            <ul>
+                                <li>Remove harmful, toxic, or inappropriate content</li>
+                                <li>Important for model safety</li>
+                                <li>Filters hate speech, violence, etc.</li>
+                                <li>Helps create safer models</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 5 - Language Detection:</strong>
+                            <ul>
+                                <li>Detect and filter by language</li>
+                                <li>Keep target languages (usually English)</li>
+                                <li>Remove other languages if focusing on one</li>
+                                <li>Ensures language consistency</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 6 - Length Filtering:</strong>
+                            <ul>
+                                <li>Remove texts that are too short or too long</li>
+                                <li>Too short: Not enough context</li>
+                                <li>Too long: Hard to process, may be low quality</li>
+                                <li>Keeps texts of reasonable length</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 7 - Format Normalization:</strong>
+                            <ul>
+                                <li>Clean formatting issues</li>
+                                <li>Remove HTML tags, extra whitespace</li>
+                                <li>Normalize encoding, special characters</li>
+                                <li>Standardize text format</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 8 - Chunking:</strong>
+                            <ul>
+                                <li>Split long texts into manageable chunks</li>
+                                <li>Create sequences of fixed length (e.g., 2048 tokens)</li>
+                                <li>Prepares data for training</li>
+                                <li>Each chunk becomes a training example</li>
+                            </ul>
+                        </li>
+                        
+                        <li><strong>Step 9 - Final Training Data (Green):</strong>
+                            <ul>
+                                <li>Clean, high-quality, processed data</li>
+                                <li>Ready for tokenization</li>
+                                <li>Much smaller than raw data (after filtering)</li>
+                                <li>Example: 45TB raw → 500B tokens filtered</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <p><strong>💡 Key Takeaway:</strong> Data preprocessing is a multi-stage pipeline that transforms messy raw data into clean, high-quality training data. Each step removes different types of noise and ensures data quality.</p>
+                
+                <p><strong>🎯 Real-World Impact:</strong> Without proper preprocessing:
+                    <ul>
+                        <li>Model learns from low-quality content</li>
+                        <li>Generates poor quality text</li>
+                        <li>May produce toxic or harmful content</li>
+                        <li>Wastes compute on bad data</li>
+                    </ul>
+                    With proper preprocessing:
+                    <ul>
+                        <li>Model learns from high-quality content</li>
+                        <li>Generates better text</li>
+                        <li>Safer and more useful</li>
+                        <li>More efficient training</li>
+                    </ul>
+                </p>
+                
+                <p><strong>📊 Scale:</strong> For GPT-3, this pipeline processed 45+ TB of raw text down to ~500 billion tokens of high-quality training data. The filtering removed a huge amount of low-quality content!</p>
+            </div>
+    
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Raw[Raw Text Data<br/>Petabytes] --> Dedup[1. Deduplication<br/>Remove exact duplicates]
+    Dedup --> Quality[2. Quality Filtering<br/>Remove low-quality text]
+    Quality --> Toxic[3. Toxicity Filtering<br/>Remove harmful content]
+    Toxic --> Lang[4. Language Detection<br/>Keep target languages]
+    Lang --> Length[5. Length Filtering<br/>Remove too short/long]
+    Length --> Format[6. Format Normalization<br/>Clean formatting]
+    Format --> Chunk[7. Chunking<br/>Split into sequences]
+    Chunk --> Final[Final Training Data<br/>Ready for tokenization]
+    
+    style Raw fill:#ffebee
+    style Final fill:#e8f5e9
+                </div>
+            </div>
+        </div>
+        
+<h3>Quality Filtering</h3>
+<p><strong>Criteria:</strong></p>
+<ol>
+<li><strong>Perplexity</strong>: Remove text that's too random</li>
+<li><strong>Repetition</strong>: Remove highly repetitive text</li>
+<li><strong>Length</strong>: Keep reasonable length texts</li>
+<li><strong>Language</strong>: Filter by language</li>
+<li><strong>Content</strong>: Remove low-information content</li>
+</ol>
+<h3>Data Statistics</h3>
+<p><strong>GPT-3 Training Data:</strong></p>
+<ul>
+<li><strong>Total Tokens</strong>: ~500 billion</li>
+<li><strong>Sources</strong>: 45+ TB of text</li>
+<li><strong>Languages</strong>: Primarily English, some multilingual</li>
+<li><strong>Time Period</strong>: Up to October 2021</li>
+<li><strong>Processing</strong>: Months of filtering and cleaning</li>
+</ul>
+<p>---</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter10.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter12.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 11 of 15</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

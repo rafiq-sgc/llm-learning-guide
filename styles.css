@@ -388,6 +388,70 @@ code {
 }
 
 /* Diagrams */
+.diagram-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.diagram-explanation {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.diagram-explanation h4 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.diagram-explanation h5 {
+    color: var(--text-primary);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.diagram-explanation .step-by-step {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.diagram-explanation .step-by-step ol {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.diagram-explanation .step-by-step li {
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+}
+
+.diagram-explanation .step-by-step li strong {
+    color: var(--primary-color);
+}
+
+.diagram-explanation p {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+}
+
+.diagram-explanation ul {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.diagram-explanation ul li {
+    margin-bottom: 0.5rem;
+}
+
 .diagram-container {
     background: white;
     padding: 2rem;
