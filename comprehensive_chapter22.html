@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Recipe (Step-by-Step): How Organizations Train LLMs - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧪 Training Recipe: Step-by-Step</h1>
+            <p class="subtitle">Chapter 22 of 26 - Comprehensive Guide</p>
+        </header>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="comprehensive_index.html">🏠 Home</a></li>
+                <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+                <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+                <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+                <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+                <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+                <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+                <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+                <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+                <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+                <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+                <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+                <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+                <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+                <li><a href="comprehensive_chapter19.html">🏭 Chapter 19: End-to-End LLM Lifecycle</a></li>
+                <li><a href="comprehensive_chapter20.html">🎲 Chapter 20: How LLMs Generate Text</a></li>
+                <li><a href="comprehensive_chapter21.html">🧠 Chapter 21: How LLMs Understand Meaning</a></li>
+                <li><a href="comprehensive_chapter22.html" class="active">🧪 Chapter 22: Training Recipe (Step-by-Step)</a></li>
+                <li><a href="comprehensive_chapter23.html">👁️ Chapter 23: How Multimodal LLMs “See”</a></li>
+                <li><a href="comprehensive_chapter24.html">🗄️ Chapter 24: NL2SQL Deep Dive</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🧪 Chapter 22: Training an LLM — The Real Step-by-Step Recipe</h1>
+                <p>What teams do in practice: data pipeline, scaling decisions, distributed training, checkpoints, evaluation, and post-training.</p>
+            </div>
+
+            <div class="chapter-nav">
+                <a href="comprehensive_chapter21.html">← Previous Chapter</a>
+                <a href="comprehensive_index.html">🏠 Home</a>
+                <a href="comprehensive_chapter23.html">Next Chapter →</a>
+            </div>
+
+            <div class="section">
+                <h2>Step 0: Decide the Product Goal (This shapes everything)</h2>
+                <ul>
+                    <li><strong>Target use cases</strong>: chat assistant, coding, search, NL2SQL, customer support.</li>
+                    <li><strong>Constraints</strong>: latency, cost, safety, on-prem vs cloud, languages, context window.</li>
+                    <li><strong>Evaluation definition</strong>: what “good” means (accuracy, helpfulness, refusal correctness).</li>
+                </ul>
+
+                <h2>Step 1: Build the Dataset (Quality beats raw size)</h2>
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📚 Data pipeline</h4>
+                        <p>Think of this like ETL for model training.</p>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    A[Collect sources<br/>web, books, code, docs] --> B[Normalize formats<br/>HTML→text, code parse]
+    B --> C[Deduplication<br/>exact + near-dup]
+    C --> D[Filtering<br/>quality, spam, toxicity]
+    D --> E[PII removal + policy filters]
+    E --> F[Tokenize + shard<br/>create training files]
+    F --> G[Train/valid/test splits<br/>+ domain eval sets]
+
+    style A fill:#e3f2fd
+    style D fill:#fff3e0
+    style G fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Common data decisions (practical)</h3>
+                <ul>
+                    <li><strong>Dedup strategy</strong>: prevents memorization and improves generalization.</li>
+                    <li><strong>Domain mixing</strong>: code-heavy models benefit from a larger code fraction.</li>
+                    <li><strong>Safety filtering</strong>: remove clearly harmful content; keep enough “negative” examples for refusals.</li>
+                </ul>
+
+                <h2>Step 2: Choose Tokenization + Context Length</h2>
+                <ul>
+                    <li><strong>Tokenizer</strong>: BPE/SentencePiece; vocabulary size trades off compression vs flexibility.</li>
+                    <li><strong>Context window</strong>: longer context helps RAG/NL2SQL prompts but increases compute (attention cost grows ~quadratically with sequence length in vanilla transformers).</li>
+                </ul>
+
+                <h2>Step 3: Choose Architecture + Training Scale</h2>
+                <p>Architecture choices include transformer variants, normalization strategy, activation, attention optimizations, and parallelism design.</p>
+                <div class="example-box">
+                    <h4>📌 Engineering framing</h4>
+                    <p><strong>Parameters</strong> are the model’s capacity; <strong>tokens</strong> are the experience; <strong>compute</strong> is the budget to turn experience into learning.</p>
+                </div>
+
+                <h2>Step 4: Pretraining Objective (Next-token prediction)</h2>
+                <p>The objective is usually autoregressive cross-entropy. At scale, training is just repeating the same update step on massive data.</p>
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>🧱 One training step (distributed)</h4>
+                        <p>Forward pass + loss + backward pass + optimizer update + gradient synchronization.</p>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+sequenceDiagram
+    participant DL as Data Loader
+    participant GPU1 as GPU Worker 1
+    participant GPU2 as GPU Worker 2
+    participant Sync as All-Reduce
+    participant Opt as Optimizer
+
+    DL->>GPU1: Batch shard
+    DL->>GPU2: Batch shard
+    GPU1->>GPU1: Forward + loss + backward
+    GPU2->>GPU2: Forward + loss + backward
+    GPU1->>Sync: Gradients
+    GPU2->>Sync: Gradients
+    Sync->>Opt: Averaged gradients
+    Opt->>GPU1: Update weights
+    Opt->>GPU2: Update weights
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Step 5: Stability Techniques (Why big training doesn’t explode)</h2>
+                <ul>
+                    <li><strong>Learning rate schedules</strong>: warmup + decay.</li>
+                    <li><strong>Gradient clipping</strong>: prevents exploding gradients.</li>
+                    <li><strong>Mixed precision</strong>: BF16/FP16 for speed, with loss scaling.</li>
+                    <li><strong>Checkpointing</strong>: save progress and recover from failures.</li>
+                </ul>
+
+                <h2>Step 6: Continuous Evaluation During Training</h2>
+                <ul>
+                    <li><strong>Validation loss/perplexity</strong>: general language modeling health.</li>
+                    <li><strong>Domain eval</strong>: code tests, math tests, NL2SQL sets.</li>
+                    <li><strong>Safety eval</strong>: toxicity, jailbreak susceptibility.</li>
+                </ul>
+
+                <h2>Step 7: Post-Training / Alignment (SFT + Preferences)</h2>
+                <p>After pretraining you usually perform alignment (covered in Chapter 19), then re-evaluate for regressions.</p>
+
+                <h2>Step 8: Deployment Engineering</h2>
+                <ul>
+                    <li><strong>Inference optimizations</strong>: KV cache, batching, quantization.</li>
+                    <li><strong>Reliability</strong>: timeouts, retries, fallbacks.</li>
+                    <li><strong>Observability</strong>: latency, cost, token usage, safety incidents.</li>
+                </ul>
+
+                <h2>Step 9: Iteration Loop (The real “secret sauce”)</h2>
+                <p>Most improvements happen after deployment by mining failure cases and training on them.</p>
+                <div class="diagram-section">
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart LR
+    A[User interactions] --> B[Find failure clusters]
+    B --> C[Create new datasets<br/>instructions, preferences]
+    C --> D[Fine-tune / align]
+    D --> E[Regression eval]
+    E --> F[Deploy update]
+    F --> A
+
+    style A fill:#e3f2fd
+    style C fill:#fff3e0
+    style F fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Final Summary</h2>
+                <ol>
+                    <li><strong>Training is an engineering program</strong>, not just “run GPUs.”</li>
+                    <li><strong>Data + eval + alignment</strong> matter as much as architecture.</li>
+                    <li><strong>Iteration after launch</strong> is how models become truly useful in a company.</li>
+                </ol>
+            </div>
+
+            <div class="chapter-nav">
+                <a href="comprehensive_chapter21.html">← Previous Chapter</a>
+                <a href="comprehensive_index.html">🏠 Home</a>
+                <a href="comprehensive_chapter23.html">Next Chapter →</a>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 22 of 26</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+
+            if (nav && toggle &&
+                !nav.contains(event.target) &&
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

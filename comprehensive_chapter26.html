@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Failures: Why Models Fail and How to Fix (Success/Failure Points) - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧯 LLM Failures: Why + Fixes</h1>
+            <p class="subtitle">Chapter 26 of 26 - Comprehensive Guide</p>
+        </header>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="comprehensive_index.html">🏠 Home</a></li>
+                <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+                <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+                <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+                <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+                <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+                <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+                <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+                <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+                <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+                <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+                <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+                <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+                <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+                <li><a href="comprehensive_chapter19.html">🏭 Chapter 19: End-to-End LLM Lifecycle</a></li>
+                <li><a href="comprehensive_chapter20.html">🎲 Chapter 20: How LLMs Generate Text</a></li>
+                <li><a href="comprehensive_chapter21.html">🧠 Chapter 21: How LLMs Understand Meaning</a></li>
+                <li><a href="comprehensive_chapter22.html">🧪 Chapter 22: Training Recipe (Step-by-Step)</a></li>
+                <li><a href="comprehensive_chapter23.html">👁️ Chapter 23: How Multimodal LLMs “See”</a></li>
+                <li><a href="comprehensive_chapter24.html">🗄️ Chapter 24: NL2SQL Deep Dive</a></li>
+                <li><a href="comprehensive_chapter25.html">🧩 Chapter 25: Advanced Prompt Engineering</a></li>
+                <li><a href="comprehensive_chapter26.html" class="active">🧯 Chapter 26: Failures, Why, and Fixes</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🧯 Chapter 26: Failure + Success Points (Why LLMs Fail and Solutions)</h1>
+                <p>Common failure modes across chat, coding, and NL2SQL—what causes them, how to detect them, and concrete mitigations.</p>
+            </div>
+
+            <div class="chapter-nav">
+                <a href="comprehensive_chapter25.html">← Previous Chapter</a>
+                <a href="comprehensive_index.html">🏠 Home</a>
+                <span></span>
+            </div>
+
+            <div class="section">
+                <h2>The Core Reason: LLMs Generate Plausible Tokens, Not Guaranteed Truth</h2>
+                <p>LLMs optimize for <strong>likely continuation</strong>. When the prompt is underspecified or the task requires grounding (DB, docs, tools), the model may produce a confident but wrong completion.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>⚖️ Success vs failure depends on grounding + constraints</h4>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart LR
+    A[Task] --> B{Grounded context available?}
+    B -->|Yes| C[Higher correctness]
+    B -->|No| D[Guessing zone]
+    C --> E{Constraints + verification?}
+    D --> E
+    E -->|Yes| F[Production-grade reliability]
+    E -->|No| G[Fluent but risky output]
+
+    style C fill:#e8f5e9
+    style D fill:#ffebee
+    style F fill:#e8f5e9
+    style G fill:#ffebee
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Failure Mode 1: Hallucination (Fabricated facts)</h2>
+                <ul>
+                    <li><strong>Why it happens</strong>: missing evidence; multiple plausible continuations.</li>
+                    <li><strong>Symptoms</strong>: invented citations, made-up APIs, fake table/column names.</li>
+                    <li><strong>Fix</strong>: grounding (RAG/schema), “use-only-context” rules, verification.</li>
+                </ul>
+
+                <div class="example-box warning-box">
+                    <h4>⚠️ NL2SQL hallucination example</h4>
+                    <pre><code>Schema has: students(enrollment_year)
+Model outputs: students(enrolled_year)  <-- invented column</code></pre>
+                </div>
+
+                <h2>Failure Mode 2: Ambiguity (Wrong assumption)</h2>
+                <ul>
+                    <li><strong>Why it happens</strong>: natural language is under-specified (business terms).</li>
+                    <li><strong>Fix</strong>: force clarifying questions, or provide definitions.</li>
+                </ul>
+
+                <div class="example-box">
+                    <h4>✅ Fix pattern</h4>
+                    <pre><code>If the request is ambiguous, ask 1-3 clarifying questions and do NOT guess.</code></pre>
+                </div>
+
+                <h2>Failure Mode 3: Long-Context Confusion (Lost constraints)</h2>
+                <ul>
+                    <li><strong>Why it happens</strong>: earlier constraints weaken as context grows; retrieval misses key facts.</li>
+                    <li><strong>Fix</strong>: restate constraints near the end; use structured context; retrieve only relevant schema; use “summary state”.</li>
+                </ul>
+
+                <h2>Failure Mode 4: Wrong Reasoning / Multi-step errors</h2>
+                <ul>
+                    <li><strong>Why it happens</strong>: token-level generation can drift; intermediate steps aren’t verified.</li>
+                    <li><strong>Fix</strong>: decomposition + verification checkpoints; tool execution; unit tests; self-consistency (multiple attempts) when allowed.</li>
+                </ul>
+
+                <h2>Failure Mode 5: Format Violations (Breaks JSON/SQL)</h2>
+                <ul>
+                    <li><strong>Why it happens</strong>: model mixes explanation and output; high temperature; unclear contracts.</li>
+                    <li><strong>Fix</strong>: strict output contract + validate + repair loop. Lower temperature.</li>
+                </ul>
+
+                <h2>Failure Mode 6: Safety / Policy Violations</h2>
+                <ul>
+                    <li><strong>Why it happens</strong>: prompt injection, ambiguous policy requests, adversarial input.</li>
+                    <li><strong>Fix</strong>: separate system policies; input sanitization; allowlists; refusal patterns; red-teaming tests.</li>
+                </ul>
+
+                <h2>Failure Mode 7: Tool Use Errors (Wrong API / Wrong SQL dialect)</h2>
+                <ul>
+                    <li><strong>Why it happens</strong>: learned pattern mismatches your environment.</li>
+                    <li><strong>Fix</strong>: provide exact docs/dialect; few-shot examples; enforce validators; run tools and feed back errors.</li>
+                </ul>
+
+                <h2>Success Points (What makes LLM systems reliable)</h2>
+                <table>
+                    <tr>
+                        <th>Success point</th>
+                        <th>Why it works</th>
+                        <th>How to implement</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Grounding</strong></td>
+                        <td>Reduces guessing</td>
+                        <td>Schema/doc retrieval (RAG)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Constraints</strong></td>
+                        <td>Prevents unsafe/wrong formats</td>
+                        <td>Output contract + allowlists</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Verification</strong></td>
+                        <td>Catches errors before users</td>
+                        <td>Parsers, unit tests, execution</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Repair loop</strong></td>
+                        <td>Turns failures into feedback</td>
+                        <td>Retry with error messages</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clarification</strong></td>
+                        <td>Avoids wrong assumptions</td>
+                        <td>Ask questions when ambiguous</td>
+                    </tr>
+                </table>
+
+                <h2>Production Checklist (Copy-Paste)</h2>
+                <div class="example-box success-box">
+                    <h4>✅ Checklist</h4>
+                    <ul>
+                        <li><strong>Grounding</strong>: Do we provide schema/docs/context?</li>
+                        <li><strong>Contract</strong>: Is output format strict (SQL-only/JSON-only)?</li>
+                        <li><strong>Validation</strong>: Do we parse and reject invalid output?</li>
+                        <li><strong>Execution</strong>: Can we verify with tools/DB (read-only)?</li>
+                        <li><strong>Repair loop</strong>: Do we retry with error feedback?</li>
+                        <li><strong>Clarify</strong>: Do we ask questions when ambiguous?</li>
+                        <li><strong>Eval</strong>: Do we measure execution accuracy + safety?</li>
+                    </ul>
+                </div>
+
+                <h2>Final Summary</h2>
+                <ol>
+                    <li><strong>LLMs fail mainly when they must guess</strong> (missing grounding, ambiguity).</li>
+                    <li><strong>Reliability comes from systems</strong>: grounding + constraints + verification + repair loops.</li>
+                    <li><strong>For NL2SQL</strong>: schema grounding + SQL validation + execution feedback is the strongest combo.</li>
+                </ol>
+            </div>
+
+            <div class="chapter-nav">
+                <a href="comprehensive_chapter25.html">← Previous Chapter</a>
+                <a href="comprehensive_index.html">🏠 Home</a>
+                <span></span>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 26 of 26</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+
+            if (nav && toggle &&
+                !nav.contains(event.target) &&
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

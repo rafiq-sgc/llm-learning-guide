@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How LLMs Understand Meaning (Semantics, Context, Attention) - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧠 How LLMs Understand Meaning</h1>
+            <p class="subtitle">Chapter 21 of 26 - Comprehensive Guide</p>
+        </header>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="comprehensive_index.html">🏠 Home</a></li>
+                <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+                <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+                <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+                <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+                <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+                <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+                <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+                <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+                <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+                <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+                <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+                <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+                <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+                <li><a href="comprehensive_chapter19.html">🏭 Chapter 19: End-to-End LLM Lifecycle</a></li>
+                <li><a href="comprehensive_chapter20.html">🎲 Chapter 20: How LLMs Generate Text</a></li>
+                <li><a href="comprehensive_chapter21.html" class="active">🧠 Chapter 21: How LLMs Understand Meaning</a></li>
+                <li><a href="comprehensive_chapter22.html">🧪 Chapter 22: Training Recipe (Step-by-Step)</a></li>
+                <li><a href="comprehensive_chapter23.html">👁️ Chapter 23: How Multimodal LLMs “See”</a></li>
+                <li><a href="comprehensive_chapter24.html">🗄️ Chapter 24: NL2SQL Deep Dive</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🧠 Chapter 21: How LLMs Understand Meaning (Semantics)</h1>
+                <p>Embeddings + attention + context windows: how models map words to meaning, resolve ambiguity, and “connect” ideas across a prompt.</p>
+            </div>
+
+            <div class="chapter-nav">
+                <a href="comprehensive_chapter20.html">← Previous Chapter</a>
+                <a href="comprehensive_index.html">🏠 Home</a>
+                <a href="comprehensive_chapter22.html">Next Chapter →</a>
+            </div>
+
+            <div class="section">
+                <h2>Meaning is Not Stored as Dictionary Definitions</h2>
+                <p><strong>How it really works:</strong> the model learns internal numeric representations where “meaning” is reflected in how vectors relate, and how attention routes information between tokens.</p>
+
+                <h2>Layer 0: Embeddings (Where “semantic space” starts)</h2>
+                <p>Each token ID maps to a vector. During training, tokens used in similar contexts get similar vectors. This creates a <strong>semantic geometry</strong>.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>🗺️ Semantic space intuition</h4>
+                        <p>“King” and “Queen” end up closer than “King” and “Banana,” because their surrounding contexts are similar.</p>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    A["Embedding space (conceptual)<br/>vectors in high dimensions"] --> B["Nearby vectors → similar usage/context"]
+    B --> C["Similarity enables generalization<br/>to new sentences"]
+
+    style A fill:#e3f2fd
+    style C fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>💡 Example: “bank” ambiguity</h4>
+                    <p>The token “bank” does not have one fixed meaning. Its meaning becomes clear when combined with surrounding tokens:</p>
+                    <pre><code>Sentence A: "I deposited money at the bank"
+Sentence B: "We sat on the river bank"</code></pre>
+                    <p>Different surrounding words push the model into different internal states, so “bank” becomes finance-bank vs river-bank.</p>
+                </div>
+
+                <h2>Attention: Meaning via Relationships (Contextualization)</h2>
+                <p>Attention mixes information across tokens so each token representation becomes <strong>context-aware</strong>. The same token can “mean different things” depending on what it attends to.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>👁️ Self-attention in one line</h4>
+                        <p>Each token asks: “Which other tokens should influence me right now?”</p>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart LR
+    X[Token representations] --> Q[Queries: what I need]
+    X --> K[Keys: what others offer]
+    X --> V[Values: info to pass]
+    Q --> S[Score(Q,K)]
+    K --> S
+    S --> W[Softmax → attention weights]
+    W --> Mix[Weighted sum of V]
+    V --> Mix
+    Mix --> Y[New contextual representations]
+
+    style X fill:#e3f2fd
+    style W fill:#fff3e0
+    style Y fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>How LLM Finds “Real Meaning” in Practice (Step-by-step)</h2>
+                <p>Let’s use a query you might get in NL2SQL:</p>
+                <div class="example-box">
+                    <h4>🗄️ Example user question</h4>
+                    <pre><code>"Show me the top 5 students by GPA in 2024, excluding those who graduated."</code></pre>
+                </div>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>🧩 Meaning extraction happens across layers</h4>
+                        <p>Not one “meaning module”—the model incrementally builds structure.</p>
+                        <div class="step-by-step">
+                            <ol>
+                                <li><strong>Tokenization</strong>: split into tokens (including “top”, “5”, “GPA”, “2024”, “excluding”, “graduated”).</li>
+                                <li><strong>Early layers</strong>: detect syntax and key phrases (“top 5”, “by GPA”, “in 2024”).</li>
+                                <li><strong>Middle layers</strong>: link constraints (ranking metric = GPA; filter year = 2024; exclusion = graduated).</li>
+                                <li><strong>Late layers</strong>: decide output plan (SQL structure: SELECT, WHERE, ORDER BY, LIMIT) and generate tokens accordingly.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    A[Input tokens] --> B[Early layers<br/>syntax + phrase boundaries]
+    B --> C[Mid layers<br/>constraints + relations]
+    C --> D[Late layers<br/>decision: output structure]
+    D --> E[Token-by-token generation<br/>SQL / explanation]
+
+    style A fill:#e3f2fd
+    style D fill:#fff3e0
+    style E fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>What “Understanding” Means (Engineering-friendly definition)</h2>
+                <p>In LLMs, “understanding” means: <strong>producing internal representations that support correct prediction and useful behavior</strong> across many contexts.</p>
+                <ul>
+                    <li><strong>Not symbolic logic by default</strong>: it’s learned patterns, not explicit rules.</li>
+                    <li><strong>Compositional behavior</strong>: can combine concepts it saw separately.</li>
+                    <li><strong>Fragile grounding</strong>: it can be confident even when uncertain.</li>
+                </ul>
+
+                <h2>Limits: Why it sometimes fails to “get it”</h2>
+                <ul>
+                    <li><strong>Context window</strong>: only “sees” the tokens inside its current window (plus any memory/tools you add).</li>
+                    <li><strong>Hidden assumptions</strong>: if schema or definitions are missing, it guesses.</li>
+                    <li><strong>Training distribution</strong>: it generalizes from what it has seen.</li>
+                </ul>
+
+                <div class="example-box error-box">
+                    <h4>❌ Example failure mode (schema ambiguity)</h4>
+                    <pre><code>User: "Show active users"
+Problem: What does "active" mean?
+  - logged in last 30 days?
+  - status = 'active'?
+  - paid subscription?
+Without definition/schema, the model may guess incorrectly.</code></pre>
+                </div>
+
+                <h2>Final Summary</h2>
+                <ol>
+                    <li><strong>Embeddings</strong> create a semantic geometry from usage patterns.</li>
+                    <li><strong>Attention</strong> makes meaning contextual by routing information between tokens.</li>
+                    <li><strong>Understanding</strong> is the ability to form useful representations for prediction and instruction following.</li>
+                    <li><strong>Limits</strong> come from missing grounding, limited context, and uncertainty.</li>
+                </ol>
+            </div>
+
+            <div class="chapter-nav">
+                <a href="comprehensive_chapter20.html">← Previous Chapter</a>
+                <a href="comprehensive_index.html">🏠 Home</a>
+                <a href="comprehensive_chapter22.html">Next Chapter →</a>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 21 of 26</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+
+            if (nav && toggle &&
+                !nav.contains(event.target) &&
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

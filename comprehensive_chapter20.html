@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How LLMs Generate Text (Why it can be accurate) - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎲 How LLMs Generate Text</h1>
+            <p class="subtitle">Chapter 20 of 26 - Comprehensive Guide</p>
+        </header>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="comprehensive_index.html">🏠 Home</a></li>
+                <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+                <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+                <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+                <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+                <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+                <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+                <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+                <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+                <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+                <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+                <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+                <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+                <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+                <li><a href="comprehensive_chapter19.html">🏭 Chapter 19: End-to-End LLM Lifecycle</a></li>
+                <li><a href="comprehensive_chapter20.html" class="active">🎲 Chapter 20: How LLMs Generate Text</a></li>
+                <li><a href="comprehensive_chapter21.html">🧠 Chapter 21: How LLMs Understand Meaning</a></li>
+                <li><a href="comprehensive_chapter22.html">🧪 Chapter 22: Training Recipe (Step-by-Step)</a></li>
+                <li><a href="comprehensive_chapter23.html">👁️ Chapter 23: How Multimodal LLMs “See”</a></li>
+                <li><a href="comprehensive_chapter24.html">🗄️ Chapter 24: NL2SQL Deep Dive</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🎲 Chapter 20: How LLMs Generate Text (Accurately)</h1>
+                <p>From tokens → logits → softmax → decoding. Why answers can be coherent, long, and detailed—plus where hallucinations come from.</p>
+            </div>
+
+            <div class="chapter-nav">
+                <a href="comprehensive_chapter19.html">← Previous Chapter</a>
+                <a href="comprehensive_index.html">🏠 Home</a>
+                <a href="comprehensive_chapter21.html">Next Chapter →</a>
+            </div>
+
+            <div class="section">
+                <h2>The Core Mechanism: Next-Token Generation (Loop)</h2>
+                <p><strong>LLMs don’t output a full answer at once.</strong> They generate one token at a time. After each token, the model re-evaluates the updated context and predicts the next token distribution.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>🔁 The generation loop</h4>
+                        <p>This is the single most important diagram for “how it writes long responses like a human.”</p>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Q[Prompt / conversation so far] --> T[Tokenize]
+    T --> E[Embedding + Positional Info]
+    E --> M[Transformer Layers]
+    M --> L[Logits for next token<br/>1 score per vocab token]
+    L --> S[Softmax → probabilities]
+    S --> D[Decode / sample next token]
+    D --> A[Append token to context]
+    A --> C{Stop?<br/>EOS / max_tokens / user stop}
+    C -->|No| M
+    C -->|Yes| R[Return final text]
+
+    style Q fill:#e3f2fd
+    style L fill:#fff3e0
+    style D fill:#f3e5f5
+    style R fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Logits → Softmax: Turning scores into probabilities</h2>
+                <p>The model outputs <strong>logits</strong> (raw scores). Softmax converts them to probabilities that sum to 1.</p>
+                <div class="example-box">
+                    <h4>📌 Tiny numeric example</h4>
+                    <pre><code>Context: "SQL stands for"
+Logits (example):
+  "Structured" : 9.2
+  "Simple"     : 4.1
+  "Strong"     : 2.5
+
+After softmax (example):
+  P("Structured") ≈ 0.98
+  P("Simple")     ≈ 0.02
+  P("Strong")     ≈ ~0.00</code></pre>
+                </div>
+
+                <h2>Decoding: How a token is chosen</h2>
+                <p><strong>Decoding</strong> is the policy that picks the next token from the distribution. This controls creativity, repetition, and factual risk.</p>
+                <table>
+                    <tr>
+                        <th>Method</th>
+                        <th>What it does</th>
+                        <th>When it’s used</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Greedy</strong></td>
+                        <td>Pick max-prob token each step</td>
+                        <td>Deterministic, can be repetitive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperature</strong></td>
+                        <td>Flattens/sharpens distribution</td>
+                        <td>Controls randomness</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Top-k</strong></td>
+                        <td>Sample only from top k tokens</td>
+                        <td>Reduces weird rare tokens</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Top-p (nucleus)</strong></td>
+                        <td>Sample from smallest set with cumulative prob ≥ p</td>
+                        <td>Common default for chat</td>
+                    </tr>
+                </table>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>🎛️ Temperature intuition</h4>
+                        <p>Low temperature makes the model more “confident/deterministic.” Higher temperature increases diversity, but can reduce factual reliability.</p>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph LR
+    A[Logits] --> B[Divide by temperature T]
+    B --> C[Softmax]
+    C --> D[Sampling]
+    D --> E[Next token]
+
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style D fill:#f3e5f5
+    style E fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Why LLM output looks “human” and can be long</h2>
+                <p>Three reasons it can produce long structured responses:</p>
+                <ul>
+                    <li><strong>Training exposure</strong>: it saw many examples of explanations, tutorials, and docs.</li>
+                    <li><strong>Instruction tuning</strong>: it learned to produce structured “helpful assistant” outputs.</li>
+                    <li><strong>Autoregressive loop</strong>: once it starts a structure (headings, bullets), the most likely continuation is to keep it consistent.</li>
+                </ul>
+
+                <div class="example-box success-box">
+                    <h4>✅ Example: “Office presentation style” emerges from pattern continuation</h4>
+                    <p>If the model begins with “Step 1, Step 2, Step 3…”, the next-token probabilities heavily favor continuing that pattern until a natural conclusion.</p>
+                </div>
+
+                <h2>Why LLMs can be accurate</h2>
+                <p>Accuracy comes from learning statistical regularities of language and domain text. The model becomes good at predicting what <strong>usually follows</strong> in similar contexts.</p>
+                <ul>
+                    <li><strong>High-quality data</strong> provides correct patterns.</li>
+                    <li><strong>Scale</strong> (parameters + tokens + compute) increases capacity.</li>
+                    <li><strong>Alignment</strong> teaches clearer, safer, more helpful answers.</li>
+                    <li><strong>Tools/RAG</strong> (when used) anchor answers to sources or databases.</li>
+                </ul>
+
+                <h2>Why hallucinations happen (important for credibility)</h2>
+                <p><strong>Hallucination</strong> is often a decoding outcome: the model produces fluent text that fits the prompt pattern, even if it’s not grounded in a true source.</p>
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>🧨 Hallucination is “plausible continuation without grounding”</h4>
+                        <p>When the context doesn’t contain enough evidence, the model still must output tokens.</p>
+                    </div>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart LR
+    A[Prompt asks for a fact] --> B{Is the fact strongly supported<br/>by internal knowledge OR provided context?}
+    B -->|Yes| C[High probability for correct tokens]
+    B -->|No| D[Many plausible continuations<br/>similar probability]
+    D --> E[Decoding picks one]
+    E --> F[Fluent but possibly wrong output]
+
+    style A fill:#e3f2fd
+    style C fill:#e8f5e9
+    style F fill:#ffebee
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box warning-box">
+                    <h4>⚠️ Practical mitigation (for your NL2SQL world)</h4>
+                    <ul>
+                        <li><strong>Constrain output</strong>: structured JSON or SQL-only with validation.</li>
+                        <li><strong>Ground with schema</strong>: include table/column list in prompt or via retrieval.</li>
+                        <li><strong>Verify</strong>: execute SQL in read-only and check errors; regenerate with feedback.</li>
+                    </ul>
+                </div>
+
+                <h2>Final Summary</h2>
+                <ol>
+                    <li><strong>Generation is token-by-token.</strong></li>
+                    <li><strong>Logits → softmax → decoding</strong> determines what comes next.</li>
+                    <li><strong>Long coherent answers</strong> come from the autoregressive loop + learned writing patterns.</li>
+                    <li><strong>Hallucinations</strong> are plausible continuations when grounding is weak.</li>
+                </ol>
+            </div>
+
+            <div class="chapter-nav">
+                <a href="comprehensive_chapter19.html">← Previous Chapter</a>
+                <a href="comprehensive_index.html">🏠 Home</a>
+                <a href="comprehensive_chapter21.html">Next Chapter →</a>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 20 of 26</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+
+            if (nav && toggle &&
+                !nav.contains(event.target) &&
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
