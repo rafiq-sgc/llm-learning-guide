@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Attention Layer - Complete Deep Dive - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔍 Self-Attention Layer - Complete Deep Dive</h1>
+            <p class="subtitle">Chapter 27 of 28 - Comprehensive Guide</p>
+        </header>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="comprehensive_index.html">🏠 Home</a></li>
+                <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+                <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+                <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+                <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+                <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+                <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+                <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+                <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+                <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+                <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+                <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+                <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+                <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+                <li><a href="comprehensive_chapter19.html">🏭 Chapter 19: End-to-End LLM Lifecycle</a></li>
+                <li><a href="comprehensive_chapter20.html">🎲 Chapter 20: How LLMs Generate Text</a></li>
+                <li><a href="comprehensive_chapter21.html">🧠 Chapter 21: How LLMs Understand Meaning</a></li>
+                <li><a href="comprehensive_chapter22.html">🧪 Chapter 22: Training Recipe (Step-by-Step)</a></li>
+                <li><a href="comprehensive_chapter23.html">👁️ Chapter 23: How Multimodal LLMs "See"</a></li>
+                <li><a href="comprehensive_chapter24.html">🗄️ Chapter 24: NL2SQL Deep Dive</a></li>
+                <li><a href="comprehensive_chapter25.html">🧩 Chapter 25: Advanced Prompt Engineering</a></li>
+                <li><a href="comprehensive_chapter26.html">🧯 Chapter 26: Failures, Why, and Fixes</a></li>
+                <li><a href="comprehensive_chapter27.html" class="active">🔍 Chapter 27: Self-Attention Deep Dive</a></li>
+                <li><a href="comprehensive_chapter28.html">⚙️ Chapter 28: Feed Forward Network Deep Dive</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🔍 Chapter 27: Self-Attention Layer - Complete Deep Dive</h1>
+                <p>Understanding Every Step of Self-Attention with Visual Examples and Mathematical Details</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter26.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter28.html">Next Chapter →</a></div>
+
+            <div class="section">
+                <h2>Introduction: What is Self-Attention?</h2>
+                <p><strong>Self-Attention</strong> is the core mechanism that allows transformers to understand relationships between all tokens in a sequence simultaneously. Unlike RNNs that process sequentially, self-attention processes all tokens in parallel and allows each token to "attend" to all other tokens.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Why Self-Attention is Revolutionary:</h4>
+                        <p><strong>Key Innovation:</strong> Self-attention allows direct connections between any two tokens, regardless of distance. This enables the model to capture long-range dependencies and understand context much better than previous architectures.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Key Advantages:</h5>
+                            <ol>
+                                <li><strong>Parallel Processing:</strong> All tokens processed simultaneously (not sequentially)</li>
+                                <li><strong>Long-Range Dependencies:</strong> Direct connections between distant tokens</li>
+                                <li><strong>Context Awareness:</strong> Each token sees full context of entire sequence</li>
+                                <li><strong>Interpretability:</strong> Attention weights show what tokens focus on</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph LR
+    subgraph Old["Old Approach: RNN"]
+        O1[Token 1] --> O2[Token 2]
+        O2 --> O3[Token 3]
+        O3 --> O4[Token 4]
+        O4 --> Note1["Sequential Processing<br/>Slow, Limited Context"]
+    end
+    
+    subgraph New["New Approach: Self-Attention"]
+        N1[Token 1] <--> N2[Token 2]
+        N1 <--> N3[Token 3]
+        N1 <--> N4[Token 4]
+        N2 <--> N3
+        N2 <--> N4
+        N3 <--> N4
+        N4 --> Note2["Parallel Processing<br/>Full Context, Fast"]
+    end
+    
+    style Old fill:#ffebee
+    style New fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Complete Self-Attention Process: Step-by-Step</h2>
+                <p><strong>We'll use a concrete example:</strong> Processing the sentence "The cat sat on the mat" to understand how self-attention works at every step.</p>
+
+                <h3>Step 1: Input Preparation</h3>
+                <p><strong>Starting Point:</strong> Token embeddings after positional encoding</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 1: Input Vectors</h4>
+                        <p><strong>Input Format:</strong> After tokenization and embedding, we have a sequence of vectors. Each token is represented as a vector of dimension <code class="inline-code">d_model</code> (typically 768 for GPT-3, 12,288 for GPT-4).</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Example Input:</h5>
+                            <p><strong>Sentence:</strong> "The cat sat on the mat"</p>
+                            <p><strong>After Tokenization:</strong> ["The", "cat", "sat", "on", "the", "mat"]</p>
+                            <p><strong>After Embedding:</strong> 6 vectors, each of dimension 768</p>
+                            <p><strong>Shape:</strong> [batch_size=1, sequence_length=6, d_model=768]</p>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Input["Input Sequence:<br/>'The cat sat on the mat'"] --> Tokenize[Tokenization]
+    Tokenize --> Embed[Embedding Layer<br/>Token → Vector]
+    Embed --> PosEnc[Positional Encoding<br/>Add position info]
+    PosEnc --> Vectors["Input Vectors X<br/>Shape: [1, 6, 768]<br/>6 tokens × 768 dimensions"]
+    
+    style Input fill:#e3f2fd
+    style Vectors fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Concrete Example - Input Vectors:</h4>
+                    <p><strong>Input Matrix X:</strong></p>
+                    <pre>
+X = [
+    [0.2, -0.5, 0.8, ..., 0.1],  # "The"   (position 0)
+    [0.3, 0.1, -0.2, ..., 0.5],  # "cat"   (position 1)
+    [0.1, 0.4, 0.6, ..., -0.3],  # "sat"   (position 2)
+    [0.5, -0.1, 0.3, ..., 0.2],  # "on"    (position 3)
+    [0.2, -0.5, 0.8, ..., 0.1],  # "the"   (position 4)
+    [0.4, 0.2, -0.1, ..., 0.6]   # "mat"   (position 5)
+]
+Shape: [6, 768]
+                    </pre>
+                    <p>Each row is a 768-dimensional vector representing one token.</p>
+                </div>
+
+                <h3>Step 2: Create Query (Q), Key (K), and Value (V) Matrices</h3>
+                <p><strong>The Core Concept:</strong> Each input vector is transformed into three different representations using learned weight matrices.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 2: Linear Transformations to Q, K, V</h4>
+                        <p><strong>Why Three Matrices?</strong> Each serves a different purpose in the attention mechanism:</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 The Three Representations:</h5>
+                            <ol>
+                                <li><strong>Query (Q):</strong> "What am I looking for?"
+                                    <ul>
+                                        <li>Represents what information this token needs</li>
+                                        <li>Used to search for relevant information</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Key (K):</strong> "What do I contain?"
+                                    <ul>
+                                        <li>Represents what information this token has</li>
+                                        <li>Used to match with queries</li>
+                                    </ul>
+                                </li>
+                                
+                                <li><strong>Value (V):</strong> "What information do I have?"
+                                    <ul>
+                                        <li>Represents the actual information content</li>
+                                        <li>Retrieved when query matches key</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    X["Input X<br/>[6, 768]"] --> MultQ["X × W_Q<br/>[6, 768] × [768, 64]"]
+    X --> MultK["X × W_K<br/>[6, 768] × [768, 64]"]
+    X --> MultV["X × W_V<br/>[6, 768] × [768, 64]"]
+    
+    MultQ --> Q["Query Q<br/>[6, 64]"]
+    MultK --> K["Key K<br/>[6, 64]"]
+    MultV --> V["Value V<br/>[6, 64]"]
+    
+    style X fill:#e3f2fd
+    style MultQ fill:#fff9c4
+    style MultK fill:#fff9c4
+    style MultV fill:#fff9c4
+    style Q fill:#fff3e0
+    style K fill:#e8f5e9
+    style V fill:#f3e5f5
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Mathematical Operation:</h4>
+                    <pre>
+Q = X × W_Q
+K = X × W_K
+V = X × W_V
+
+Where:
+- X: [6, 768] - Input vectors
+- W_Q, W_K, W_V: [768, 64] - Learned weight matrices
+- Q, K, V: [6, 64] - Output matrices
+
+Note: d_k = 64 (dimension of Q, K, V)
+      This is typically d_model / num_heads
+      For 12 heads: 768 / 12 = 64
+                    </pre>
+                </div>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Visual Example: Creating Q, K, V for "cat"</h4>
+                        <p><strong>For token "cat" (position 1):</strong></p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Step-by-Step Calculation:</h5>
+                            <ol>
+                                <li><strong>Input Vector:</strong> x_cat = [0.3, 0.1, -0.2, ..., 0.5] (768 dims)</li>
+                                <li><strong>Query Vector:</strong> q_cat = x_cat × W_Q = [0.2, -0.1, 0.5, ..., 0.3] (64 dims)</li>
+                                <li><strong>Key Vector:</strong> k_cat = x_cat × W_K = [0.1, 0.4, -0.2, ..., 0.1] (64 dims)</li>
+                                <li><strong>Value Vector:</strong> v_cat = x_cat × W_V = [0.3, 0.2, 0.1, ..., 0.4] (64 dims)</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph LR
+    XCat["x_cat<br/>[768 dims]<br/>Token 'cat'"] --> MultQ[× W_Q]
+    XCat --> MultK[× W_K]
+    XCat --> MultV[× W_V]
+    
+    MultQ --> QCat["q_cat<br/>[64 dims]<br/>What does 'cat' need?"]
+    MultK --> KCat["k_cat<br/>[64 dims]<br/>What does 'cat' have?"]
+    MultV --> VCat["v_cat<br/>[64 dims]<br/>What info 'cat' contains?"]
+    
+    style XCat fill:#e3f2fd
+    style QCat fill:#fff3e0
+    style KCat fill:#e8f5e9
+    style VCat fill:#f3e5f5
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Step 3: Calculate Attention Scores (Q × K^T)</h3>
+                <p><strong>The Matching Process:</strong> We compute how well each query matches with each key.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 3: Attention Score Calculation</h4>
+                        <p><strong>Purpose:</strong> Calculate similarity between each query and each key. Higher scores mean more attention (more relevant).</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Matrix Multiplication:</h5>
+                            <ol>
+                                <li><strong>Q Matrix:</strong> [6, 64] - 6 queries, each 64-dimensional</li>
+                                <li><strong>K^T Matrix:</strong> [64, 6] - Transpose of K (6 keys, each 64-dimensional)</li>
+                                <li><strong>Result:</strong> [6, 6] - Attention scores matrix</li>
+                                <li><strong>Each cell (i, j):</strong> How much token i attends to token j</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Q["Query Q<br/>[6, 64]"] --> Mult["Q × K^T<br/>Matrix Multiply"]
+    KT["Key K^T<br/>[64, 6]"] --> Mult
+    Mult --> Scores["Attention Scores<br/>[6, 6]<br/>Each cell (i,j): token i attends to token j"]
+    
+    style Q fill:#fff3e0
+    style KT fill:#e8f5e9
+    style Mult fill:#fff9c4
+    style Scores fill:#ffebee
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Concrete Example - Attention Scores Matrix:</h4>
+                    <p><strong>Attention Scores (before scaling and softmax):</strong></p>
+                    <pre>
+Scores = Q × K^T
+
+Result Matrix [6, 6]:
+        The   cat   sat   on   the   mat
+The  [  2.5   1.2   0.8   0.5   2.3   0.3 ]
+cat  [  1.5   3.2   2.8   1.2   1.1   2.5 ]
+sat  [  0.8   2.5   3.5   2.1   0.9   1.8 ]
+on   [  0.5   1.2   2.1   2.8   0.6   2.2 ]
+the  [  2.3   1.1   0.9   0.6   2.5   0.4 ]
+mat  [  0.3   2.5   1.8   2.2   0.4   3.2 ]
+
+Interpretation:
+- Row "cat" [1.5, 3.2, 2.8, 1.2, 1.1, 2.5]:
+  * "cat" attends most to itself (3.2) - self-attention
+  * "cat" also attends to "sat" (2.8) - verb relationship
+  * "cat" attends to "mat" (2.5) - object relationship
+                    </pre>
+                </div>
+
+                <h3>Step 4: Scale by √d_k</h3>
+                <p><strong>Why Scaling?</strong> Prevents attention scores from becoming too large, which would make softmax saturate (all probability on one token).</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 4: Scaling Operation</h4>
+                        <p><strong>Mathematical Operation:</strong> Divide all attention scores by √d_k (square root of key dimension).</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Why This Matters:</h5>
+                            <ol>
+                                <li><strong>Without scaling:</strong> Large dot products → extreme softmax → one token gets all attention</li>
+                                <li><strong>With scaling:</strong> Controlled scores → smooth softmax → distributed attention</li>
+                                <li><strong>d_k = 64:</strong> So we divide by √64 = 8</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph LR
+    Scores["Attention Scores<br/>[6, 6]"] --> Scale["Divide by √d_k<br/>√64 = 8"]
+    Scale --> ScaledScores["Scaled Scores<br/>[6, 6]<br/>Prevents extreme values<br/>Makes softmax stable"]
+    
+    style Scores fill:#ffebee
+    style Scale fill:#fff9c4
+    style ScaledScores fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Example - Scaling:</h4>
+                    <pre>
+Before Scaling (for "cat" row):
+[1.5, 3.2, 2.8, 1.2, 1.1, 2.5]
+
+After Scaling (divide by 8):
+[0.19, 0.40, 0.35, 0.15, 0.14, 0.31]
+
+Note: Values are now in a more reasonable range
+      for softmax to work properly
+                    </pre>
+                </div>
+
+                <h3>Step 5: Apply Softmax</h3>
+                <p><strong>Convert Scores to Probabilities:</strong> Softmax converts attention scores into a probability distribution that sums to 1.0.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 5: Softmax Function</h4>
+                        <p><strong>Purpose:</strong> Convert attention scores into probabilities. Each row sums to 1.0, representing how attention is distributed.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Softmax Formula:</h5>
+                            <p><strong>For each row i:</strong></p>
+                            <pre>
+softmax(x_i) = exp(x_i) / Σ exp(x_j)
+            </pre>
+                            <p>This ensures:</p>
+                            <ul>
+                                <li>All values are between 0 and 1</li>
+                                <li>Each row sums to 1.0</li>
+                                <li>Higher scores get higher probabilities</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Scaled["Scaled Scores<br/>[6, 6]"] --> Softmax["Softmax Function<br/>exp(x) / Σexp(x)"]
+    Softmax --> Weights["Attention Weights<br/>[6, 6]<br/>Probabilities<br/>Each row sums to 1.0<br/>Represents attention distribution"]
+    
+    style Scaled fill:#fff3e0
+    style Softmax fill:#fff9c4
+    style Weights fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Example - Attention Weights for "cat":</h4>
+                    <pre>
+Scaled Scores (for "cat" row):
+[0.19, 0.40, 0.35, 0.15, 0.14, 0.31]
+
+After Softmax:
+[0.12, 0.28, 0.24, 0.10, 0.09, 0.17]
+ ↑     ↑     ↑     ↑     ↑     ↑
+The   cat   sat   on   the   mat
+
+Interpretation:
+- "cat" attends 28% to itself
+- "cat" attends 24% to "sat" (verb)
+- "cat" attends 17% to "mat" (object)
+- "cat" attends 12% to "The" (article)
+- Sum = 1.0 ✓
+                    </pre>
+                </div>
+
+                <h3>Step 6: Weighted Sum with Values (Attention Weights × V)</h3>
+                <p><strong>The Final Step:</strong> Use attention weights to create a weighted combination of value vectors.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 6: Weighted Sum</h4>
+                        <p><strong>Purpose:</strong> Create output vectors by combining value vectors according to attention weights.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Matrix Multiplication:</h5>
+                            <ol>
+                                <li><strong>Attention Weights:</strong> [6, 6] - How much each token attends to others</li>
+                                <li><strong>Value V:</strong> [6, 64] - Information content of each token</li>
+                                <li><strong>Result:</strong> [6, 64] - Output vectors (context-aware representations)</li>
+                                <li><strong>Each output:</strong> Weighted combination of all value vectors</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Weights["Attention Weights<br/>[6, 6]"] --> Mult["Weights × V<br/>Matrix Multiply<br/>[6, 6] × [6, 64]"]
+    V["Value V<br/>[6, 64]"] --> Mult
+    Mult --> Output["Output Vectors<br/>[6, 64]<br/>Each output vector is a<br/>weighted combination of<br/>all value vectors"]
+    
+    style Weights fill:#fff3e0
+    style V fill:#f3e5f5
+    style Mult fill:#fff9c4
+    style Output fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Example - Output for "cat":</h4>
+                    <pre>
+Attention Weights for "cat":
+[0.12, 0.28, 0.24, 0.10, 0.09, 0.17]
+
+Value Vectors:
+v_The  = [0.1, 0.2, ..., 0.3]  (64 dims)
+v_cat  = [0.3, 0.2, ..., 0.4]  (64 dims)
+v_sat  = [0.2, 0.1, ..., 0.2]  (64 dims)
+v_on   = [0.1, 0.3, ..., 0.1]  (64 dims)
+v_the  = [0.1, 0.2, ..., 0.3]  (64 dims)
+v_mat  = [0.3, 0.1, ..., 0.2]  (64 dims)
+
+Output for "cat":
+output_cat = 0.12×v_The + 0.28×v_cat + 0.24×v_sat + 
+             0.10×v_on + 0.09×v_the + 0.17×v_mat
+
+Result: [0.22, 0.18, ..., 0.28] (64 dims)
+        ↑
+        Context-aware representation of "cat"
+                    </pre>
+                </div>
+
+                <h2>Complete Self-Attention Formula</h2>
+                <p><strong>The Full Mathematical Expression:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Complete Self-Attention Formula</h4>
+                        <p><strong>Single Formula:</strong></p>
+                        <pre>
+Attention(Q, K, V) = softmax(Q × K^T / √d_k) × V
+                        </pre>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 Breaking It Down:</h5>
+                            <ol>
+                                <li><strong>Q × K^T:</strong> Calculate attention scores</li>
+                                <li><strong>/ √d_k:</strong> Scale to prevent extreme values</li>
+                                <li><strong>softmax(...):</strong> Convert to probabilities</li>
+                                <li><strong>× V:</strong> Weighted sum of values</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    X[Input X] --> QKV[Create Q, K, V]
+    QKV --> Q[Q]
+    QKV --> K[K]
+    QKV --> V[V]
+    
+    Q --> Mult[Q × K^T]
+    K --> Mult
+    Mult --> Scale[Divide by √d_k]
+    Scale --> Softmax[Softmax]
+    Softmax --> Weight[Attention Weights]
+    Weight --> Final[× V]
+    V --> Final
+    Final --> Output[Output]
+    
+    style X fill:#e3f2fd
+    style Output fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Multi-Head Attention</h2>
+                <p><strong>Why Multiple Heads?</strong> Different attention heads can focus on different types of relationships.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Multi-Head Attention Concept</h4>
+                        <p><strong>Idea:</strong> Instead of one attention mechanism, use multiple (e.g., 12 heads). Each head learns different patterns.</p>
+                        
+                        <div class="step-by-step">
+                            <h5>🔍 How It Works:</h5>
+                            <ol>
+                                <li><strong>Split Dimensions:</strong> d_model (768) → num_heads (12) × d_k (64)</li>
+                                <li><strong>Each Head:</strong> Performs independent self-attention</li>
+                                <li><strong>Different Patterns:</strong> Each head learns different relationships</li>
+                                <li><strong>Concatenate:</strong> Combine all head outputs</li>
+                                <li><strong>Project:</strong> Linear projection to final dimension</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    X["Input X<br/>[6, 768]"] --> Split["Split into 12 heads<br/>768 → 12 × 64"]
+    
+    Split --> H1["Head 1<br/>Syntax"]
+    Split --> H2["Head 2<br/>Semantics"]
+    Split --> H3["Head 3<br/>Long-range"]
+    Split --> H12["Head 12<br/>Other patterns"]
+    
+    H1 --> O1["Output 1<br/>[6, 64]"]
+    H2 --> O2["Output 2<br/>[6, 64]"]
+    H3 --> O3["Output 3<br/>[6, 64]"]
+    H12 --> O12["Output 12<br/>[6, 64]"]
+    
+    O1 --> Concat["Concatenate<br/>12 × [6, 64] → [6, 768]"]
+    O2 --> Concat
+    O3 --> Concat
+    O12 --> Concat
+    
+    Concat --> Proj["Linear Projection<br/>W_O: [768, 768]"]
+    Proj --> Final["Final Output<br/>[6, 768]"]
+    
+    style X fill:#e3f2fd
+    style Split fill:#fff9c4
+    style Concat fill:#fff9c4
+    style Proj fill:#fff9c4
+    style Final fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Multi-Head Attention Example:</h4>
+                    <pre>
+For sentence "The cat sat on the mat":
+
+Head 1 (Syntax): Focuses on grammatical relationships
+  - "cat" → "sat" (subject-verb)
+  - "sat" → "on" (verb-preposition)
+
+Head 2 (Semantics): Focuses on meaning
+  - "cat" → "mat" (cat sits on mat)
+  - "The" → "cat" (article-noun)
+
+Head 3 (Long-range): Focuses on distant relationships
+  - "cat" → "mat" (spans multiple words)
+
+... (9 more heads with different patterns)
+
+Final: Concatenate all 12 heads → [6, 768]
+        </pre>
+                </div>
+
+                <h2>Complete Self-Attention Layer in Transformer</h2>
+                <p><strong>How Self-Attention Fits in a Transformer Block:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Self-Attention in Transformer Block</h4>
+                        <p><strong>Complete Flow:</strong> Self-attention is followed by residual connection, layer norm, feed-forward network, and another residual connection.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Input[Input X] --> Norm1[Layer Norm]
+    Norm1 --> SelfAttn[Self-Attention<br/>Multi-Head]
+    SelfAttn --> Add1[Residual Add]
+    Input --> Add1
+    
+    Add1 --> Norm2[Layer Norm]
+    Norm2 --> FFN[Feed Forward Network]
+    FFN --> Add2[Residual Add]
+    Add1 --> Add2
+    
+    Add2 --> Output[Output]
+    
+    style Input fill:#e3f2fd
+    style SelfAttn fill:#fff3e0
+    style FFN fill:#e8f5e9
+    style Output fill:#e3f2fd
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Visual Example: Complete Attention Flow</h2>
+                <p><strong>Processing "The cat sat on the mat" - Full Visualization:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Complete Attention Visualization</h4>
+                        <p><strong>Attention Weights Matrix:</strong> Shows how each token attends to others.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    T1[The]
+    T2[cat]
+    T3[sat]
+    T4[on]
+    T5[the]
+    T6[mat]
+    
+    T2 -.->|0.28| T2
+    T2 -.->|0.24| T3
+    T2 -.->|0.17| T6
+    T3 -.->|0.25| T2
+    T3 -.->|0.30| T3
+    T3 -.->|0.20| T4
+    T6 -.->|0.15| T2
+    T6 -.->|0.20| T3
+    T6 -.->|0.35| T6
+    
+    style T2 fill:#fff3e0
+    style T3 fill:#e8f5e9
+    style T6 fill:#f3e5f5
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Key Takeaways</h2>
+                <div class="section">
+                    <ol>
+                        <li><strong>Self-Attention Processes All Tokens in Parallel:</strong> Unlike RNNs, all tokens are processed simultaneously.</li>
+                        <li><strong>Three Representations (Q, K, V):</strong> Each token has query (what it needs), key (what it has), and value (what it contains).</li>
+                        <li><strong>Attention Scores:</strong> Q × K^T calculates how well queries match keys.</li>
+                        <li><strong>Scaling:</strong> Dividing by √d_k prevents extreme values and stabilizes softmax.</li>
+                        <li><strong>Softmax:</strong> Converts scores to probabilities (each row sums to 1.0).</li>
+                        <li><strong>Weighted Sum:</strong> Attention weights × Values creates context-aware output vectors.</li>
+                        <li><strong>Multi-Head:</strong> Multiple attention heads learn different types of relationships.</li>
+                        <li><strong>Complete Formula:</strong> Attention(Q,K,V) = softmax(QK^T/√d_k) × V</li>
+                    </ol>
+                </div>
+
+                <h2>Mathematical Summary</h2>
+                <div class="example-box">
+                    <h4>📝 Complete Self-Attention Formula:</h4>
+                    <pre>
+Input: X ∈ ℝ^(n×d_model)
+
+Step 1: Create Q, K, V
+  Q = X × W_Q  where W_Q ∈ ℝ^(d_model×d_k)
+  K = X × W_K  where W_K ∈ ℝ^(d_model×d_k)
+  V = X × W_V  where W_V ∈ ℝ^(d_model×d_v)
+
+Step 2: Calculate Attention
+  Scores = Q × K^T          # [n, n]
+  Scaled = Scores / √d_k     # [n, n]
+  Weights = softmax(Scaled)  # [n, n]
+  Output = Weights × V       # [n, d_v]
+
+For Multi-Head:
+  - Split: d_model = num_heads × d_k
+  - Each head: Independent attention
+  - Concatenate: [n, num_heads × d_v]
+  - Project: W_O × Concatenated → [n, d_model]
+                    </pre>
+                </div>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter26.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><a href="comprehensive_chapter28.html">Next Chapter →</a></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 27 of 28</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Byte Pair Encoding (BPE) - Complete Process with Vocabulary & Embeddings - Comprehensive LLM Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔤 Byte Pair Encoding (BPE) - Complete Process</h1>
+            <p class="subtitle">Chapter 29 of 29 - Comprehensive Guide</p>
+        </header>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+
+        <nav class="nav-sidebar" id="nav-sidebar">
+            <ul>
+                <li><a href="comprehensive_index.html">🏠 Home</a></li>
+                <li><a href="comprehensive_chapter1.html">🤖 Chapter 1: Introduction to AI</a></li>
+                <li><a href="comprehensive_chapter2.html">📊 Chapter 2: Machine Learning</a></li>
+                <li><a href="comprehensive_chapter3.html">🧠 Chapter 3: Deep Learning</a></li>
+                <li><a href="comprehensive_chapter4.html">🔗 Chapter 4: Neural Networks</a></li>
+                <li><a href="comprehensive_chapter5.html">💬 Chapter 5: NLP Evolution</a></li>
+                <li><a href="comprehensive_chapter6.html">⚡ Chapter 6: Transformers</a></li>
+                <li><a href="comprehensive_chapter7.html">🎓 Chapter 7: LLM Training</a></li>
+                <li><a href="comprehensive_chapter8.html">🏗️ Chapter 8: LLM Architecture</a></li>
+                <li><a href="comprehensive_chapter9.html">🔄 Chapter 9: Query Processing</a></li>
+                <li><a href="comprehensive_chapter10.html">👁️ Chapter 10: Attention</a></li>
+                <li><a href="comprehensive_chapter11.html">📚 Chapter 11: Training Data</a></li>
+                <li><a href="comprehensive_chapter12.html">🎯 Chapter 12: Fine-tuning</a></li>
+                <li><a href="comprehensive_chapter13.html">⚙️ Chapter 13: Inference</a></li>
+                <li><a href="comprehensive_chapter14.html">📈 Chapter 14: Evolution</a></li>
+                <li><a href="comprehensive_chapter15.html">🚀 Chapter 15: Applications</a></li>
+                <li><a href="comprehensive_chapter16.html">🔤 Chapter 16: Tokenization</a></li>
+                <li><a href="comprehensive_chapter17.html">🧮 Chapter 17: Embeddings</a></li>
+                <li><a href="comprehensive_chapter18.html">🔗 Chapter 18: Tokenization vs Embeddings</a></li>
+                <li><a href="comprehensive_chapter19.html">🏭 Chapter 19: End-to-End LLM Lifecycle</a></li>
+                <li><a href="comprehensive_chapter20.html">🎲 Chapter 20: How LLMs Generate Text</a></li>
+                <li><a href="comprehensive_chapter21.html">🧠 Chapter 21: How LLMs Understand Meaning</a></li>
+                <li><a href="comprehensive_chapter22.html">🧪 Chapter 22: Training Recipe (Step-by-Step)</a></li>
+                <li><a href="comprehensive_chapter23.html">👁️ Chapter 23: How Multimodal LLMs "See"</a></li>
+                <li><a href="comprehensive_chapter24.html">🗄️ Chapter 24: NL2SQL Deep Dive</a></li>
+                <li><a href="comprehensive_chapter25.html">🧩 Chapter 25: Advanced Prompt Engineering</a></li>
+                <li><a href="comprehensive_chapter26.html">🧯 Chapter 26: Failures, Why, and Fixes</a></li>
+                <li><a href="comprehensive_chapter27.html">🔍 Chapter 27: Self-Attention Deep Dive</a></li>
+                <li><a href="comprehensive_chapter28.html">⚙️ Chapter 28: Feed Forward Network Deep Dive</a></li>
+                <li><a href="comprehensive_chapter29.html" class="active">🔤 Chapter 29: BPE - Complete Process</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div class="chapter-header">
+                <h1>🔤 Chapter 29: Byte Pair Encoding (BPE) - Complete Process</h1>
+                <p>From Text Corpus to Vocabulary Table to Embedding Table - Complete Step-by-Step with Visual Examples</p>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter28.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><span></span></div>
+
+            <div class="section">
+                <h2>Introduction: The Complete Journey</h2>
+                <p><strong>This chapter covers the complete process:</strong> How a text corpus becomes a vocabulary table, how that vocabulary is used to create token IDs, how an embedding table is initialized and learned, and how LLMs understand semantic meaning from embeddings.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Complete Flow Overview:</h4>
+                        <p><strong>The Journey:</strong> Text Corpus → BPE Algorithm → Vocabulary Table → Tokenization → Embedding Table → Training → Semantic Understanding</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Corpus["Text Corpus<br/>Raw text data"] --> BPE["BPE Algorithm<br/>Learn vocabulary"]
+    BPE --> Vocab["Vocabulary Table<br/>Token String → Token ID<br/>FROZEN"]
+    Vocab --> Tokenize["Tokenization<br/>Text → Token IDs"]
+    Tokenize --> EmbedInit["Embedding Table<br/>Token ID → Vector<br/>RANDOM initialization"]
+    EmbedInit --> Train["Training<br/>Learn embeddings"]
+    Train --> Learned["Learned Embeddings<br/>Semantic meaning"]
+    
+    style Corpus fill:#e3f2fd
+    style Vocab fill:#fff3e0
+    style EmbedInit fill:#ffebee
+    style Learned fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Part 1: Byte Pair Encoding (BPE) Algorithm</h2>
+                <p><strong>What is BPE?</strong> BPE is a data compression algorithm that learns to merge the most frequent pairs of bytes (or characters) in a text corpus. It creates a vocabulary of subword tokens that can represent any text.</p>
+
+                <h3>BPE Algorithm: Step-by-Step with Example</h3>
+                <p><strong>Example Corpus:</strong> Let's use a simple corpus to understand BPE:</p>
+
+                <div class="example-box">
+                    <h4>📝 Example Training Corpus:</h4>
+                    <pre>
+Corpus:
+1. "low"
+2. "lower"
+3. "newest"
+4. "widest"
+                    </pre>
+                </div>
+
+                <h3>Step 1: Initialize with Characters</h3>
+                <p><strong>Start with individual characters:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 1: Character Initialization</h4>
+                        <p><strong>Process:</strong> Split each word into characters and add a special end-of-word token.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Words["Words:<br/>low, lower, newest, widest"] --> Split["Split into characters<br/>Add </w> token"]
+    Split --> Chars["Character tokens:<br/>l, o, w, e, r, n, s, t, i, d, </w>"]
+    
+    style Words fill:#e3f2fd
+    style Chars fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 After Character Splitting:</h4>
+                    <pre>
+"low"    → ['l', 'o', 'w', '</w>']
+"lower"  → ['l', 'o', 'w', 'e', 'r', '</w>']
+"newest" → ['n', 'e', 'w', 'e', 's', 't', '</w>']
+"widest" → ['w', 'i', 'd', 'e', 's', 't', '</w>']
+
+Initial Vocabulary: {'l', 'o', 'w', 'e', 'r', 'n', 's', 't', 'i', 'd', '</w>'}
+                    </pre>
+                </div>
+
+                <h3>Step 2: Count All Pairs</h3>
+                <p><strong>Find the most frequent character pairs:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 2: Count Character Pairs</h4>
+                        <p><strong>Process:</strong> Count how many times each pair of adjacent characters appears.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Tokens["Token sequences"] --> Count["Count all pairs<br/>in each sequence"]
+    Count --> Pairs["Pair frequencies:<br/>lo: 2, ow: 2, we: 2,<br/>er: 2, es: 2, st: 2, ..."]
+    
+    style Tokens fill:#e3f2fd
+    style Pairs fill:#fff3e0
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Pair Frequencies:</h4>
+                    <pre>
+From sequences:
+['l', 'o', 'w', '</w>']           → pairs: lo, ow, w</w>
+['l', 'o', 'w', 'e', 'r', '</w>']  → pairs: lo, ow, we, er, r</w>
+['n', 'e', 'w', 'e', 's', 't', '</w>'] → pairs: ne, ew, we, es, st, t</w>
+['w', 'i', 'd', 'e', 's', 't', '</w>'] → pairs: wi, id, de, es, st, t</w>
+
+Count:
+'es': 2, 'st': 2, 'we': 2, 'lo': 2, 'ow': 2, 'er': 2, 't</w>': 2, ...
+                    </pre>
+                </div>
+
+                <h3>Step 3: Merge Most Frequent Pair</h3>
+                <p><strong>Merge the pair that appears most often:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 3: Merge Most Frequent Pair</h4>
+                        <p><strong>Process:</strong> Find the most frequent pair and merge it into a single token. Update all sequences.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Pairs["Pair frequencies"] --> Find["Find most frequent<br/>'es' appears 2 times"]
+    Find --> Merge["Merge 'e' + 's' → 'es'"]
+    Merge --> Update["Update all sequences<br/>Replace 'e' + 's' with 'es'"]
+    
+    style Pairs fill:#fff3e0
+    style Merge fill:#ffebee
+    style Update fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 After Merging 'es':</h4>
+                    <pre>
+Before:
+['n', 'e', 'w', 'e', 's', 't', '</w>'] → ['n', 'e', 'w', 'es', 't', '</w>']
+['w', 'i', 'd', 'e', 's', 't', '</w>'] → ['w', 'i', 'd', 'es', 't', '</w>']
+
+New Vocabulary: {'l', 'o', 'w', 'e', 'r', 'n', 's', 't', 'i', 'd', '</w>', 'es'}
+
+Iteration 1 Complete: Merged 'es' (frequency: 2)
+                    </pre>
+                </div>
+
+                <h3>Step 4: Repeat Until Vocabulary Size Reached</h3>
+                <p><strong>Continue merging pairs until desired vocabulary size:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Step 4: Iterative Merging</h4>
+                        <p><strong>Process:</strong> Repeat steps 2-3: count pairs, merge most frequent, update vocabulary.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Start["Start with characters"] --> Iter1["Iteration 1:<br/>Merge 'es'"]
+    Iter1 --> Iter2["Iteration 2:<br/>Merge 'st'"]
+    Iter2 --> Iter3["Iteration 3:<br/>Merge 'we'"]
+    Iter3 --> More{More<br/>iterations?}
+    More -->|Yes| Iter1
+    More -->|No| Final["Final Vocabulary<br/>Desired size reached"]
+    
+    style Start fill:#e3f2fd
+    style Final fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Complete BPE Process (First 5 Iterations):</h4>
+                    <pre>
+Iteration 1: Merge 'es' (frequency: 2)
+  Vocabulary: {..., 'es'}
+  Sequences updated
+
+Iteration 2: Merge 'st' (frequency: 2)
+  Vocabulary: {..., 'es', 'st'}
+  Sequences: ['n', 'e', 'w', 'es', 'st', '</w>'], ...
+
+Iteration 3: Merge 'we' (frequency: 2)
+  Vocabulary: {..., 'es', 'st', 'we'}
+  Sequences: ['n', 'e', 'we', 'st', '</w>'], ...
+
+Iteration 4: Merge 'est' (frequency: 2, from 'es' + 't')
+  Vocabulary: {..., 'es', 'st', 'we', 'est'}
+  Sequences: ['n', 'e', 'we', 'est', '</w>'], ...
+
+Iteration 5: Merge 'lo' (frequency: 2)
+  Vocabulary: {..., 'es', 'st', 'we', 'est', 'lo'}
+  Sequences: ['lo', 'w', '</w>'], ['lo', 'w', 'e', 'r', '</w>'], ...
+
+... (continue until vocabulary size reached, e.g., 50,000 tokens)
+                    </pre>
+                </div>
+
+                <h2>Part 2: Vocabulary Table Creation</h2>
+                <p><strong>After BPE completes:</strong> We have a vocabulary of subword tokens. Now we create a vocabulary table that maps token strings to token IDs.</p>
+
+                <h3>Vocabulary Table Structure</h3>
+                <p><strong>Format:</strong> A dictionary/hash table mapping token strings to unique integer IDs.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Vocabulary Table Structure</h4>
+                        <p><strong>Purpose:</strong> Fast lookup from token string to token ID. This table is FROZEN after creation and never changes during training.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Vocab["Vocabulary Table<br/>Token String → Token ID"]
+    
+    Vocab --> Entry1["'</w>': 0"]
+    Vocab --> Entry2["'the': 1"]
+    Vocab --> Entry3["'ing': 2"]
+    Vocab --> Entry4["'est': 3"]
+    Vocab --> Entry5["'lo': 4"]
+    Vocab --> EntryN["... (50,000 entries)"]
+    
+    style Vocab fill:#fff3e0
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Example Vocabulary Table (Simplified):</h4>
+                    <pre>
+Vocabulary Table (first 20 entries):
+{
+    '</w>': 0,        # End of word token
+    'the': 1,
+    'ing': 2,
+    'est': 3,
+    'lo': 4,
+    'we': 5,
+    'es': 6,
+    'st': 7,
+    'er': 8,
+    'ow': 9,
+    'ne': 10,
+    'wi': 11,
+    'id': 12,
+    'de': 13,
+    'low': 14,
+    'new': 15,
+    'wide': 16,
+    'lower': 17,
+    'newest': 18,
+    'widest': 19,
+    ...
+}
+
+Total Vocabulary Size: 50,000 tokens (example)
+                    </pre>
+                </div>
+
+                <h3>How Vocabulary Table is Used</h3>
+                <p><strong>During Tokenization:</strong> When we need to tokenize text, we use the vocabulary table to convert token strings to IDs.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Tokenization Using Vocabulary Table</h4>
+                        <p><strong>Process:</strong> Text → BPE splitting → Lookup in vocabulary table → Token IDs</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Text["Text: 'lowest'"] --> BPE["BPE Algorithm<br/>Split into tokens"]
+    BPE --> Tokens["Tokens: ['low', 'est', '</w>']"]
+    Tokens --> Lookup["Vocabulary Lookup"]
+    Lookup --> IDs["Token IDs: [14, 3, 0]"]
+    
+    subgraph VocabTable["Vocabulary Table"]
+        V1["'low': 14"]
+        V2["'est': 3"]
+        V3["'</w>': 0"]
+    end
+    
+    Lookup -.-> VocabTable
+    
+    style Text fill:#e3f2fd
+    style IDs fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Complete Tokenization Example:</h4>
+                    <pre>
+Input Text: "Show me students enrolled in 2024"
+
+Step 1: BPE Tokenization
+  → ['Show', ' me', ' student', 's', ' enrolled', ' in', ' 2024', '</w>']
+
+Step 2: Vocabulary Lookup
+  'Show'    → 1234
+  ' me'     → 567
+  ' student' → 890
+  's'       → 12
+  ' enrolled' → 3456
+  ' in'     → 78
+  ' 2024'   → 9012
+  '</w>'    → 0
+
+Result: [1234, 567, 890, 12, 3456, 78, 9012, 0]
+                    </pre>
+                </div>
+
+                <h2>Part 3: Embedding Table Creation</h2>
+                <p><strong>Initialization:</strong> The embedding table is created when the model is initialized, BEFORE training starts.</p>
+
+                <h3>Embedding Table Structure</h3>
+                <p><strong>Format:</strong> A 2D matrix where each row corresponds to a token ID and contains an embedding vector.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Embedding Table Structure</h4>
+                        <p><strong>Purpose:</strong> Maps token IDs to embedding vectors. This table is LEARNED during training (unlike vocabulary table which is frozen).</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    EmbedTable["Embedding Table<br/>[vocab_size, embedding_dim]<br/>[50,000, 768]"]
+    
+    EmbedTable --> Row0["Row 0 (Token ID 0):<br/>[0.1, -0.2, 0.3, ..., 0.05]<br/>768 dimensions"]
+    EmbedTable --> Row1["Row 1 (Token ID 1):<br/>[0.2, 0.1, -0.1, ..., 0.1]<br/>768 dimensions"]
+    EmbedTable --> Row14["Row 14 (Token ID 14):<br/>[0.3, -0.1, 0.2, ..., 0.15]<br/>768 dimensions"]
+    EmbedTable --> RowN["Row 50,000:<br/>..."]
+    
+    style EmbedTable fill:#ffebee
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Embedding Table Initialization:</h4>
+                    <pre>
+Embedding Table Structure:
+- Shape: [vocab_size, embedding_dim]
+- Example: [50,000, 768] for GPT-3
+- Example: [100,256, 12,288] for GPT-4
+
+Initialization (Random):
+Embedding_Table = [
+    [0.1, -0.2, 0.3, ..., 0.05],  # Row 0: Token ID 0 ('</w>')
+    [0.2, 0.1, -0.1, ..., 0.1],   # Row 1: Token ID 1 ('the')
+    [0.15, -0.15, 0.25, ..., 0.08], # Row 2: Token ID 2 ('ing')
+    ...
+    [0.3, -0.1, 0.2, ..., 0.15],  # Row 14: Token ID 14 ('low')
+    ...
+]
+
+Each row is initialized with small random values
+(e.g., sampled from normal distribution with mean=0, std=0.02)
+                    </pre>
+                </div>
+
+                <h3>Why Random Initialization?</h3>
+                <p><strong>Starting Point:</strong> Embeddings start random because the model needs to learn semantic relationships during training.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Random Initialization Rationale</h4>
+                        <p><strong>Key Points:</strong></p>
+                        <ul>
+                            <li>Random initialization breaks symmetry (prevents all tokens from having same embedding)</li>
+                            <li>Small random values allow gradual learning</li>
+                            <li>Model learns semantic relationships during training</li>
+                            <li>Similar tokens will learn similar embeddings</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph LR
+    Init["Random Initialization<br/>Small random values"] --> Train["Training Process<br/>Learn from data"]
+    Train --> Learned["Learned Embeddings<br/>Semantic relationships"]
+    
+    style Init fill:#ffebee
+    style Learned fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Part 4: Complete Training Flow</h2>
+                <p><strong>How Everything Works Together:</strong> From text corpus to trained embeddings.</p>
+
+                <h3>Phase 1: Pre-Training (Before Model Training)</h3>
+                <p><strong>Vocabulary Creation:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Phase 1: Vocabulary Creation</h4>
+                        <p><strong>Timeline:</strong> This happens BEFORE any model training begins.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Corpus["Text Corpus<br/>45+ TB of text"] --> BPE["BPE Algorithm<br/>Learn vocabulary<br/>50,000 iterations"]
+    BPE --> Vocab["Vocabulary Table<br/>Token String → Token ID<br/>50,000 entries<br/>FROZEN"]
+    Vocab --> Tokenize["Tokenize Training Data<br/>All text → Token IDs"]
+    Tokenize --> Ready["Ready for Training<br/>Training data as Token IDs"]
+    
+    style Corpus fill:#e3f2fd
+    style Vocab fill:#fff3e0
+    style Ready fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Phase 2: Model Initialization (Start of Training)</h3>
+                <p><strong>Embedding Table Creation:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Phase 2: Embedding Table Initialization</h4>
+                        <p><strong>Timeline:</strong> This happens when training starts.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Start["Start Training"] --> Init["Initialize Embedding Table<br/>[50,000, 768]<br/>Random values"]
+    Init --> Ready["Embedding Table Ready<br/>Will be LEARNED during training"]
+    
+    style Start fill:#e3f2fd
+    style Ready fill:#ffebee
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Phase 3: Training Loop (How They Work Together)</h3>
+                <p><strong>Complete Training Step:</strong></p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Phase 3: Training Loop</h4>
+                        <p><strong>Each Training Step:</strong> Shows how vocabulary table and embedding table work together.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+sequenceDiagram
+    participant Text as Training Text
+    participant Vocab as Vocabulary Table<br/>FROZEN
+    participant Embed as Embedding Table<br/>LEARNED
+    participant Model as Transformer Model
+    participant Loss as Loss Function
+    participant Update as Update
+
+    Text->>Vocab: "Show me students"
+    Vocab->>Vocab: Lookup: "Show" → 1234<br/>" me" → 567<br/>" student" → 890
+    Note over Vocab: Vocabulary FROZEN<br/>Never updated
+    Vocab->>Embed: Token IDs: [1234, 567, 890]
+    Embed->>Embed: Lookup rows:<br/>Row 1234 → Vector<br/>Row 567 → Vector<br/>Row 890 → Vector
+    Embed->>Model: Embedding Vectors<br/>[3, 768]
+    Model->>Model: Forward pass
+    Model->>Loss: Predictions
+    Loss->>Loss: Calculate loss
+    Loss->>Update: Gradients
+    Update->>Embed: Update embedding vectors
+    Note over Embed: Embeddings LEARNED<br/>Updated every step
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Complete Training Step Example:</h4>
+                    <pre>
+Training Example: "Show me students enrolled in 2024"
+
+Step 1: Tokenization (Use FROZEN Vocabulary Table)
+  Text: "Show me students enrolled in 2024"
+  → BPE: ['Show', ' me', ' student', 's', ' enrolled', ' in', ' 2024', '</w>']
+  → Vocabulary Lookup:
+     'Show' → 1234
+     ' me' → 567
+     ' student' → 890
+     's' → 12
+     ' enrolled' → 3456
+     ' in' → 78
+     ' 2024' → 9012
+     '</w>' → 0
+  → Token IDs: [1234, 567, 890, 12, 3456, 78, 9012, 0]
+
+Step 2: Embedding Lookup (Use LEARNED Embedding Table)
+  Token ID 1234 → Row 1234 → Embedding vector [768 dims]
+  Token ID 567 → Row 567 → Embedding vector [768 dims]
+  Token ID 890 → Row 890 → Embedding vector [768 dims]
+  ...
+  → Embeddings: [8, 768] matrix
+
+Step 3: Forward Pass
+  Process embeddings through transformer layers
+  Make prediction for next token
+
+Step 4: Calculate Loss
+  Compare prediction with actual next token
+  Calculate error
+
+Step 5: Backward Pass
+  Calculate gradients for embedding table
+  Update embedding vectors
+  (Vocabulary table stays frozen!)
+                    </pre>
+                </div>
+
+                <h2>Part 5: How Embeddings Learn Semantic Meaning</h2>
+                <p><strong>The Learning Process:</strong> How random embeddings become meaningful representations.</p>
+
+                <h3>Initial State: Random Embeddings</h3>
+                <p><strong>Before Training:</strong> All embeddings are random, no semantic meaning.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Initial Embeddings (Random)</h4>
+                        <p><strong>State:</strong> No relationships, no meaning, just random numbers.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Init["Initial Embeddings<br/>Random values"]
+    
+    Init --> E1["'student': [0.1, -0.2, 0.3, ...]<br/>Random"]
+    Init --> E2["'teacher': [0.2, 0.1, -0.1, ...]<br/>Random"]
+    Init --> E3["'car': [-0.1, 0.3, 0.2, ...]<br/>Random"]
+    
+    Note["No semantic relationships<br/>No meaning yet"]
+    
+    style Init fill:#ffebee
+    style Note fill:#fff3e0
+                        </div>
+                    </div>
+                </div>
+
+                <h3>During Training: Learning Relationships</h3>
+                <p><strong>How Embeddings Learn:</strong> Through gradient descent, embeddings of similar tokens become similar.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Learning Process</h4>
+                        <p><strong>Mechanism:</strong> When tokens appear in similar contexts, their embeddings are updated to be closer together.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Context1["Context: 'The student studies'<br/>'The teacher teaches'"] --> Learn1["Learn: student and teacher<br/>are similar (both people)"]
+    Context2["Context: 'The car drives'<br/>'The vehicle moves'"] --> Learn2["Learn: car and vehicle<br/>are similar (both transportation)"]
+    
+    Learn1 --> Update1["Update embeddings:<br/>student embedding ≈ teacher embedding"]
+    Learn2 --> Update2["Update embeddings:<br/>car embedding ≈ vehicle embedding"]
+    
+    style Context1 fill:#e3f2fd
+    style Learn1 fill:#fff3e0
+    style Update1 fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 How Embeddings Learn Semantic Relationships:</h4>
+                    <pre>
+Example: Learning that "student" and "teacher" are related
+
+Training Example 1: "The student studies hard"
+  - Model sees "student" in context
+  - Predicts "studies" (correct)
+  - Embedding for "student" updated
+
+Training Example 2: "The teacher teaches well"
+  - Model sees "teacher" in context
+  - Predicts "teaches" (correct)
+  - Embedding for "teacher" updated
+
+Training Example 3: "The student learns from the teacher"
+  - Model sees "student" and "teacher" together
+  - Both appear in similar contexts (education)
+  - Their embeddings become more similar
+
+Result: After many training examples:
+  - "student" embedding: [0.3, 0.1, 0.5, ..., 0.2]
+  - "teacher" embedding: [0.31, 0.12, 0.48, ..., 0.21]
+  - They are close in embedding space (similar vectors)
+  - Model learned they are semantically related!
+                    </pre>
+                </div>
+
+                <h3>Learned Embeddings: Semantic Clusters</h3>
+                <p><strong>After Training:</strong> Embeddings form clusters of semantically similar tokens.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Learned Embedding Space</h4>
+                        <p><strong>Result:</strong> Similar tokens have similar embeddings, forming semantic clusters.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Space["Embedding Space<br/>768 dimensions"]
+    
+    Space --> Cluster1["Education Cluster:<br/>student, teacher, school,<br/>learn, study, class"]
+    Space --> Cluster2["Transportation Cluster:<br/>car, vehicle, drive,<br/>road, travel, speed"]
+    Space --> Cluster3["Technology Cluster:<br/>computer, software,<br/>code, program, data"]
+    
+    Note["Tokens in same cluster<br/>have similar embeddings"]
+    
+    style Space fill:#e3f2fd
+    style Cluster1 fill:#fff3e0
+    style Cluster2 fill:#e8f5e9
+    style Cluster3 fill:#f3e5f5
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>📝 Semantic Clusters Example:</h4>
+                    <pre>
+After Training, Embeddings Form Clusters:
+
+Education Cluster (similar embeddings):
+  - "student": [0.3, 0.1, 0.5, ..., 0.2]
+  - "teacher": [0.31, 0.12, 0.48, ..., 0.21]
+  - "school": [0.29, 0.11, 0.49, ..., 0.19]
+  - "learn": [0.32, 0.13, 0.47, ..., 0.22]
+  → All close together in embedding space
+
+Transportation Cluster:
+  - "car": [0.8, -0.2, 0.1, ..., 0.5]
+  - "vehicle": [0.81, -0.19, 0.11, ..., 0.51]
+  - "drive": [0.79, -0.21, 0.09, ..., 0.49]
+  → All close together, far from education cluster
+
+Technology Cluster:
+  - "computer": [-0.3, 0.6, -0.1, ..., 0.4]
+  - "software": [-0.29, 0.61, -0.09, ..., 0.41]
+  - "code": [-0.31, 0.59, -0.11, ..., 0.39]
+  → All close together, different from other clusters
+
+Distance in embedding space = Semantic similarity!
+                    </pre>
+                </div>
+
+                <h2>Part 6: Complete Example: Training a Simple LLM</h2>
+                <p><strong>End-to-End Example:</strong> From corpus to trained embeddings.</p>
+
+                <h3>Step 1: Prepare Corpus</h3>
+                <div class="example-box">
+                    <h4>📝 Training Corpus:</h4>
+                    <pre>
+Corpus (simplified):
+1. "The student studies hard"
+2. "The teacher teaches well"
+3. "Students learn in school"
+4. "Teachers help students learn"
+5. "The car drives fast"
+6. "The vehicle moves quickly"
+                    </pre>
+                </div>
+
+                <h3>Step 2: Run BPE Algorithm</h3>
+                <div class="example-box">
+                    <h4>📝 BPE Vocabulary (Simplified):</h4>
+                    <pre>
+After BPE (first 20 tokens):
+{
+    '</w>': 0,
+    'the': 1,
+    ' student': 2,
+    's': 3,
+    ' teacher': 4,
+    ' teach': 5,
+    'es': 6,
+    ' learn': 7,
+    ' in': 8,
+    ' school': 9,
+    ' help': 10,
+    ' car': 11,
+    ' drive': 12,
+    's': 13,
+    ' vehicle': 14,
+    ' move': 15,
+    's': 16,
+    ' quick': 17,
+    'ly': 18,
+    ' hard': 19,
+    ' well': 20,
+    ...
+}
+                    </pre>
+                </div>
+
+                <h3>Step 3: Create Vocabulary Table</h3>
+                <div class="example-box">
+                    <h4>📝 Vocabulary Table:</h4>
+                    <pre>
+Vocabulary Table (FROZEN):
+{
+    '</w>': 0,
+    'the': 1,
+    ' student': 2,
+    's': 3,
+    ' teacher': 4,
+    ' teach': 5,
+    'es': 6,
+    ' learn': 7,
+    ' in': 8,
+    ' school': 9,
+    ' help': 10,
+    ' car': 11,
+    ' drive': 12,
+    ' vehicle': 14,
+    ' move': 15,
+    ' quick': 17,
+    'ly': 18,
+    ' hard': 19,
+    ' well': 20,
+    ...
+}
+
+This table is FROZEN - never changes!
+                    </pre>
+                </div>
+
+                <h3>Step 4: Initialize Embedding Table</h3>
+                <div class="example-box">
+                    <h4>📝 Embedding Table (Random Initialization):</h4>
+                    <pre>
+Embedding Table [vocab_size, 768] (LEARNED):
+Row 0 (Token ID 0, '</w>'):    [0.1, -0.2, 0.3, ..., 0.05]  (random)
+Row 1 (Token ID 1, 'the'):    [0.2, 0.1, -0.1, ..., 0.1]   (random)
+Row 2 (Token ID 2, ' student'): [0.15, -0.15, 0.25, ..., 0.08] (random)
+Row 4 (Token ID 4, ' teacher'): [0.3, -0.1, 0.2, ..., 0.15] (random)
+Row 7 (Token ID 7, ' learn'):  [0.25, 0.05, 0.3, ..., 0.12] (random)
+Row 11 (Token ID 11, ' car'):  [-0.1, 0.3, 0.2, ..., 0.05] (random)
+Row 14 (Token ID 14, ' vehicle'): [-0.12, 0.28, 0.18, ..., 0.06] (random)
+...
+
+All random - no meaning yet!
+                    </pre>
+                </div>
+
+                <h3>Step 5: Training Loop</h3>
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Training Process</h4>
+                        <p><strong>Each Training Step:</strong> Process text, update embeddings, learn semantic relationships.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Example["Training Example:<br/>'The student studies hard'"] --> Tokenize["Tokenize<br/>Use Vocabulary Table"]
+    Tokenize --> IDs["Token IDs:<br/>[1, 2, 3, 19, 0]"]
+    IDs --> Embed["Embedding Lookup<br/>Use Embedding Table"]
+    Embed --> Vectors["Embedding Vectors<br/>[5, 768]"]
+    Vectors --> Model["Transformer Model<br/>Forward Pass"]
+    Model --> Loss["Calculate Loss"]
+    Loss --> Grad["Calculate Gradients"]
+    Grad --> Update["Update Embeddings<br/>Learn relationships"]
+    Update --> Learned["Learned Embeddings<br/>Semantic meaning"]
+    
+    style Example fill:#e3f2fd
+    style Update fill:#ffebee
+    style Learned fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Step 6: After Training - Learned Embeddings</h3>
+                <div class="example-box">
+                    <h4>📝 Learned Embeddings (After Training):</h4>
+                    <pre>
+After Training, Embeddings Learned Semantic Relationships:
+
+Row 2 (' student'): [0.32, 0.08, 0.48, ..., 0.18]
+Row 4 (' teacher'): [0.31, 0.09, 0.47, ..., 0.19]
+Row 7 (' learn'):   [0.33, 0.07, 0.49, ..., 0.17]
+Row 9 (' school'):  [0.30, 0.10, 0.46, ..., 0.20]
+→ All similar! (Education cluster)
+
+Row 11 (' car'):    [0.82, -0.18, 0.12, ..., 0.52]
+Row 14 (' vehicle'): [0.81, -0.17, 0.13, ..., 0.53]
+Row 12 (' drive'):  [0.80, -0.19, 0.11, ..., 0.51]
+→ All similar! (Transportation cluster)
+
+Key Insight:
+- "student" and "teacher" embeddings are now similar
+- "car" and "vehicle" embeddings are now similar
+- Model learned semantic relationships from training data!
+                    </pre>
+                </div>
+
+                <h2>Part 7: How LLMs Understand Semantic Meaning</h2>
+                <p><strong>The Magic:</strong> How embeddings enable semantic understanding.</p>
+
+                <h3>Semantic Similarity in Embedding Space</h3>
+                <p><strong>Key Concept:</strong> Similar meanings = Similar embeddings</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Semantic Similarity</h4>
+                        <p><strong>How It Works:</strong> Tokens with similar meanings have embeddings that are close together in the high-dimensional space.</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+graph TD
+    Space["768-Dimensional<br/>Embedding Space"]
+    
+    Space --> Close["Close in Space<br/>= Similar Meaning"]
+    Space --> Far["Far in Space<br/>= Different Meaning"]
+    
+    Close --> Ex1["'student' and 'teacher'<br/>Distance: 0.15<br/>Similar!"]
+    Close --> Ex2["'car' and 'vehicle'<br/>Distance: 0.12<br/>Similar!"]
+    
+    Far --> Ex3["'student' and 'car'<br/>Distance: 1.8<br/>Different!"]
+    
+    style Space fill:#e3f2fd
+    style Close fill:#e8f5e9
+    style Far fill:#ffebee
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Context-Aware Understanding</h3>
+                <p><strong>Beyond Individual Tokens:</strong> Attention mechanism uses embeddings to understand context.</p>
+
+                <div class="diagram-section">
+                    <div class="diagram-explanation">
+                        <h4>📊 Context Understanding</h4>
+                        <p><strong>Process:</strong> Embeddings + Attention = Context-aware understanding</p>
+                    </div>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+flowchart TD
+    Text["Text: 'The student studies'"] --> Embed["Embeddings:<br/>'the': v1<br/>'student': v2<br/>'studies': v3"]
+    Embed --> Attn["Attention Mechanism<br/>Compare embeddings"]
+    Attn --> Context["Context-Aware<br/>Understanding"]
+    
+    Context --> Rel1["'student' relates to<br/>'studies' (subject-verb)"]
+    Context --> Rel2["'the' relates to<br/>'student' (article-noun)"]
+    
+    style Text fill:#e3f2fd
+    style Context fill:#e8f5e9
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Key Takeaways</h2>
+                <div class="section">
+                    <ol>
+                        <li><strong>BPE Algorithm:</strong> Iteratively merges most frequent character pairs to create subword vocabulary</li>
+                        <li><strong>Vocabulary Table:</strong> Maps token strings to token IDs, created BEFORE training, FROZEN forever</li>
+                        <li><strong>Embedding Table:</strong> Maps token IDs to embedding vectors, initialized randomly, LEARNED during training</li>
+                        <li><strong>Two Separate Tables:</strong> Vocabulary (frozen) and Embeddings (learned) work together but are completely separate</li>
+                        <li><strong>Training Process:</strong> Use frozen vocabulary to tokenize, use learned embeddings to get vectors</li>
+                        <li><strong>Semantic Learning:</strong> Embeddings learn semantic relationships through gradient descent during training</li>
+                        <li><strong>Similar Meanings:</strong> Tokens with similar meanings get similar embeddings (close in embedding space)</li>
+                        <li><strong>Context Understanding:</strong> Embeddings + Attention mechanism enable context-aware understanding</li>
+                    </ol>
+                </div>
+
+                <h2>Complete Summary</h2>
+                <div class="example-box">
+                    <h4>📝 The Complete Journey:</h4>
+                    <pre>
+1. Text Corpus
+   → Raw text data (45+ TB for GPT-3)
+
+2. BPE Algorithm
+   → Learn vocabulary by merging frequent pairs
+   → Result: 50,000 subword tokens
+
+3. Vocabulary Table (FROZEN)
+   → Token String → Token ID
+   → Created BEFORE training
+   → Never changes
+
+4. Tokenization
+   → Text → BPE → Vocabulary Lookup → Token IDs
+   → Uses FROZEN vocabulary table
+
+5. Embedding Table (LEARNED)
+   → Token ID → Embedding Vector
+   → Initialized randomly
+   → Learned during training
+
+6. Training
+   → Use vocabulary (frozen) to get token IDs
+   → Use embeddings (learned) to get vectors
+   → Process through transformer
+   → Update embeddings based on loss
+
+7. Learned Embeddings
+   → Similar tokens have similar embeddings
+   → Semantic clusters form
+   → Model understands meaning!
+
+The Magic: Two tables working together:
+- Vocabulary Table: FROZEN, maps strings to IDs
+- Embedding Table: LEARNED, maps IDs to semantic vectors
+                    </pre>
+                </div>
+            </div>
+
+            <div class="chapter-nav"><a href="comprehensive_chapter28.html">← Previous Chapter</a><a href="comprehensive_index.html">🏠 Home</a><span></span></div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 NL2SQL Project - Comprehensive LLM Learning Guide</p>
+            <p>Chapter 29 of 29</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: { useMaxWidth: true, htmlLabels: true }
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const nav = document.getElementById('nav-sidebar');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('nav-sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (nav && toggle && 
+                !nav.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                nav.classList.contains('open')) {
+                nav.classList.remove('open');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                const nav = document.getElementById('nav-sidebar');
+                if (nav && window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
